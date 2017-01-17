@@ -1,0 +1,224 @@
+// out: theme.css, compress: true
+@import "normalize";
+@import "color-scheme";
+@import url( "https://fonts.googleapis.com/css?family=Maven+Pro" );
+
+@font-face {
+	font-family: "icons";
+	src: url( "icons.woff" ) format( "woff" ),
+		 url( "icons.svg" )  format( "svg" );
+	font-weight: normal;
+	font-style: normal;
+}
+
+.laurus-icon {
+	font-family: "icons";
+}
+
+/* consts
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+@standard-font-size: 14px;
+@standard-line-height: 1.8;
+@standard-font-family: Meiryo, sans-self;
+@horizontal-size: 900px;
+@icon-size: 16px;
+@panel-label-font-size: 20px;
+@index-tape-width: 7px;
+
+.icon {
+	font-family: icons;
+}
+
+
+/* multi prefix attributes
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+.disable-select() {
+	        user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+		-ms-user-select: none;
+}
+
+/* fundation
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+body {
+	background:     url( "background.jpg" ) repeat fixed;
+	color:          @key-tone;
+	font-family:    @standard-font-family;
+	font-size:      @standard-font-size;
+	letter-spacing: 0.5px;
+	line-height:    @standard-line-height;
+	margin:         0 auto;
+}
+
+::selection       { background: @selection-color; }
+::-moz-selecttion { background: @selection-color; }
+
+header {
+	border-top: @index-tape-width solid transparent;
+	height:     50px;
+	overflow:   visible;
+	.disable-select();
+
+	&.advisor   { border-color: fade( @advisor-theme, 40% )   }
+	&.manager   { border-color: fade( @manager-theme, 40% )   }
+	&.purveyor  { border-color: fade( @purveyor-theme, 40% )  }
+	&.credit    { border-color: fade( @credit-theme, 40% )    }
+	&.changelog { border-color: fade( @changelog-theme, 40% ) }
+}
+
+	#header-area {
+		margin:  0 auto 20px;
+		padding: 5px 0 20px;
+		width:   @horizontal-size;
+		h1 {
+			font-family: "Maven Pro";
+			font-size:   @panel-label-font-size;
+			margin:      0;
+		}
+	}
+		#logo-area {
+			float: left;
+			width: 300px;
+		}
+		#general-navgation {
+			float:      left;
+			text-align: right;
+			width:      600px;
+			ul {
+				padding: 0;
+				margin:  0;
+			}
+				li {
+					cursor:         pointer;
+					display:        inline-block;
+					font-size:      12px;
+					padding:        0 10px;
+					vertical-align: top;
+					&:first-child { padding-left: 0; }
+					& + li        { border-left: 1px solid @separate-color; }
+					&:last-child  { padding-right: 0; }
+				}
+			.ghost-button {
+				border:        1px solid transparent;
+				border-radius: 5px;
+				padding:       0 10px;
+			}
+		}
+
+			.button-active( @color ) {
+				border-color: @color;
+						transition: 0.2s linear;
+				-webkit-transition: 0.2s linear;
+				   -moz-transition: 0.2s linear;
+				.laurus-icon {
+					color: @color;
+							transition: 0.2s linear;
+					-webkit-transition: 0.2s linear;
+					   -moz-transition: 0.2s linear;
+				}
+			}
+			#advisor-button:hover,   #advisor-button.current-mode   { .button-active( @advisor-theme; )   }
+			#manager-button:hover,   #manager-button.current-mode   { .button-active( @manager-theme; )   }
+			#purveyor-button:hover,  #purveyor-button.current-mode  { .button-active( @purveyor-theme; )  }
+			#credit-button:hover,    #credit-button.current-mode    { .button-active( @credit-theme; )    }
+			#changelog-button:hover, #changelog-button.current-mode { .button-active( @changelog-theme; ) }
+
+			#more-menu {
+				overflow: hidden;
+				position: relative;
+				ul {
+					background:    fade( #a9c7d8, 20% );
+					border-radius: 0 0 4px 4px;
+					position:      absolute;
+					right:         0;
+					width:         130px;
+				}
+				li {
+					height:         32px;
+					text-align:     center;
+					padding:        5px 0;
+					vertical-align: middle;
+					width:          130px;
+					& + li { border-left: none; }
+				}
+				&:hover { overflow: visible; }
+			}
+
+footer {
+	font-size:  14px;
+	text-align: center;
+	margin:     0 auto;
+	width:      @horizontal-size;
+	ul {
+		padding: 0;
+		margin:  0;
+		li {
+			display:   inline-block;
+			font-size: 12px;
+			padding:   0 10px;
+			&:first-child { padding-left: 0; }
+			& + li        { border-left: 1px solid @separate-color; }
+			&:last-child  { padding-right: 0; }
+		}
+		.profile-icon {
+			border-radius: @icon-size / 2;
+			height:        @icon-size;
+			width:         @icon-size;
+		}
+		a, a:visited { color: @key-tone; }
+		a:hover { color: @link-color; }
+	}
+}
+
+/* tag
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+img {
+	border:         0;
+	max-width:      100%;
+	height:         auto;
+	vertical-align: middle;
+}
+
+a {
+	text-decoration: none;
+}
+
+/* advisor
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+#advisor   { .tentative( @advisor-theme )   }
+#manager   { .tentative( @manager-theme )   }
+#purveyor  { .tentative( @purveyor-theme )  }
+#credit    { .tentative( @credit-theme )    }
+#changelog { .tentative( @changelog-theme ) }
+
+.tentative( @color ) { /* @todo: 仮ページ。全てつくり終わったら削除 */
+	border:        2px solid @color;
+	border-radius: 4px;
+	clear:         both;
+	color:         @color;
+	display:       none;
+	font-family:   "Maven Pro";
+	font-size:     150px;
+	height:        500px;
+	line-height:   500px;
+	margin:        15px auto;
+	text-align:    center;
+	width:         @horizontal-size;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
