@@ -128,27 +128,37 @@ header {
 				overflow: hidden;
 				position: relative;
 				ul {
-					background:    fade( #a9c7d8, 20% );
-					border-radius: 0 0 4px 4px;
-					position:      absolute;
-					right:         0;
-					width:         130px;
+					background:       url( "background.jpg" ) repeat fixed;
+					border:           0 solid @separate-color;
+					border-radius:    1px 1px 4px 4px;
+					box-shadow:       0 1px 4px @separate-color;
+					margin-right:     -20px;
+					opacity:          0.9;
+					position:         absolute;
+					right:            0;
+					top:              100%;
+					width:            130px;
 				}
 				li {
 					height:         32px;
+					margin:         0 10px;
 					text-align:     center;
 					padding:        5px 0;
 					vertical-align: middle;
-					width:          130px;
-					& + li { border-left: none; }
+					width:          110px;
+					& + li {
+						border-left: none;
+						border-top:  1px solid fade( @separate-color, 75% );
+					}
 				}
 				&:hover { overflow: visible; }
 			}
 
 footer {
+	clear:      both;
 	font-size:  14px;
 	text-align: center;
-	margin:     0 auto;
+	margin:     10px auto 40px;
 	width:      @horizontal-size;
 	ul {
 		padding: 0;
@@ -184,10 +194,89 @@ a {
 	text-decoration: none;
 }
 
+article {
+	clear:    both;
+	margin:   15px auto;
+	overflow: auto;
+	width:    @horizontal-size;
+}
+
+/* Item Card
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+@card-height: 85px;
+@card-width:  290px;
+@card-icon-size: 40px;
+@card-padding: 5px;
+@card-gap: 10px;
+@tag-max-width: @card-icon-size;
+@tag-height: 15px;
+@card-corner: 4px;
+@tag-margin: 2px;
+@tag-box-height: @tag-height * 2 + @tag-margin + 2;
+@item-name-font-size: 14px;
+@item-name-line-height: 20px;
+@attributes-width: 220px;
+@attributes-height: 45px;
+@attributes-gap: 5px;
+
+.item-card {
+	background:    @card-background;
+	border-radius: @card-corner;
+	float:         left;
+	height:        @card-height;
+	margin:        @card-gap @card-gap 0 0;
+	padding:       @card-padding;
+	position:      relative;
+	width:         @card-width;
+}
+	.item-icon-box {
+		float:        left;
+		margin-right: 10px;
+		width:        @card-icon-size;
+	}
+		.item-icon {
+			border-radius: @card-corner;
+			display:       block;
+			float:         left;
+			height:        @card-icon-size;
+			width:         @card-icon-size;
+		}
+		.item-tags {
+			display:    block;
+			float:      left;
+			height:     @tag-box-height;
+			margin-top: @tag-margin;
+			width:      @card-icon-size;
+			img {
+				display:    block;
+				height:     @tag-height;
+				margin-top: @tag-margin;
+				max-width:  @tag-max-width;
+				text-align: center;
+			}
+		}
+	.item-name {
+		display:       block;
+		float:         left;
+		font-size:     @item-name-font-size;
+		line-height:   @item-name-line-height;
+		overflow:      hidden;
+		text-overflow: ellipsis;
+		width:         @attributes-width;
+		white-space:   nowrap;
+	}
+	.item-attributes {
+		background: fade( gray, 50% );
+		display:    block;
+		float:      left;
+		height:     @attributes-height;
+		margin-top: 5px;
+		width:      @attributes-width;
+	}
+
 /* advisor
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 #advisor   { .tentative( @advisor-theme )   }
-#manager   { .tentative( @manager-theme )   }
 #purveyor  { .tentative( @purveyor-theme )  }
 #credit    { .tentative( @credit-theme )    }
 #changelog { .tentative( @changelog-theme ) }
@@ -195,19 +284,17 @@ a {
 .tentative( @color ) { /* @todo: 仮ページ。全てつくり終わったら削除 */
 	border:        2px solid @color;
 	border-radius: 4px;
-	clear:         both;
 	color:         @color;
 	display:       none;
 	font-family:   "Maven Pro";
 	font-size:     150px;
 	height:        500px;
 	line-height:   500px;
-	margin:        15px auto;
 	text-align:    center;
-	width:         @horizontal-size;
 }
 
-
+#manager {
+}
 
 
 
