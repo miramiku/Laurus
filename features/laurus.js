@@ -115,10 +115,9 @@ LAURUS.WARDROBE = ( function () {
 		_wardrobe[ this ] = {};
 	} );
 
-
 	$.ajax( {
 		type: "GET",
-		url: "/data/wardrobe.json",
+		url: "/resources/wardrobe.json",
 		dataType: "json",
 		async: false,
 		success: function ( data ) {
@@ -290,7 +289,7 @@ $( document ).ready( function () {
 	$( "#general-navgation .ghost-button" )
 		.click( LAURUS.changeMode );
 
-	//	LAURUS.wakeup.wardrobe();
+	LAURUS.wakeup.wardrobe();
 
 	$( "#advisor-button" ).click();
 	//	$( "#wardrobe-button" ).click();
