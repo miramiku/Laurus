@@ -1,70 +1,154 @@
-// out: null
+ // out: false
 
 /* color space
  * ----- ----- ----- ----- ----- ----- ----- ----- */
+// fundamental color
+@AzaleaPink: #e6679a; // PANTONE 116-2126 TPX Azalea Pink
+@BlackInk: #3c3e38; // PANTONE  19-0506 TPX Black Ink
+@Drizzle: #9a9b98; // PANTONE  16-4402 TPX Drizzle
+@Gargoyle: #666766; // PANTONE  18-0503 TPX Gargoyle
+@LunarRock: #c8cacc; // PANTONE  14-4201 TPX Lunar Rock
+@ParrotGreen: #8fb34c; // PANTONE 115-0541 TPX Parrot Green
+@StrawberryPink: #f87b90; // PANTONE  16-1731 TPX Strawberry Pink
+
+// Laurus theme
 @1775CP: #e89fa2;
-@366CP:  #8dd68d;
-@120CP:  #f7dd76;
+@366CP: #8dd68d;
+@264CP: #bba5cc;
+@120CP: #f7dd76;
+@310CP: #89ccda;
 @1635CP: #e8986d;
-@310CP:  #89ccda;
-@264CP:  #bba5cc;
 @2925CP: #1596d1;
 
-@Background-Solid: #f1eee9;
+// style theme
+@GORGEOUS: #edad56;
+@SIMPLE: #657e93;
+@ELEGANCE: #9d7fb7;
+@LIVELY: #ff5f47;
+@MATURE: #ff7878;
+@CUTE: #ff555e;
+@SEXY: #aaa3ca;
+@PURE: #35a194;
+@WARM: #ff7438;
+@COOL: #4797bb;
 
-@Gargoyle:       #666766; // PANTONE  18-0503 TPX Gargoyle
-@LunarRock:      #c8cacc; // PANTONE  14-4201 TPX Lunar Rock
+// skill theme
+@SMILE: #ffd8d8;
+@CRITICAL-EYE: #d5d1fd;
+@PICKLY-IMMUNE: #d2e3fd;
+@CHARMING: #ffc6c7;
+@GIFT: #c5e7ff;
+@GIFT-IMMUNE: #ceecfd;
+@CLOCK: #d7f1df;
+@CLOCK-IMMUNE: #d9f1e4;
+@SLEEPING: #ffdfda;
+@TRUE-LOVE: #ffc6cd;
+@PICKY-BOUNCE: #d8e8f8;
+@GIFT-BOUNCE: #eaeee8;
+@CINDERELLA: #eaeaf9;
 
-
-// color space
-@AzaleaPink:     #e6679a; // PANTONE 116-2126 TPX Azalea Pink
-@BlackInk:       #3c3e38; // PANTONE  19-0506 TPX Black Ink
-@CadmiumOrange:  #f5926c; // PANTONE  15-1340 TPX Cadmium Orange
-@Drizzle:        #9a9b98; // PANTONE  16-4402 TPX Drizzle
-@ParrotGreen:    #8fb34c; // PANTONE 115-0541 TPX Parrot Green
-@RiverBlue:      #3bb3d0; // PANTONE  15-4720 TPX River Blue
-@StrawberryPink: #f87b90; // PANTONE  16-1731 TPX Strawberry Pink
+// tags theme
+@TAG-NONE: @Drizzle;
+@SUN-CARE: #ed7029;
+@DANCE: #ec6161;
+@FLORAL: #d87764;
+@WINTER: #7e9ea5;
+@BRITAIN: #4e6fb7;
+@SWIMSUIT: #4dabcd;
+@SHOWER: #5ebac3;
+@KIMONO: #d38171;
+@PAJAMAS: #a886b5;
+@WEDDING: #ae9295;
+@ARMY: #74824f;
+@OFFICE: #74757c;
+@APRON: #bb615a;
+@CHEOGSAM: #cc6161;
+@MAIDEN: #6b6b6b;
+@EVENING-GOWN: #746891;
+@NAVY: #5a8dd1;
+@TRADITIONAL: #dc6650;
+@BUNNY: #fc80c1;
+@LADY: #f2ac47;
+@LOLITA: #f774a6;
+@GOTHIC: #756868;
+@SPORTS: #47928f;
+@HARAJUKU: #8d8fb4;
+@PREPPY: #ad6363;
+@UNISEX: #85a57b;
+@FUTURE: #7498bb;
+@FAIRY: #ff708b;
+@ROCK: #c44d4d;
+@DENIM: #4d8582;
+@PET: #be877c;
+@GODDESS: #d085d6;
+@POP: #f44545;
+@HOMEWEAR: #e48a63;
+@CHINESE-CLASSICAL: #664242;
+@HINDU: #d5a631;
+@REPUBLIC-OF-CHINA: #617491;
+@EUROPEAN: #6c6868;
+@SWORDMAN: #5c89bf;
+@RAIN: #55a073;
+@MODERN-CHINA: #856d6d;
+@DRYAD: #8e6e6c;
+@BOHEMIA: #ff853c;
+@PARAMEDICS: #5f81ad;
 
 /* theme space
  * ----- ----- ----- ----- ----- ----- ----- ----- */
+@key-tone: @Gargoyle;
+@selection-color: fade( @310CP, 20%);
+@separate-color: @LunarRock;
+@link-color: @2925CP;
+@inactive-color: @Drizzle;
+@Background-Solid: #f1eee9;
 
-@key-tone:          @Gargoyle;
-@selection-color:   fade( @310CP, 20% );
-@separate-color:    @LunarRock;
-@link-color:        @2925CP;
-
-@advisor-theme:   @1775CP;
-@manager-theme:   @366CP;
-@purveyor-theme:  @264CP;
-@credit-theme:    @310CP;
+@advisor-theme: @1775CP;
+@wardrobe-theme: @366CP;
+@purveyor-theme: @264CP;
+@cheatsheet-theme: @120CP;
+@credit-theme: @310CP;
 @changelog-theme: @1635CP;
-@welcome-theme:   @120CP;
+@welcome-theme: @120CP;
 
-@card-background: fade( @manager-theme, 10% );
+@TwitterColor: #50ccd3;
+@GithubColor: #2f4556;
 
+@attributes-value-s: #ffb316;
+@attributes-value-a: #dd658c;
+@attributes-value-b: #ad614a;
+@attributes-value-c: #53a4d6;
 
+@rarity-color: @attributes-value-a;
+@rarity-animate: @attributes-value-s;
 
+@card-background: fade( @wardrobe-theme, 10%);
+@non-active-color: @Drizzle;
+@increase-scale: @ParrotGreen;
+@same-scale: @Drizzle;
+@reduce-scale: @AzaleaPink;
 
-// Theme color
+// 未使用
 // --------------------------------------------------
 //@color: #29abe2;
-@themeColor:             fade( @AzaleaPink,    40% );
-@subColor:               @Drizzle;
-@baseFontColor:          @Gargoyle;
-@leadColor:              fade( @ParrotGreen,   40% );
-@altColor:               fade( @CadmiumOrange, 40% );
-@codeFontColor:          @BlackInk;
-@headColor:              fade( @ParrotGreen,   10% );
-@categoriesColor:        fade( @AzaleaPink,    20% );
-@seriesColor:            fade( @ParrotGreen,   20% );
-@disabledBackground:     fade( @LunarRock,     50% );
-@pagerBackground:        fade( @CadmiumOrange, 10% );
-@pagerActive:            fade( @CadmiumOrange, 40% );
-@blockquoteBackground:   fade( @LunarRock,     25% );
-@readMoreLinkColor:      @ParrotGreen;
-@goToTopBackground:      fade( @ParrotGreen,   40% );
-@tocBacktoTopBackground: fade( @RiverBlue,     20% );
-@tocLevel3Background:    fade( @AzaleaPink,    20% );
-@tocLevel4Background:    fade( @ParrotGreen,   20% );
-@tocLevel5Background:    fade( @CadmiumOrange, 20% );
-@tableEvenBackground:    fade( @CadmiumOrange, 10% );
+@CadmiumOrange: #f5926c; // PANTONE  15-1340 TPX Cadmium Orange
+@RiverBlue: #3bb3d0; // PANTONE  15-4720 TPX River Blue
+@themeColor: fade( @AzaleaPink, 40%);
+@baseFontColor: @Gargoyle;
+@leadColor: fade( @ParrotGreen, 40%);
+@altColor: fade( @CadmiumOrange, 40%);
+@codeFontColor: @BlackInk;
+@headColor: fade( @ParrotGreen, 10%);
+@categoriesColor: fade( @AzaleaPink, 20%);
+@seriesColor: fade( @ParrotGreen, 20%);
+@disabledBackground: fade( @LunarRock, 50%);
+@pagerBackground: fade( @CadmiumOrange, 10%);
+@pagerActive: fade( @CadmiumOrange, 40%);
+@blockquoteBackground: fade( @LunarRock, 25%);
+@readMoreLinkColor: @ParrotGreen;
+@goToTopBackground: fade( @ParrotGreen, 40%);
+@tocBacktoTopBackground: fade( @RiverBlue, 20%);
+@tocLevel3Background: fade( @AzaleaPink, 20%);
+@tocLevel4Background: fade( @ParrotGreen, 20%);
+@tocLevel5Background: fade( @CadmiumOrange, 20%);
+@tableEvenBackground: fade( @CadmiumOrange, 10%);

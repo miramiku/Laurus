@@ -11,11 +11,12 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-<!--
-	<script src="features/laurus.min.js?ver=1.0.0"></script>
--->
-	<script src="features/jquery.min.js"></script>
+	<!--
+	<script src="laurus.min.js?ver=1.0.0"></script>
+	-->
+	<script src="library/jquery.min.js"></script>
 	<script src="features/laurus.js"></script>
+	<script src="library/jquery.peity.js"></script>
 
 	<!-- style / favicon -->
 	<link href="styles/theme.css" rel="stylesheet" type="text/css">
@@ -27,37 +28,41 @@
 		<div id="header-area">
 			<div id="logo-area">
 				<h1>
-					<img src="styles/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor">
-					Laurus :: <span id="current-mode">Welcome</span>
+					<img src="styles/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor"> Laurus :: <span id="current-mode">Welcome</span>
 				</h1>
 			</div>
 			<nav id="general-navgation">
 				<ul class="enumeration">
 					<li>
 						<span id="advisor-button" class="ghost-button" data-mode="advisor">
-							<span class="laurus-icon">&#xe000;</span> Advisor
+							<span class="laurus-icon">&#x2600;</span> Advisor
 						</span>
 					</li>
 					<li>
-						<span id="manager-button" class="ghost-button" data-mode="manager">
-							<span class="laurus-icon">&#xe001;</span> Manager
+						<span id="wardrobe-button" class="ghost-button" data-mode="wardrobe">
+							<span class="laurus-icon">&#x2601;</span> Wardrobe
 						</span>
 					</li>
 					<li>
 						<span id="purveyor-button" class="ghost-button" data-mode="purveyor">
-							<span class="laurus-icon">&#xe002;</span> Purveyor
+							<span class="laurus-icon">&#x2602;</span> Purveyor
 						</span>
 					</li>
 					<li id="more-menu"><img src="styles/more.png" alt="more">
 						<ul>
 							<li>
+								<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
+									<span class="laurus-icon">&#x2603;</span> cheatsheet
+								</span>
+							</li>
+							<li>
 								<span id="credit-button" class="ghost-button" data-mode="credit">
-									<span class="laurus-icon">&#xe003;</span> credit
+									<span class="laurus-icon">&#x2604;</span> credit
 								</span>
 							</li>
 							<li>
 								<span id="changelog-button" class="ghost-button" data-mode="changelog">
-									<span class="laurus-icon">&#xe004;</span> changelog
+									<span class="laurus-icon">&#x2605;</span> changelog
 								</span>
 							</li>
 						</ul>
@@ -67,34 +72,159 @@
 		</div>
 	</header>
 
-	<article id="advisor">
-		Advisor
-	</article>
+	<div id="advisor" class="tab">
+		<h3>目的条件</h3>
+		<div id="objective">
+			<div id="objective-conditions">
+				<div id="request-box">
+					<div id="request-stage">
+						<span id="request-stage-title">4-12 バニーガールの誤解</span>
+						<span id="request-chapter">第4章 デザイナーのお茶会</span>
+					</div>
+					<div id="optimal-search">
+						<span class="laurus-button" id="advisor-wakeup">条件確定</span>
+					</div>
+				</div>
+				<p id="criteria-subject">バニーガールの衣装は、キュートとセクシーの両立</p>
 
-	<article id="manager"></article>
+				<h4>評価基準</h4>
+				<div id="criteria">
+					<table id="criteria-style">
+						<tbody>
+							<tr>
+								<th class="gorgeous">華麗</th>
+								<td>-</td>
+								<th class="elegance">エレガント</th>
+								<td>-</td>
+								<th class="mature">大人</th>
+								<td>-</td>
+								<th class="sexy active">セクシー</th>
+								<td class="reduce">0.13</td>
+								<th class="warm">ウォーム</th>
+								<td>-</td>
+							</tr>
+							<tr>
+								<th class="simple active">シンプル</th>
+								<td class="reduce">0.13</td>
+								<th class="lively active">アクティブ</th>
+								<td class="increase">0.2</td>
+								<th class="cute active">キュート</th>
+								<td class="increase">0.2</td>
+								<th class="pure">ピュア</th>
+								<td>-</td>
+								<th class="cool active">クール</th>
+								<td class="reduce">0.07</td>
+							</tr>
+						</tbody>
+					</table>
+					<div id="criteria-tags">
+						<div id="criteria-tag1" class="tag-box">
+							<span class="tag"><span class="bunny">バニー</span></span>
+							<span class="value ss">SS</span>
+							<span class="product">20</span>
+						</div>
+						<div id="criteria-tag2" class="tag-box">
+							<span class="tag"><span>タグ選択</span></span>
+							<span class="value c">C</span>
+							<span class="product">0.25</span>
+						</div>
+					</div>
+				</div>
 
-	<article id="purveyor">
+				<h4>使用スキル</h4>
+				<div id="skill">
+					<div id="receive-skill-icons">
+						<span class="smile active"></span>
+						<span class="critical-eye active"></span>
+						<span class="pickly-immune"></span>
+						<span class="charming"></span>
+						<span class="gift"></span>
+						<span class="gift-immune"></span>
+						<span class="clock active"></span>
+						<span class="clock-immune"></span>
+						<span class="sleeping active"></span>
+						<span class="true-love"></span>
+						<span class="pickly-bounce"></span>
+						<span class="gift-bounce"></span>
+						<span class="cinderella"></span>
+					</div>
+					<div id="receive-skill-names">
+						<span class="smile">ニキ・スマイル</span>
+						<span class="critical-eye">厳しい視線</span>
+						<span class="pickly-immune">視線無効</span>
+						<span class="charming">投げキッス</span>
+						<span class="gift">Xmasプレゼント</span>
+						<span class="gift-immune">プレゼント無効</span>
+						<span class="clock">シンデレラ</span>
+						<span class="clock-immune">シンデレラ無効</span>
+						<span class="sleeping">眠りの呪い</span>
+						<span class="true-love">愛の口づけ</span>
+						<span class="sleeping">眠りの呪い</span>
+						<span class="true-love">愛の口づけ</span>
+						<span class="pickly-bounce">視線反射</span>
+						<span class="gift-bounce">プレゼントはじき</span>
+						<span class="cinderella">シンデレラ反射</span>
+					</div>
+				</div>
+
+				<h4>禁忌アイテム</h4>
+				<div id="fail-items"></div>
+			</div>
+			<div id="options">
+				option
+			</div>
+		</div>
+
+		<h3>最適コーディネート</h3>
+		<div id="feasible">
+		</div>
+	</div>
+
+	<div id="wardrobe" class="tab"></div>
+
+	<div id="purveyor" class="tab">
 		Purveyor
-	</article>
+	</div>
 
-	<article id="credit">
+	<div id="cheatsheet" class="tab">
+		Cheatsheet
+	</div>
+
+	<div id="credit" class="tab">
 		Credit
-	</article>
+	</div>
 
-	<article id="changelog">
+	<div id="changelog" class="tab">
 		Changelog
-	</article>
+	</div>
+
+	<div id="dialogue-pane"></div>
+	<div id="dialogue" style="margin-top: -242.5px; margin-left: -430px;">
+		<div id="stage-choice">
+			<div class="dialogue-title">
+				<span class="dialogue-title-text">ステージ選択</span>
+				<span class="dialogue-close dialogue-button">close</span>
+			</div>
+			<div class="dialogue-content">
+
+			</div>
+		</div>
+	</div>
+
+	<!-- dialogue contents -->
 
 	<footer>
 		<ul class="enumeration">
-			<li><a href="http://miramiku.github.io/"><img src="styles/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a></li>
-			<li><a href="https://twitter.com/miramiku"><img src="styles/twitter.png" alt="twitter"> @miramiku</a></li>
-			<li><a href="https://github.com/miramiku/Laurus"><img src="styles/github.png" alt="github"> Repository</a></li>
+			<li>
+				<a href="http://miramiku.github.io/"><img src="styles/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a>
+			</li>
+			<li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li>
+			<li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li>
 		</ul>
 	</footer>
 
 	<script>
-		<!-- @todo: Google Analytics -->
+		// <!-- @todo: Google Analytics -->
 	</script>
 </body>
 
