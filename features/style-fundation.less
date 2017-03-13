@@ -1,0 +1,164 @@
+/* body
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+body {
+	background: url("/resources/background.jpg") repeat fixed;
+	color: @key-tone;
+	font-family: @standard-font-family;
+	font-size: @standard-font-size;
+	letter-spacing: 0.5px;
+	line-height: @standard-line-height;
+	margin: 0 auto;
+}
+
+::selection { background: @selection-color; }
+::-moz-selecttion { background: @selection-color; }
+
+/* header
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+header {
+	border-top: @index-tape-width solid transparent;
+	height: 50px;
+	overflow: visible;
+	.disable-select();
+	&.advisor { border-color: fade( @advisor-theme, 40%) }
+	&.wardrobe { border-color: fade( @wardrobe-theme, 40%) }
+	&.purveyor { border-color: fade( @purveyor-theme, 40%) }
+	&.cheatsheet { border-color: fade( @cheatsheet-theme, 40%) }
+	&.credit { border-color: fade( @credit-theme, 40%) }
+	&.changelog { border-color: fade( @changelog-theme, 40%) }
+}
+	#header-area {
+		margin: 0 auto 20px;
+		padding: 5px 0 20px;
+		width: @horizontal-size;
+		h1 {
+			font-family: "Maven Pro";
+			font-size: @panel-label-font-size;
+			margin: 0;
+		}
+	}
+		#logo-area {
+			float: left;
+			width: 300px;
+		}
+		#general-navgation {
+			float: left;
+			text-align: right;
+			width: 600px;
+			ul {
+				padding: 0;
+				margin: 0;
+			}
+			li {
+				cursor: pointer;
+				display: inline-block;
+				font-size: @sub-font-size;
+				padding: 0 10px;
+				vertical-align: top;
+				&:first-child { padding-left: 0; }
+				&+li { border-left: 1px solid @separate-color; }
+				&:last-child { padding-right: 0; }
+			}
+			.ghost-button {
+				border: 1px solid transparent;
+				border-radius: 5px;
+				padding: 0 10px;
+			}
+		}
+		.button-active( @color ) {
+			border-color: @color;
+			transition: 0.2s linear;
+			-webkit-transition: 0.2s linear;
+			-moz-transition: 0.2s linear;
+			.laurus-icon {
+				color: @color;
+				-webkit-transition: 0.2s linear;
+				-moz-transition: 0.2s linear;
+				-o-transition: 0.2s linear;
+				transition: 0.2s linear;
+			}
+		}
+		#advisor-button:hover, #advisor-button.current-mode { .button-active( @advisor-theme ); }
+		#wardrobe-button:hover, #wardrobe-button.current-mode { .button-active( @wardrobe-theme ); }
+		#purveyor-button:hover, #purveyor-button.current-mode { .button-active( @purveyor-theme ); }
+		#cheatsheet-button:hover, #cheatsheet-button.current-mode { .button-active( @cheatsheet-theme ); }
+		#credit-button:hover, #credit-button.current-mode { .button-active( @credit-theme ); }
+		#changelog-button:hover, #changelog-button.current-mode { .button-active( @changelog-theme ); }
+
+		#more-menu {
+			overflow: hidden;
+			position: relative;
+			ul {
+				background: url("/resources/background.jpg") repeat fixed;
+				border: 0 solid @separate-color;
+				border-radius: 1px 1px 4px 4px;
+				box-shadow: 0 1px 4px @separate-color;
+				margin-right: -20px;
+				opacity: 0.9;
+				position: absolute;
+				right: 0;
+				top: 100%;
+				width: 130px;
+			}
+			li {
+				height: 32px;
+				margin: 0 10px;
+				text-align: center;
+				padding: 5px 0;
+				vertical-align: middle;
+				width: 110px;
+				&+li {
+					border-left: none;
+					border-top: 1px solid fade( @separate-color, 75%);
+				}
+			}
+			&:hover {
+				overflow: visible;
+			}
+		}
+
+/* article
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+.tab {
+	clear: both;
+	margin: 15px auto;
+	width: @horizontal-size;
+}
+
+/* footer
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+footer {
+	clear: both;
+	font-size: 14px;
+	text-align: center;
+	margin: 10px auto 40px;
+	width: @horizontal-size;
+	ul {
+		padding: 0;
+		margin: 0;
+		li {
+			display: inline-block;
+			font-size: @sub-font-size;
+			padding: 0 10px;
+			&:first-child { padding-left: 0; }
+			&+li { border-left: 1px solid @separate-color; }
+			&:last-child { padding-right: 0; }
+			.laurus-icon {
+				font-size: @subject-font-size;
+				line-height: @subject-font-size;
+				vertical-align: text-bottom;
+			}
+		}
+		.profile-icon {
+			border-radius: @icon-size / 2;
+			height: @icon-size;
+			width: @icon-size;
+		}
+		a, a:visited { color: @key-tone; }
+		a:hover { color: @link-color; }
+	}
+}
+	.laurus-icon {
+		#footer-twitter & { color: @TwitterColor; }
+		#footer-repository & { color: @GithubColor; }
+	}

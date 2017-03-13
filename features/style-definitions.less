@@ -1,0 +1,39 @@
+// out: false
+
+/* consts
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+@subject-font-size: 16px;
+@standard-font-size: 14px;
+@sub-font-size: 12px;
+@standard-line-height: 1.8;
+@standard-font-family: Meiryo, ans-self;
+@horizontal-size: 900px;
+@icon-size: 16px;
+@panel-label-font-size: 20px;
+@index-tape-width: 7px;
+.laurus-icon {
+	font-family: "icons";
+}
+
+/* multi prefix attributes
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+.disable-select() {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.laurus-gradient( @color, @fade ) {
+	background: -webkit-radial-gradient( top left, circle, fade( @color, @fade ), transparent 100% );
+	background: -moz-radial-gradient( top left, circle, fade( @color, @fade ), transparent 100% );
+	background: -ms-radial-gradient( top left, circle, fade( @color, @fade ), transparent 100% );
+	background: radial-gradient( top left, circle, fade( @color, @fade ), transparent 100% );
+}
+
+.laurus-gradient-rev( @color, @fade ) {
+	background: -webkit-radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
+	background: -moz-radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
+	background: -ms-radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
+	background: radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
+}

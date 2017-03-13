@@ -1,0 +1,258 @@
+// #advisor {}
+#objective {
+	overflow: auto;
+	margin-bottom: 20px;
+}
+	#objective-conditions {
+		float: left;
+		width: 600px;
+	}
+		#request-stage {
+			.disable-select();
+			border-radius: 4px;
+			cursor: pointer;
+			float: left;
+			padding: 5px;
+			margin: 5px 20px 5px 0;
+			width: 450px;
+			&:hover {
+				.field-border( @advisor-theme );
+			}
+		}
+			#request-chapter {
+				font-size: @sub-font-size;
+				display: block;
+				line-height: 1;
+			}
+			#request-stage-title {
+				font-size: @subject-font-size;
+				font-weight: bold;
+				display: block;
+				line-height: 1.2;
+			}
+		#optimal-search {
+			float: left;
+			margin: 5px 0;
+			width: 130px;
+		}
+			#advisor-wakeup {
+				.laurus-button-factory( @advisor-theme );
+			}
+		#criteria-subject {
+			.disable-select();
+
+			clear: both;
+			color: @StrawberryPink;
+			cursor: pointer;
+			padding: 0 5px;
+			&:hover {
+				.field-border( @advisor-theme );
+			}
+		}
+		// #criteria {}
+			#criteria-style {
+				.disable-select();
+				font-size: @sub-font-size;
+				margin: 10px 0;
+				th {
+					color: @non-active-color;
+					padding-left: 15px;
+					text-align: left;
+					width: 85px;
+					&.active {
+						&.gorgeous { color: @GORGEOUS; }
+						&.simple { color: @SIMPLE; }
+						&.elegance { color: @ELEGANCE; }
+						&.lively { color: @LIVELY; }
+						&.mature { color: @MATURE; }
+						&.cute { color: @CUTE; }
+						&.sexy { color: @SEXY; }
+						&.pure { color: @PURE; }
+						&.warm { color: @WARM; }
+						&.cool { color: @COOL; }
+					}
+				}
+				td {
+					border-radius: 4px;
+					cursor: pointer;
+					font-family: "Maven Pro";
+					font-weight: bold;
+					padding: 0 5px;
+					text-align: right;
+					width: 40px;
+					color: @same-scale;
+					&.increase { color: @increase-scale; }
+					&.reduce { color: @reduce-scale; }
+					&:hover { .field-border( @advisor-theme ); }
+				}
+			}
+			#criteria-tags {
+				font-size: @sub-font-size;
+				margin-top: 15px;
+				overflow: auto;
+				.tag-box {
+					float: left;
+					width: 280px;
+				}
+				.tag {
+					.disable-select();
+					cursor: pointer;
+					display: block;
+					float: left;
+					text-align: center;
+					width: 170px;
+					span {
+						border: 2px solid @TAG-NONE;
+						border-radius: 4px;
+						color: @TAG-NONE;
+						display: inline-block;
+						line-height: 1;
+						padding: 3px 10px;
+						.tag-color( @color ) {
+							border-color: fade( @color, 25%);
+							color: @color;
+						}
+						&.sun-care { .tag-color( @SUN-CARE ); }
+						&.dance { .tag-color( @DANCE ); }
+						&.floral { .tag-color( @FLORAL ); }
+						&.winter { .tag-color( @WINTER ); }
+						&.britain { .tag-color( @BRITAIN ); }
+						&.swimsuit { .tag-color( @SWIMSUIT ); }
+						&.shower { .tag-color( @SHOWER ); }
+						&.kimono { .tag-color( @KIMONO ); }
+						&.pajamas { .tag-color( @PAJAMAS ); }
+						&.wedding { .tag-color( @WEDDING ); }
+						&.army { .tag-color( @ARMY ); }
+						&.office { .tag-color( @OFFICE ); }
+						&.apron { .tag-color( @APRON ); }
+						&.cheogsam { .tag-color( @CHEOGSAM ); }
+						&.maiden { .tag-color( @MAIDEN ); }
+						&.evening-gown { .tag-color( @EVENING-GOWN ); }
+						&.navy { .tag-color( @NAVY ); }
+						&.traditional { .tag-color( @TRADITIONAL ); }
+						&.bunny { .tag-color( @BUNNY ); }
+						&.lady { .tag-color( @LADY ); }
+						&.lolita { .tag-color( @LOLITA ); }
+						&.gothic { .tag-color( @GOTHIC ); }
+						&.sports { .tag-color( @SPORTS ); }
+						&.harajuku { .tag-color( @HARAJUKU ); }
+						&.preppy { .tag-color( @PREPPY ); }
+						&.unisex { .tag-color( @UNISEX ); }
+						&.future { .tag-color( @FUTURE ); }
+						&.fairy { .tag-color( @FAIRY ); }
+						&.rock { .tag-color( @ROCK ); }
+						&.denim { .tag-color( @DENIM ); }
+						&.pet { .tag-color( @PET ); }
+						&.goddess { .tag-color( @GODDESS ); }
+						&.pop { .tag-color( @POP ); }
+						&.homewear { .tag-color( @HOMEWEAR ); }
+						&.chinese-classical { .tag-color( @CHINESE-CLASSICAL ); }
+						&.hindu { .tag-color( @HINDU ); }
+						&.republic-of-china { .tag-color( @REPUBLIC-OF-CHINA ); }
+						&.european { .tag-color( @EUROPEAN ); }
+						&.swordman { .tag-color( @SWORDMAN ); }
+						&.rain { .tag-color( @RAIN ); }
+						&.modern-china { .tag-color( @MODERN-CHINA ); }
+						&.dryad { .tag-color( @DRYAD ); }
+						&.bohemia { .tag-color( @BOHEMIA ); }
+						&.paramedics { .tag-color( @PARAMEDICS ); }
+					}
+				}
+				.value {
+					.disable-select();
+					border-radius: 4px;
+					cursor: pointer;
+					display: block;
+					float: left;
+					font-family: "Maven Pro";
+					font-weight: bold;
+					padding: 0 5px;
+					text-align: center;
+					width: 50px;
+					&.ss { color: @attributes-value-s; }
+					&.s { color: @attributes-value-s; }
+					&.a { color: @attributes-value-a; }
+					&.b { color: @attributes-value-b; }
+					&.c { color: @attributes-value-c; }
+					&:hover { .field-border( @advisor-theme ); }
+				}
+				.product {
+					.disable-select();
+					border-radius: 4px;
+					cursor: pointer;
+					display: block;
+					float: left;
+					font-family: "Maven Pro";
+					font-weight: bold;
+					text-align: right;
+					padding: 0 5px;
+					width: 50px;
+					&::before { content: "x"; }
+					&:hover { .field-border( @advisor-theme ); }
+				}
+			}
+		#skill {
+			margin-left: 20px;
+		}
+			#receive-skill-icons {
+				overflow: auto;
+				margin: 5px 0 5px 0;
+				@skill-icon-width: 40px;
+				@skill-icon-height: 30px;
+				.receive-skills ( @pos ) {
+					background-position: ( -1 * @skill-icon-width * @pos ) ( -1 * @skill-icon-height );
+					&.active {
+						background-position: ( -1 * @skill-icon-width * @pos ) 0;
+					}
+				}
+				span {
+					background: url("/resources/receive-skills.png");
+					cursor: pointer;
+					display: block;
+					float: left;
+					height: @skill-icon-height;
+					width: @skill-icon-width;
+					&.smile { .receive-skills( 0 ); }
+					&.critical-eye { .receive-skills( 1 ); }
+					&.pickly-immune { .receive-skills( 2 ); }
+					&.charming { .receive-skills( 3 ); }
+					&.gift { .receive-skills( 4 ); }
+					&.gift-immune { .receive-skills( 5 ); }
+					&.clock { .receive-skills( 6 ); }
+					&.clock-immune { .receive-skills( 7 ); }
+					&.sleeping { .receive-skills( 8 ); }
+					&.true-love { .receive-skills( 9 ); }
+					&.pickly-bounce { .receive-skills( 10 ); }
+					&.gift-bounce { .receive-skills( 11 ); }
+					&.cinderella { .receive-skills( 12 ); }
+				}
+			}
+			#receive-skill-names {
+				clear: both;
+				span {
+					display: inline-block;
+					font-size: @sub-font-size;
+					width: 125px;
+					&::before { content: "■ "; }
+					&.smile::before { color: @SMILE; }
+					&.critical-eye::before { color: @CRITICAL-EYE; }
+					&.pickly-immune::before { color: @PICKLY-IMMUNE; }
+					&.charming::before { color: @CHARMING; }
+					&.gift::before { color: @GIFT; }
+					&.gift-immune::before { color: @GIFT-IMMUNE; }
+					&.clock::before { color: @CLOCK; }
+					&.clock-immune::before { color: @CLOCK-IMMUNE; }
+					&.sleeping::before { color: @SLEEPING; }
+					&.true-love::before { color: @TRUE-LOVE; }
+					&.pickly-bounce::before { color: @PICKY-BOUNCE; }
+					&.gift-bounce::before { color: @GIFT-BOUNCE; }
+					&.cinderella::before { color: @CINDERELLA; }
+				}
+			}
+	// #fail-items {}
+	#options {
+		float: left;
+		width: 300px;
+	}
+
+// #feasible {}
