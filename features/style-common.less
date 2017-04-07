@@ -1,9 +1,9 @@
 /* tag
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 img {
-	border: 0;
-	max-width: 100%;
-	height: auto;
+	border:         0;
+	max-width:      100%;
+	height:         auto;
 	vertical-align: middle;
 }
 
@@ -12,13 +12,13 @@ a {
 }
 
 div, p {
-	margin: 0;
+	margin:  0;
 	padding: 0;
 }
 
 table {
 	border-collapse: collapse;
-	table-layout: fixed;
+	table-layout:    fixed;
 }
 
 th {
@@ -30,265 +30,305 @@ th {
 h3 {
 	// h3: division subject
 	border-bottom: 2px solid transparent;
-	clear: both;
-	font-size: @subject-font-size;
-	line-height: 1.4;
-	margin: 15px 0 10px -10px;
-	padding: 2px 0 2px 10px;
-	#advisor & { border-color: fade( @advisor-theme, 40% ); }
-	#wardrobe & { border-color: fade( @wardrobe-theme, 40% ); }
-	#purveyor & { border-color: fade( @purveyor-theme, 40% ); }
+	clear:         both;
+	font-size:     @subject-font-size;
+	line-height:   1.4;
+	margin:        15px 0 10px -10px;
+	padding:       2px 0 2px 10px;
+	#advisor    & { border-color: fade( @advisor-theme,    40% ); }
+	#wardrobe   & { border-color: fade( @wardrobe-theme,   40% ); }
+	#purveyor   & { border-color: fade( @purveyor-theme,   40% ); }
 	#cheatsheet & { border-color: fade( @cheatsheet-theme, 40% ); }
-	#credit & { border-color: fade( @credit-theme, 40% ); }
-	#changelog & { border-color: fade( @changelog-theme, 40% ); }
+	#credit     & { border-color: fade( @credit-theme,     40% ); }
+	#changelog  & { border-color: fade( @changelog-theme,  40% ); }
 }
 
 h4 {
 	// h4: part subject
-	clear: both;
+	clear:     both;
 	font-size: @standard-font-size;
-	margin: 20px 0 0 0;
+	margin:    20px 0 0 0;
 	&::before {
 		content: "■ ";
 		opacity: 0.4;
 	}
-	#advisor &::before { color: @advisor-theme; }
-	#wardrobe &::before { color: @wardrobe-theme; }
-	#purveyor &::before { color: @purveyor-theme; }
+	#advisor    &::before { color: @advisor-theme;    }
+	#wardrobe   &::before { color: @wardrobe-theme;   }
+	#purveyor   &::before { color: @purveyor-theme;   }
 	#cheatsheet &::before { color: @cheatsheet-theme; }
-	#credit &::before { color: @credit-theme; }
-	#changelog &::before { color: @changelog-theme; }
+	#credit     &::before { color: @credit-theme;     }
+	#changelog  &::before { color: @changelog-theme;  }
 }
 
 // h5: paragraph subjet
 // h6: sentence subject
+
+input {
+	.field-border( @advisor-theme );
+	background-color: transparent;
+	border:           none;
+	border-radius:    4px;
+	font-family:      @standard-font-family;
+	outline:          none;
+	padding:          0 5px;
+}
+
 .laurus-button-factory( @color ) {
 	.disable-select();
-	border: 1px solid fade( @color, 80%);
+	border:        1px solid fade( @color, 80% );
 	border-radius: 4px;
-	cursor: pointer;
-	display: inline-block;
-	line-height: 1;
-	padding: 7px 21px;
-	&:hover {
-		.laurus-gradient( @color, 25%);
-	}
-	&:active {
-		background: fade( @color, 20%);
+	cursor:        pointer;
+	display:       inline-block;
+	line-height:   1;
+	padding:       7px 21px;
+	&:hover  { .laurus-gradient( @color, 25% ); }
+	&:active { background: fade( @color, 20% ); }
+}
+
+.laurus-tag-button-factory( @color ) {
+	.disable-select();
+	background:    fade( @color, 20% );
+	border-radius: 3px;
+	color:         @key-tone;
+	cursor:        pointer;
+	display:       inline-block;
+	font-size:     @sub-font-size;
+	line-height:   9px;
+	margin-right:  10px;
+	padding:       4px 10px;
+	// &:hover { background: fade( @RiverBlue, 30% ); }
+	&.insparkly {
+		background: fade( @insparkly-color, 20% );
 	}
 }
 
 .field-border( @color ) {
-	box-shadow: 1px 1px 1px 1px fade( @color, 25%) inset, -1px -1px 1px 1px fade( @color, 25%) inset;
+	box-shadow:  1px  1px 1px 1px fade( @color, 25%) inset,
+				-1px -1px 1px 1px fade( @color, 25%) inset;
 }
 
 /* Item Card
  * ----- ----- ----- ----- ----- ----- ----- ----- */
-@card-height: 85px;
-@card-width: 290px;
-@card-icon-side: 40px;
-@card-padding: 5px;
-@card-gap: 10px;
-@tag-height: 15px;
-@card-corner: 4px;
-@tag-margin: 2px;
-@tag-box-height: @tag-height * 2+@tag-margin +2;
-@item-name-font-size: 14px;
-@item-name-line-height: 20px;
-@name-area-width: 195px;
-@sparkline-width: 60px;
-@sparkline-height: 37px;
+@card-height:                    85px;
+@card-width:                     290px;
+@card-icon-side:                 40px;
+@card-padding:                   5px;
+@card-gap:                       10px;
+@tag-height:                     15px;
+@card-corner:                    4px;
+@tag-margin:                     2px;
+@tag-box-height:                 @tag-height * 2 + @tag-margin + 2;
+@item-name-font-size:            14px;
+@item-name-line-height:          20px;
+@name-area-width:                195px;
+@sparkline-width:                60px;
+@sparkline-height:               30px;
+@attributes-table-header-height: 9px;
+@attributes-table-header-width:  32px;
 
 .item-card {
-	background: @card-background;
+	background:    @card-background;
 	border-radius: @card-corner;
-	float: left;
-	height: @card-height;
-	margin: @card-gap @card-gap 0 0;
-	padding: @card-padding;
-	position: relative;
-	width: @card-width;
+	float:         left;
+	height:        @card-height;
+	margin:        @card-gap @card-gap 0 0;
+	padding:       @card-padding;
+	position:      relative;
+	width:         @card-width;
 }
 	.item-icon-box {
-		float: left;
+		float:        left;
 		margin-right: 10px;
-		width: @card-icon-side;
+		width:        @card-icon-side;
 	}
 		.item-icon {
 			background-repeat: no-repeat;
-			border-radius: @card-corner;
-			display: block;
-			float: left;
-			height: @card-icon-side;
-			width: @card-icon-side;
-			&.hair-0 { background-image: url("/resources/item-icons/hair-0.png"); }
-			&.hair-1 { background-image: url("/resources/item-icons/hair-1.png"); }
-			&.hair-2 { background-image: url("/resources/item-icons/hair-2.png"); }
-			&.hair-3 { background-image: url("/resources/item-icons/hair-3.png"); }
-			&.hair-4 { background-image: url("/resources/item-icons/hair-4.png"); }
-			&.hair-5 { background-image: url("/resources/item-icons/hair-5.png"); }
-			&.dress-0 { background-image: url("/resources/item-icons/dress-0.png"); }
-			&.dress-1 { background-image: url("/resources/item-icons/dress-1.png"); }
-			&.dress-2 { background-image: url("/resources/item-icons/dress-2.png"); }
-			&.dress-3 { background-image: url("/resources/item-icons/dress-3.png"); }
-			&.coat-0 { background-image: url("/resources/item-icons/coat-0.png"); }
-			&.coat-1 { background-image: url("/resources/item-icons/coat-1.png"); }
-			&.coat-2 { background-image: url("/resources/item-icons/coat-2.png"); }
-			&.coat-3 { background-image: url("/resources/item-icons/coat-3.png"); }
-			&.coat-4 { background-image: url("/resources/item-icons/coat-4.png"); }
-			&.coat-5 { background-image: url("/resources/item-icons/coat-5.png"); }
-			&.coat-6 { background-image: url("/resources/item-icons/coat-6.png"); }
-			&.tops-0 { background-image: url("/resources/item-icons/tops-0.png"); }
-			&.tops-1 { background-image: url("/resources/item-icons/tops-1.png"); }
-			&.tops-2 { background-image: url("/resources/item-icons/tops-2.png"); }
-			&.bottoms-0 { background-image: url("/resources/item-icons/bottoms-0.png"); }
-			&.bottoms-1 { background-image: url("/resources/item-icons/bottoms-1.png"); }
-			&.bottoms-2 { background-image: url("/resources/item-icons/bottoms-2.png"); }
-			&.hosiery-0 { background-image: url("/resources/item-icons/hosiery-0.png"); }
-			&.hosiery-1 { background-image: url("/resources/item-icons/hosiery-1.png"); }
-			&.hosiery-2 { background-image: url("/resources/item-icons/hosiery-2.png"); }
-			&.shoes-0 { background-image: url("/resources/item-icons/shoes-0.png"); }
-			&.shoes-1 { background-image: url("/resources/item-icons/shoes-1.png"); }
-			&.shoes-2 { background-image: url("/resources/item-icons/shoes-2.png"); }
-			&.shoes-3 { background-image: url("/resources/item-icons/shoes-3.png"); }
-			&.shoes-4 { background-image: url("/resources/item-icons/shoes-4.png"); }
-			&.shoes-5 { background-image: url("/resources/item-icons/shoes-5.png"); }
-			&.accessory-0 { background-image: url("/resources/item-icons/accessory-0.png"); }
-			&.accessory-1 { background-image: url("/resources/item-icons/accessory-1.png"); }
-			&.accessory-2 { background-image: url("/resources/item-icons/accessory-2.png"); }
-			&.accessory-3 { background-image: url("/resources/item-icons/accessory-3.png"); }
-			&.accessory-4 { background-image: url("/resources/item-icons/accessory-4.png"); }
-			&.accessory-5 { background-image: url("/resources/item-icons/accessory-5.png"); }
-			&.accessory-6 { background-image: url("/resources/item-icons/accessory-6.png"); }
-			&.accessory-7 { background-image: url("/resources/item-icons/accessory-7.png"); }
-			&.accessory-8 { background-image: url("/resources/item-icons/accessory-8.png"); }
-			&.accessory-9 { background-image: url("/resources/item-icons/accessory-9.png"); }
-			&.accessory-10 { background-image: url("/resources/item-icons/accessory-10.png"); }
-			&.makeup-0 { background-image: url("/resources/item-icons/makeup-0.png"); }
+			border-radius:     @card-corner;
+			display:           block;
+			float:             left;
+			height:            @card-icon-side;
+			width:             @card-icon-side;
+
+			// カテゴリーアイコンでの実装
+			background-image: url( "resources/category-icons.png" );
+			.category-icon( @pos ) {
+				background-position: 0 ( @pos * -40px );
+			}
+			&.hair      { .category-icon(  0 ); }
+			&.dress     { .category-icon(  1 ); }
+			&.coat      { .category-icon(  2 ); }
+			&.tops      { .category-icon(  3 ); }
+			&.bottoms   { .category-icon(  4 ); }
+			&.hosiery   { .category-icon(  5 ); }
+			&.shoes     { .category-icon(  6 ); }
+		//	&.accessory { .category-icon(  7 ); }
+			&.headwear  { .category-icon(  8 ); }
+			&.earrings  { .category-icon(  9 ); }
+			&.necklace  { .category-icon( 10 ); }
+			&.bracelet  { .category-icon( 11 ); }
+			&.handheld  { .category-icon( 12 ); }
+			&.waist     { .category-icon( 13 ); }
+			&.special   { .category-icon( 14 ); }
+			&.makeup    { .category-icon( 15 ); }
+
+			// &.hair-0       { background-image: url( "resources/item-icons/hair-0.png"       ); }
+			// &.hair-1       { background-image: url( "resources/item-icons/hair-1.png"       ); }
+			// &.hair-2       { background-image: url( "resources/item-icons/hair-2.png"       ); }
+			// &.hair-3       { background-image: url( "resources/item-icons/hair-3.png"       ); }
+			// &.hair-4       { background-image: url( "resources/item-icons/hair-4.png"       ); }
+			// &.hair-5       { background-image: url( "resources/item-icons/hair-5.png"       ); }
+			// &.dress-0      { background-image: url( "resources/item-icons/dress-0.png"      ); }
+			// &.dress-1      { background-image: url( "resources/item-icons/dress-1.png"      ); }
+			// &.dress-2      { background-image: url( "resources/item-icons/dress-2.png"      ); }
+			// &.dress-3      { background-image: url( "resources/item-icons/dress-3.png"      ); }
+			// &.coat-0       { background-image: url( "resources/item-icons/coat-0.png"       ); }
+			// &.coat-1       { background-image: url( "resources/item-icons/coat-1.png"       ); }
+			// &.coat-2       { background-image: url( "resources/item-icons/coat-2.png"       ); }
+			// &.coat-3       { background-image: url( "resources/item-icons/coat-3.png"       ); }
+			// &.coat-4       { background-image: url( "resources/item-icons/coat-4.png"       ); }
+			// &.coat-5       { background-image: url( "resources/item-icons/coat-5.png"       ); }
+			// &.coat-6       { background-image: url( "resources/item-icons/coat-6.png"       ); }
+			// &.tops-0       { background-image: url( "resources/item-icons/tops-0.png"       ); }
+			// &.tops-1       { background-image: url( "resources/item-icons/tops-1.png"       ); }
+			// &.tops-2       { background-image: url( "resources/item-icons/tops-2.png"       ); }
+			// &.bottoms-0    { background-image: url( "resources/item-icons/bottoms-0.png"    ); }
+			// &.bottoms-1    { background-image: url( "resources/item-icons/bottoms-1.png"    ); }
+			// &.bottoms-2    { background-image: url( "resources/item-icons/bottoms-2.png"    ); }
+			// &.hosiery-0    { background-image: url( "resources/item-icons/hosiery-0.png"    ); }
+			// &.hosiery-1    { background-image: url( "resources/item-icons/hosiery-1.png"    ); }
+			// &.hosiery-2    { background-image: url( "resources/item-icons/hosiery-2.png"    ); }
+			// &.shoes-0      { background-image: url( "resources/item-icons/shoes-0.png"      ); }
+			// &.shoes-1      { background-image: url( "resources/item-icons/shoes-1.png"      ); }
+			// &.shoes-2      { background-image: url( "resources/item-icons/shoes-2.png"      ); }
+			// &.shoes-3      { background-image: url( "resources/item-icons/shoes-3.png"      ); }
+			// &.shoes-4      { background-image: url( "resources/item-icons/shoes-4.png"      ); }
+			// &.shoes-5      { background-image: url( "resources/item-icons/shoes-5.png"      ); }
+			// &.accessory-0  { background-image: url( "resources/item-icons/accessory-0.png"  ); }
+			// &.accessory-1  { background-image: url( "resources/item-icons/accessory-1.png"  ); }
+			// &.accessory-2  { background-image: url( "resources/item-icons/accessory-2.png"  ); }
+			// &.accessory-3  { background-image: url( "resources/item-icons/accessory-3.png"  ); }
+			// &.accessory-4  { background-image: url( "resources/item-icons/accessory-4.png"  ); }
+			// &.accessory-5  { background-image: url( "resources/item-icons/accessory-5.png"  ); }
+			// &.accessory-6  { background-image: url( "resources/item-icons/accessory-6.png"  ); }
+			// &.accessory-7  { background-image: url( "resources/item-icons/accessory-7.png"  ); }
+			// &.accessory-8  { background-image: url( "resources/item-icons/accessory-8.png"  ); }
+			// &.accessory-9  { background-image: url( "resources/item-icons/accessory-9.png"  ); }
+			// &.accessory-10 { background-image: url( "resources/item-icons/accessory-10.png" ); }
+			// &.makeup-0     { background-image: url( "resources/item-icons/makeup-0.png"     ); }
 		}
 		.item-tags-box {
-			display: block;
-			float: left;
-			height: @tag-box-height;
+			display:    block;
+			float:      left;
+			height:     @tag-box-height;
 			margin-top: @tag-margin;
-			width: @card-icon-side;
+			width:      @card-icon-side;
 		}
 			.item-tags {
-				display: block;
-				background: url("/resources/tags.png") no-repeat top left;
-				height: @tag-height;
-				width: @card-icon-side;
-				.setTag( @row, @col ) {
-					background-position: ( -1 * @card-icon-side * @col ) ( -1 * @tag-height * @row );
-				}
-				&.item-tags-none { background-image: none; }
-				&.item-tags-sun-care { .setTag( 0, 0 ); }
-				&.item-tags-dance { .setTag( 0, 1 ); }
-				&.item-tags-floral { .setTag( 0, 2 ); }
-				&.item-tags-winter { .setTag( 0, 3 ); }
-				&.item-tags-britain { .setTag( 1, 0 ); }
-				&.item-tags-swimsuit { .setTag( 1, 1 ); }
-				&.item-tags-shower { .setTag( 1, 2 ); }
-				&.item-tags-kimono { .setTag( 1, 3 ); }
-				&.item-tags-pajamas { .setTag( 2, 0 ); }
-				&.item-tags-wedding { .setTag( 2, 1 ); }
-				&.item-tags-army { .setTag( 2, 2 ); }
-				&.item-tags-office { .setTag( 2, 3 ); }
-				&.item-tags-apron { .setTag( 3, 0 ); }
-				&.item-tags-cheogsam { .setTag( 3, 1 ); }
-				&.item-tags-maiden { .setTag( 3, 2 ); }
-				&.item-tags-evening-gown { .setTag( 3, 3 ); }
-				&.item-tags-navy { .setTag( 4, 0 ); }
-				&.item-tags-traditional { .setTag( 4, 1 ); }
-				&.item-tags-bunny { .setTag( 4, 2 ); }
-				&.item-tags-lady { .setTag( 4, 3 ); }
-				&.item-tags-lolita { .setTag( 5, 0 ); }
-				&.item-tags-gothic { .setTag( 5, 1 ); }
-				&.item-tags-sports { .setTag( 5, 2 ); }
-				&.item-tags-harajuku { .setTag( 5, 3 ); }
-				&.item-tags-preppy { .setTag( 6, 0 ); }
-				&.item-tags-unisex { .setTag( 6, 1 ); }
-				&.item-tags-future { .setTag( 6, 2 ); }
-				&.item-tags-fairy { .setTag( 6, 3 ); }
-				&.item-tags-rock { .setTag( 7, 0 ); }
-				&.item-tags-denim { .setTag( 7, 1 ); }
-				&.item-tags-pet { .setTag( 7, 2 ); }
-				&.item-tags-goddess { .setTag( 7, 3 ); }
-				&.item-tags-pop { .setTag( 8, 0 ); }
-				&.item-tags-homewear { .setTag( 8, 1 ); }
-				&.item-tags-chinese-classical { .setTag( 8, 2 ); }
-				&.item-tags-hindu { .setTag( 8, 3 ); }
-				&.item-tags-republic-of-china { .setTag( 9, 0 ); }
-				&.item-tags-european { .setTag( 9, 1 ); }
-				&.item-tags-swordman { .setTag( 9, 2 ); }
-				&.item-tags-rain { .setTag( 9, 3 ); }
-				&.item-tags-modern-china { .setTag( 10, 0 ); }
-				&.item-tags-dryad { .setTag( 10, 1 ); }
-				&.item-tags-bohemia { .setTag( 10, 2 ); }
-				&.item-tags-paramedics { .setTag( 10, 3 ); }
+				display:    block;
+				background: url( "/resources/tags.png" ) no-repeat top left;
+				height:     @tag-height;
+				width:      @card-icon-side;
+				.setTag( @row, @col ) { background-position: ( -1 * @card-icon-side * @col ) ( -1 * @tag-height * @row ); }
+				&.item-tags-tag-none          { background-image: none; }
+				&.item-tags-sun-care          { .setTag(  0, 0 ); }
+				&.item-tags-dance             { .setTag(  0, 1 ); }
+				&.item-tags-floral            { .setTag(  0, 2 ); }
+				&.item-tags-winter            { .setTag(  0, 3 ); }
+				&.item-tags-britain           { .setTag(  1, 0 ); }
+				&.item-tags-swimsuit          { .setTag(  1, 1 ); }
+				&.item-tags-shower            { .setTag(  1, 2 ); }
+				&.item-tags-kimono            { .setTag(  1, 3 ); }
+				&.item-tags-pajamas           { .setTag(  2, 0 ); }
+				&.item-tags-wedding           { .setTag(  2, 1 ); }
+				&.item-tags-army              { .setTag(  2, 2 ); }
+				&.item-tags-office            { .setTag(  2, 3 ); }
+				&.item-tags-apron             { .setTag(  3, 0 ); }
+				&.item-tags-cheogsam          { .setTag(  3, 1 ); }
+				&.item-tags-maiden            { .setTag(  3, 2 ); }
+				&.item-tags-evening-gown      { .setTag(  3, 3 ); }
+				&.item-tags-navy              { .setTag(  4, 0 ); }
+				&.item-tags-traditional       { .setTag(  4, 1 ); }
+				&.item-tags-bunny             { .setTag(  4, 2 ); }
+				&.item-tags-lady              { .setTag(  4, 3 ); }
+				&.item-tags-lolita            { .setTag(  5, 0 ); }
+				&.item-tags-gothic            { .setTag(  5, 1 ); }
+				&.item-tags-sports            { .setTag(  5, 2 ); }
+				&.item-tags-harajuku          { .setTag(  5, 3 ); }
+				&.item-tags-preppy            { .setTag(  6, 0 ); }
+				&.item-tags-unisex            { .setTag(  6, 1 ); }
+				&.item-tags-future            { .setTag(  6, 2 ); }
+				&.item-tags-fairy             { .setTag(  6, 3 ); }
+				&.item-tags-rock              { .setTag(  7, 0 ); }
+				&.item-tags-denim             { .setTag(  7, 1 ); }
+				&.item-tags-pet               { .setTag(  7, 2 ); }
+				&.item-tags-goddess           { .setTag(  7, 3 ); }
+				&.item-tags-pop               { .setTag(  8, 0 ); }
+				&.item-tags-homewear          { .setTag(  8, 1 ); }
+				&.item-tags-chinese-classical { .setTag(  8, 2 ); }
+				&.item-tags-hindu             { .setTag(  8, 3 ); }
+				&.item-tags-republic-of-china { .setTag(  9, 0 ); }
+				&.item-tags-european          { .setTag(  9, 1 ); }
+				&.item-tags-swordman          { .setTag(  9, 2 ); }
+				&.item-tags-rain              { .setTag(  9, 3 ); }
+				&.item-tags-modern-china      { .setTag( 10, 0 ); }
+				&.item-tags-dryad             { .setTag( 10, 1 ); }
+				&.item-tags-bohemia           { .setTag( 10, 2 ); }
+				&.item-tags-paramedics        { .setTag( 10, 3 ); }
 			}
 	.item-name {
-		display: inline-block;
-		font-size: @item-name-font-size;
-		line-height: @item-name-line-height;
-		overflow: hidden;
+		display:       inline-block;
+		font-size:     @item-name-font-size;
+		line-height:   @item-name-line-height;
+		overflow:      hidden;
 		text-overflow: ellipsis;
-		width: @name-area-width;
-		white-space: nowrap;
+		width:         @name-area-width;
+		white-space:   nowrap;
 	}
 		.item-id {
-			font-size: 8px;
-			font-family: "Maven Pro";
-			display: inline-block;
-			margin-right: 5px;
+			font-size:      @suppliment-font-size;
+			font-family:    "Maven Pro";
+			display:        inline-block;
+			margin-right:   5px;
 			vertical-align: text-top;
 		}
 	.item-rarity {
-		color: @rarity-color;
-		display: block;
-		float: right;
+		color:       @rarity-color;
+		display:     block;
+		float:       right;
 		font-family: "Maven Pro";
-		width: 30px;
-		text-align: center;
-		&.with-animate {
-			color: @rarity-animate;
-		}
-		.laurus-icon {
-			font-size: @sub-font-size;
-		}
+		width:       30px;
+		text-align:  center;
+		&.with-animate { color: @rarity-animate; }
+		.laurus-icon   { font-size: @sub-font-size; }
 	}
 	.item-attributes {
-		@attributes-table-header-height: 9px;
-		@attributes-table-header-width: 32px;
-		font-size: 8px;
-		float: left;
-		height: 50px;
+		font-size:    @suppliment-font-size;
+		float:        left;
+		height:       50px;
 		margin-right: 10px;
-		width: 160px;
+		width:        160px;
 		td {
-			font-family: "Maven Pro";
-			line-height: 1;
+			font-family:    "Maven Pro";
+			line-height:    1;
 			padding-bottom: 5px;
-			text-align: center;
-			&.inactive { color: @inactive-color; }
+			text-align:     center;
+			&.inactive      { color: @insparkly-color;    }
 			&.attributes-SS { color: @attributes-value-s; }
-			&.attributes-S { color: @attributes-value-s; }
-			&.attributes-A { color: @attributes-value-a; }
-			&.attributes-B { color: @attributes-value-b; }
-			&.attributes-C { color: @attributes-value-c; }
+			&.attributes-S  { color: @attributes-value-s; }
+			&.attributes-A  { color: @attributes-value-a; }
+			&.attributes-B  { color: @attributes-value-b; }
+			&.attributes-C  { color: @attributes-value-c; }
 		}
 		th {
-			background: url("/resources/style.png") no-repeat top left;
+			background:    url( "/resources/style.png" ) no-repeat top left;
 			border-radius: 2px;
-			height: @attributes-table-header-height;
-			opacity: 0.9;
-			width: @attributes-table-header-width;
+			height:        @attributes-table-header-height;
+			opacity:       0.9;
+			width:         @attributes-table-header-width;
 		}
 		.label-position( @pos ) {
 			background-position: ( -@attributes-table-header-width * @pos ) 0;
-			&.inactive {
-				background-position: ( -@attributes-table-header-width * @pos ) -@attributes-table-header-height;
-			}
+			&.inactive { background-position: ( -@attributes-table-header-width * @pos ) -@attributes-table-header-height; }
 		}
 		tr:nth-child( 1 ) th:nth-child( 1 ) { .label-position( 0 ); }
 		tr:nth-child( 3 ) th:nth-child( 1 ) { .label-position( 1 ); }
@@ -302,40 +342,49 @@ h4 {
 		tr:nth-child( 3 ) th:nth-child( 5 ) { .label-position( 9 ); }
 	}
 		.item-sparkline-box {
-			display: block;
-			float: left;
-			height: @sparkline-height;
-			margin-top: 7px;
-			width: @sparkline-width;
+			display:    block;
+			float:      left;
+			height:     @sparkline-height;
+			width:      @sparkline-width;
+		}
+		.item-score {
+			display:     block;
+			float:       left;
+			font-size:   @suppliment-font-size;
+			font-family: "Maven Pro";
+			line-height: 1;
+			margin-top:  5px;
+			text-align:  right;
+			width:       @sparkline-width;
 		}
 
 /* Dialogue
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 #dialogue-pane {
 	background: fade( @Gargoyle, 60% );
-	cursor: pointer;
-	// display: none;
-	height: 100%;
-	left: 0;
-	margin: 0;
-	padding: 0;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 1000;
+	cursor:     pointer;
+	display:    none;
+	height:     100%;
+	left:       0;
+	margin:     0;
+	padding:    0;
+	position:   fixed;
+	top:        0;
+	width:      100%;
+	z-index:    @modal-layer;
 }
 
 #dialogue {
-	background: url( "/resources/background.jpg" ) repeat fixed;
+	background:    url( "/resources/background.jpg" ) repeat fixed;
 	border-radius: 4px;
-	box-shadow: 0 0 20px fade( @BlackInk, 80% );
-	// display: none;
-	left: 50%;
-	margin: 0;
-	padding: 10px 20px;
-	position: fixed;
-	top: 50%;
-	z-index: 1001;
+	box-shadow:    0 0 20px fade( @BlackInk, 80% );
+	display:       none;
+	left:          50%;
+	margin:        0;
+	padding:       10px 20px 40px 20px;
+	position:      fixed;
+	top:           50%;
+	z-index:       @dialogue-pane-layer;
 }
 	// .dialogue-header {}
 		.dialogue-title {
@@ -347,34 +396,49 @@ h4 {
 			font-size: @sub-font-size;
 			width: 60px;
 		}
-	#stage-choice {
-		width: 700px;
-	}
 
 .dialogue-button {
 	.disable-select();
 	border-radius: 3px;
-	cursor: pointer;
-	display: block;
-	font-size: @sub-font-size;
-	height: 25px;
-	line-height: 25px;
+	cursor:        pointer;
+	display:       block;
+	font-size:     @sub-font-size;
+	height:        25px;
+	line-height:   25px;
 	margin-bottom: 5px;
-	position: relative;
-	padding: 0 15px;
-	text-align: center;
-	&:hover { .laurus-gradient( @advisor-theme, 40% ); }
+	position:      relative;
+	padding:       0 15px;
+	text-align:    center;
+	&:hover  { .laurus-gradient( @advisor-theme, 40% ); }
 	&:active { background: fade( @advisor-theme, 20% ); }
 }
 
 .dialogue-expand-label {
-	cursor: pointer;
+	.disable-select();
 	border-radius: 2px;
-	display: block;
-	margin-top: 20px;
-	font-size: @sub-font-size;
-	.laurus-gradient( @advisor-theme, 40% );
-	// &:hover { .laurus-gradient-rev( @advisor-theme, 40% ); }
-	&:hover { background: fade( @advisor-theme, 20% ); }
-	&:active { background: fade( @advisor-theme, 20% ); }
+	cursor:        pointer;
+	display:       block;
+	font-size:     @sub-font-size;
+	margin-top:    20px;
+	&.less        { .laurus-gradient( @wardrobe-theme, 40% ); }
+	&.less:hover  { background: fade( @wardrobe-theme, 20% ); }
+	&.less:active { background: fade( @wardrobe-theme, 20% ); }
+	&.more        { .laurus-gradient( @advisor-theme,  40% ); }
+	&.more:hover  { background: fade( @advisor-theme,  20% ); }
+	&.more:active { background: fade( @advisor-theme,  20% ); }
+
+	&.less + div {
+		display: none;
+	}
+
+	.laurus-icon {
+		display:    inline-block;
+		text-align: center;
+		margin:     0 5px 0 10px;
+	}
+}
+
+.dialogue-bottom-padding {
+	width: 100%;
+	height: 50px;
 }

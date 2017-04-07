@@ -1,8 +1,9 @@
 # brackets 設定ファイル
 .brackets.json
 gulpfile.js
+throwaway.json
 
 # folder
-styles/raw-image/
+resources/raw-image/
 node_modules/
 .vscode/

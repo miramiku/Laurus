@@ -1,1 +1,87 @@
 // #wardrobe {}
+
+#wardrobe-filter {
+	font-size:     @sub-font-size;
+	margin-bottom: 20px;
+	overflow:      hidden;
+	div { overflow: hidden; }
+	.label {
+		float:   left;
+		display: block;
+		width:   90px;
+		&::before {
+			content: "■ ";
+			color:   @wardrobe-theme;
+			opacity: 0.4;
+		}
+	}
+	.filter-key {
+		.disable-select();
+		border-radius: 4px;
+		cursor:        pointer;
+		float:         left;
+		display:       block;
+		padding:       0 10px;
+		&:hover { .field-border( @wardrobe-theme ); }
+
+		&.category {
+			max-width: 790px;
+			span {
+				display: inline-block;
+			}
+			.filter-major, .filter-minor {
+				position: relative;
+				&::after {
+					bottom:     5px;
+					content:    "";
+					height:     3px;
+					left:       0;
+					position:   absolute;
+					width:      100%;
+				}
+			}
+				.category-identifier( @color ) {
+					background: -webkit-repeating-linear-gradient( -45deg, fade( @color, 50% ), fade( @color, 50% ) 2px, transparent 2px, transparent 4px );
+					background: repeating-linear-gradient( -45deg, fade( @color, 50% ), fade( @color, 50% ) 2px, transparent 2px, transparent 4px );
+				}
+				.filter-major::after { .category-identifier( @wardrobe-theme ); }
+				.filter-minor::after { .category-identifier( @purveyor-theme ); }
+		}
+	}
+	.filter-key-rarity {
+		color:       @rarity-color;
+		font-family: "Maven Pro";
+		.laurus-icon   { font-size: @tiny-font-size; }
+	}
+}
+	#filter-category,
+	#filter-style,
+	#filter-tag {
+		width: 900px;
+	}
+	#filter-name,
+	#filter-rarity,
+	#filter-score {
+		width: 300px;
+		float: left;
+	}
+
+#display-style-option {
+	.disable-select();
+	font-size:   @standard-font-size;
+	font-weight: normal;
+	span {
+		border:        1px solid transparent;
+		border-radius: 2px;
+		color:         @insparkly-color;
+		cursor:        pointer;
+		display:       inline-block;
+		margin-left:   10px;
+		padding:       0 15px;
+		&.sparkly, &:hover {
+			border-color: fade( @wardrobe-theme, 50% );
+			color:        @key-tone;
+		}
+		&:active  { background: fade( @wardrobe-theme, 10% ); }
+	}
+}

@@ -1,42 +1,45 @@
 @import "normalize";
-@import "color-scheme";
-@import url("https://fonts.googleapis.com/css?family=Maven+Pro");
-@font-face {
-	font-family: "icons";
-	src: url( "/resources/icons.woff" ) format( "woff" ),
-		 url( "/resources/icons.svg"  ) format( "svg"  );
-	font-weight: normal;
-	font-style: normal;
-}
 
 // consts
-// multi prefix attributes
-@import "style-definitions";
+@import "color-scheme";
+@import url( "https://fonts.googleapis.com/css?family=Maven+Pro" );
+@font-face {
+	font-family: "icons";
+	src: url( "resources/icons.woff" ) format( "woff" ),
+		 url( "resources/icons.svg"  ) format( "svg"  );
+	font-weight: normal;
+	font-style:  normal;
+}
+
+// plugins
+@import "toastr";
+@import "perfect-scrollbar";
 
 // fundation
-@import "style-fundation";
+@import "style-definitions";
+@import "style-foundation";
 
 // common
 @import "style-common";
 
 /* tentative
  * ----- ----- ----- ----- ----- ----- ----- ----- */
-#purveyor { .tentative( @purveyor-theme ) }
+#purveyor   { .tentative( @purveyor-theme   ) }
 #cheatsheet { .tentative( @cheatsheet-theme ) }
-#credit { .tentative( @credit-theme ) }
-#changelog { .tentative( @changelog-theme ) }
+#credit     { .tentative( @credit-theme     ) }
+#changelog  { .tentative( @changelog-theme  ) }
 
 .tentative( @color ) {
 	/* @todo: 仮ページ。全てつくり終わったら削除 */
-	border: 2px solid @color;
+	border:        2px solid @color;
 	border-radius: 4px;
-	color: @color;
-	display: none;
-	font-family: "Maven Pro";
-	font-size: 150px;
-	height: 500px;
-	line-height: 500px;
-	text-align: center;
+	color:         @color;
+	display:       none;
+	font-family:   "Maven Pro";
+	font-size:     150px;
+	height:        500px;
+	line-height:   500px;
+	text-align:    center;
 }
 
 // tabs
