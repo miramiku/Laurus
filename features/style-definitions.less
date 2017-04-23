@@ -22,6 +22,7 @@
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 @modal-layer:         1000;
 @dialogue-pane-layer: 1200;
+@popup-layer:         1400;
 
 /* multi prefix attributes
  * ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -30,6 +31,13 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+}
+
+.slant-stripe-background( @color, @opacity ) {
+	background: -webkit-repeating-linear-gradient( -45deg, fade( @color, @opacity ), fade( @color, @opacity ) 2px, transparent 2px, transparent 4px );
+	background: -moz-repeating-linear-gradient( -45deg, fade( @color, @opacity ), fade( @color, @opacity ) 2px, transparent 2px, transparent 4px );
+	background: -ms-repeating-linear-gradient( -45deg, fade( @color, @opacity ), fade( @color, @opacity ) 2px, transparent 2px, transparent 4px );
+	background: repeating-linear-gradient( -45deg, fade( @color, @opacity ), fade( @color, @opacity ) 2px, transparent 2px, transparent 4px );
 }
 
 .laurus-gradient( @color, @fade ) {

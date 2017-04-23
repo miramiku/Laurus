@@ -62,50 +62,255 @@ h4 {
 
 // h5: paragraph subjet
 // h6: sentence subject
+h6 {
+	clear:       both;
+	font-size:   @sub-font-size;
+	font-weight: normal;
+	margin:      0 0 5px 0;
+	&::before {
+		content: "■ ";
+		opacity: 0.4;
+	}
+	.wardrobe &::before { color: @wardrobe-theme; }
+}
 
 input {
-	.field-border( @advisor-theme );
 	background-color: transparent;
 	border:           none;
 	border-radius:    4px;
 	font-family:      @standard-font-family;
+	letter-spacing:   0.5px;
+	line-height:      1.8;
 	outline:          none;
-	padding:          0 5px;
-}
-
-.laurus-button-factory( @color ) {
-	.disable-select();
-	border:        1px solid fade( @color, 80% );
-	border-radius: 4px;
-	cursor:        pointer;
-	display:       inline-block;
-	line-height:   1;
-	padding:       7px 21px;
-	&:hover  { .laurus-gradient( @color, 25% ); }
-	&:active { background: fade( @color, 20% ); }
-}
-
-.laurus-tag-button-factory( @color ) {
-	.disable-select();
-	background:    fade( @color, 20% );
-	border-radius: 3px;
-	color:         @key-tone;
-	cursor:        pointer;
-	display:       inline-block;
-	font-size:     @sub-font-size;
-	line-height:   9px;
-	margin-right:  10px;
-	padding:       4px 10px;
-	// &:hover { background: fade( @RiverBlue, 30% ); }
-	&.insparkly {
-		background: fade( @insparkly-color, 20% );
-	}
+	padding:          0 10px;
+	#advisor  & { .field-border( @advisor-theme  ); }
+	#wardrobe & { .field-border( @wardrobe-theme ); }
 }
 
 .field-border( @color ) {
 	box-shadow:  1px  1px 1px 1px fade( @color, 25%) inset,
 				-1px -1px 1px 1px fade( @color, 25%) inset;
 }
+/* Item List
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+#wardrobe-list-area-box {
+	font-size: @sub-font-size;
+	min-height: 350px;
+	table { width: 900px; }
+
+	thead {
+		background: fade( @wardrobe-theme, 10% );
+	}
+
+	th:nth-child(  1 ) { width:  30px; }
+	th:nth-child(  2 ) { width:  50px; }
+	th:nth-child(  3 ) { width: 160px; }
+	th:nth-child(  4 ) { width: 100px; }
+	th:nth-child(  5 ) { width:  30px;
+		color: @rarity-color;
+	}
+	th:nth-child( 16 ) { width:  40px; }
+	th:nth-child( 17 ),
+	th:nth-child( 18 ) { width:  50px; }
+	th:nth-child( 19 ) { width:  90px; }
+
+	th:nth-child(  6 ),
+	th:nth-child(  7 ),
+	th:nth-child(  8 ),
+	th:nth-child(  9 ),
+	th:nth-child( 10 ),
+	th:nth-child( 11 ),
+	th:nth-child( 12 ),
+	th:nth-child( 13 ),
+	th:nth-child( 14 ),
+	th:nth-child( 15 ) { width:  30px;
+		span {
+			background:     url( "resources/atrributes-heading.png" ) no-repeat top left;
+			border-radius:  2px;
+			display:        block;
+			height:         9px;
+			vertical-align: middle;
+			width:          30px;
+		}
+	}
+	.label-position( @pos ) { background-position: ( -30px * @pos ) 0; }
+	th:nth-child(  6 ) span { .label-position( 0 ); }
+	th:nth-child(  7 ) span { .label-position( 1 ); }
+	th:nth-child(  8 ) span { .label-position( 2 ); }
+	th:nth-child(  9 ) span { .label-position( 3 ); }
+	th:nth-child( 10 ) span { .label-position( 4 ); }
+	th:nth-child( 11 ) span { .label-position( 5 ); }
+	th:nth-child( 12 ) span { .label-position( 6 ); }
+	th:nth-child( 13 ) span { .label-position( 7 ); }
+	th:nth-child( 14 ) span { .label-position( 8 ); }
+	th:nth-child( 15 ) span { .label-position( 9 ); }
+}
+	#wardrobe-list-area {
+		tr {
+			cursor: pointer;
+			&:nth-child( 2n ) { background: fade( @purveyor-theme, 10% ); }
+			&:hover           { background: fade( @advisor-theme,  10% ); }
+		}
+
+		.text() {
+			overflow:      hidden;
+			padding:       0 5px;
+			text-overflow: ellipsis;
+			white-space:   nowrap;
+		}
+		.num() {
+			font-family: "Maven Pro";
+			text-align:  center;
+		}
+		td:nth-child(  1 ) {
+			span {
+				background:     url( "resources/line-category-icons.png" ) no-repeat top left;
+				display:        block;
+				height:         20px;
+				margin:         0 5px;
+				vertical-align: middle;
+				width:          20px;
+
+				.category-icon( @pos ) { background-position: 0 ( @pos * -20px ); }
+				&.hair      { .category-icon(  0 ); }
+				&.dress     { .category-icon(  1 ); }
+				&.coat      { .category-icon(  2 ); }
+				&.tops      { .category-icon(  3 ); }
+				&.bottoms   { .category-icon(  4 ); }
+				&.hosiery   { .category-icon(  5 ); }
+				&.shoes     { .category-icon(  6 ); }
+			//	&.accessory { .category-icon(  7 ); }
+				&.headwear  { .category-icon(  8 ); }
+				&.earrings  { .category-icon(  9 ); }
+				&.necklace  { .category-icon( 10 ); }
+				&.bracelet  { .category-icon( 11 ); }
+				&.handheld  { .category-icon( 12 ); }
+				&.waist     { .category-icon( 13 ); }
+				&.special   { .category-icon( 14 ); }
+				&.makeup    { .category-icon( 15 ); }
+			}
+		}
+		td:nth-child(  2 ) { .num( ); }
+		td:nth-child(  3 ) { .text(); }
+		td:nth-child(  4 ) { .text(); }
+		td:nth-child(  5 ) {
+			.laurus-icon { font-size: @tiny-font-size; }
+			.num();
+
+			span {
+				border-radius: 4px;
+				color:         @rarity-color;
+				padding:       0 2px;
+			}
+			.with-animate {
+				.slant-stripe-background( @rarity-animate, 25% );
+			}
+		}
+		td:nth-child(  6 ), td:nth-child(  7 ),
+		td:nth-child(  8 ), td:nth-child(  9 ),
+		td:nth-child( 10 ), td:nth-child( 11 ),
+		td:nth-child( 12 ), td:nth-child( 13 ),
+		td:nth-child( 14 ), td:nth-child( 15 ) {
+			.num();
+			font-weight: bold;
+		}
+		td:nth-child( 16 ) {
+			line-height:    1;
+			vertical-align: bottom;
+		}
+		td:nth-child( 17 ),
+		td:nth-child( 18 ) {
+			text-align: center;
+			span {
+				display:        inline-block;
+				background:     url( "resources/tags.png" ) no-repeat top left;
+				height:         15px;
+				vertical-align: middle;
+				width:          40px;
+				.setTag( @row, @col ) { background-position: ( -1 * 40px * @col ) ( -1 * 15px * @row ); }
+				&.tag-tag-none          { background-image: none; }
+				&.tag-sun-care          { .setTag(  0, 0 ); }
+				&.tag-dance             { .setTag(  0, 1 ); }
+				&.tag-floral            { .setTag(  0, 2 ); }
+				&.tag-winter            { .setTag(  0, 3 ); }
+				&.tag-britain           { .setTag(  1, 0 ); }
+				&.tag-swimsuit          { .setTag(  1, 1 ); }
+				&.tag-shower            { .setTag(  1, 2 ); }
+				&.tag-kimono            { .setTag(  1, 3 ); }
+				&.tag-pajamas           { .setTag(  2, 0 ); }
+				&.tag-wedding           { .setTag(  2, 1 ); }
+				&.tag-army              { .setTag(  2, 2 ); }
+				&.tag-office            { .setTag(  2, 3 ); }
+				&.tag-apron             { .setTag(  3, 0 ); }
+				&.tag-cheogsam          { .setTag(  3, 1 ); }
+				&.tag-maiden            { .setTag(  3, 2 ); }
+				&.tag-evening-gown      { .setTag(  3, 3 ); }
+				&.tag-navy              { .setTag(  4, 0 ); }
+				&.tag-traditional       { .setTag(  4, 1 ); }
+				&.tag-bunny             { .setTag(  4, 2 ); }
+				&.tag-lady              { .setTag(  4, 3 ); }
+				&.tag-lolita            { .setTag(  5, 0 ); }
+				&.tag-gothic            { .setTag(  5, 1 ); }
+				&.tag-sports            { .setTag(  5, 2 ); }
+				&.tag-harajuku          { .setTag(  5, 3 ); }
+				&.tag-preppy            { .setTag(  6, 0 ); }
+				&.tag-unisex            { .setTag(  6, 1 ); }
+				&.tag-future            { .setTag(  6, 2 ); }
+				&.tag-fairy             { .setTag(  6, 3 ); }
+				&.tag-rock              { .setTag(  7, 0 ); }
+				&.tag-denim             { .setTag(  7, 1 ); }
+				&.tag-pet               { .setTag(  7, 2 ); }
+				&.tag-goddess           { .setTag(  7, 3 ); }
+				&.tag-pop               { .setTag(  8, 0 ); }
+				&.tag-homewear          { .setTag(  8, 1 ); }
+				&.tag-chinese-classical { .setTag(  8, 2 ); }
+				&.tag-hindu             { .setTag(  8, 3 ); }
+				&.tag-republic-of-china { .setTag(  9, 0 ); }
+				&.tag-european          { .setTag(  9, 1 ); }
+				&.tag-swordman          { .setTag(  9, 2 ); }
+				&.tag-rain              { .setTag(  9, 3 ); }
+				&.tag-modern-china      { .setTag( 10, 0 ); }
+				&.tag-dryad             { .setTag( 10, 1 ); }
+				&.tag-bohemia           { .setTag( 10, 2 ); }
+				&.tag-paramedics        { .setTag( 10, 3 ); }
+			}
+		}
+		td:nth-child( 19 ) {
+			font-family:   "Maven Pro";
+			text-align:    right;
+			padding-right: 10px;
+		}
+		.attributes-SS { color: @attributes-value-s; }
+		.attributes-S  { color: @attributes-value-s; }
+		.attributes-A  { color: @attributes-value-a; }
+		.attributes-B  { color: @attributes-value-b; }
+		.attributes-C  { color: @attributes-value-c; }
+		.insparkly     { color: @insparkly-color;    }
+	}
+	#list-more-box {
+		text-align: center;
+		tr {
+			height: 50px;
+		}
+	}
+		#list-more {
+			.disable-select();
+			cursor: pointer;
+			color: @sub-key-tone;
+			border-radius: 4px;
+			display: inline-block;
+			vertical-align: middle;
+			padding: 0 10px;
+			&:hover {
+				border: 2px solid fade( @wardrobe-theme, 50% );
+			}
+			&:active {
+				.slant-stripe-background( @wardrobe-theme, 25% );
+				color: @key-tone;
+			}
+		}
+
+
 
 /* Item Card
  * ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -129,6 +334,7 @@ input {
 .item-card {
 	background:    @card-background;
 	border-radius: @card-corner;
+	cursor:        pointer;
 	float:         left;
 	height:        @card-height;
 	margin:        @card-gap @card-gap 0 0;
@@ -225,7 +431,7 @@ input {
 		}
 			.item-tags {
 				display:    block;
-				background: url( "/resources/tags.png" ) no-repeat top left;
+				background: url( "resources/tags.png" ) no-repeat top left;
 				height:     @tag-height;
 				width:      @card-icon-side;
 				.setTag( @row, @col ) { background-position: ( -1 * @card-icon-side * @col ) ( -1 * @tag-height * @row ); }
@@ -312,7 +518,7 @@ input {
 			line-height:    1;
 			padding-bottom: 5px;
 			text-align:     center;
-			&.inactive      { color: @insparkly-color;    }
+			&.insparkly     { color: @insparkly-color;    }
 			&.attributes-SS { color: @attributes-value-s; }
 			&.attributes-S  { color: @attributes-value-s; }
 			&.attributes-A  { color: @attributes-value-a; }
@@ -320,7 +526,7 @@ input {
 			&.attributes-C  { color: @attributes-value-c; }
 		}
 		th {
-			background:    url( "/resources/style.png" ) no-repeat top left;
+			background:    url( "resources/style.png" ) no-repeat top left;
 			border-radius: 2px;
 			height:        @attributes-table-header-height;
 			opacity:       0.9;
@@ -328,7 +534,7 @@ input {
 		}
 		.label-position( @pos ) {
 			background-position: ( -@attributes-table-header-width * @pos ) 0;
-			&.inactive { background-position: ( -@attributes-table-header-width * @pos ) -@attributes-table-header-height; }
+			&.insparkly { background-position: ( -@attributes-table-header-width * @pos ) -@attributes-table-header-height; }
 		}
 		tr:nth-child( 1 ) th:nth-child( 1 ) { .label-position( 0 ); }
 		tr:nth-child( 3 ) th:nth-child( 1 ) { .label-position( 1 ); }
@@ -361,7 +567,10 @@ input {
 /* Dialogue
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 #dialogue-pane {
-	background: fade( @Gargoyle, 60% );
+	background: -webkit-repeating-linear-gradient( -45deg, fade( @Gargoyle, 70% ), fade( @Gargoyle, 70% ) 15px, fade( @Gargoyle, 68%) 15px, fade( @Gargoyle, 68%) 30px );
+	background: -moz-repeating-linear-gradient( -45deg, fade( @Gargoyle, 70% ), fade( @Gargoyle, 70% ) 15px, fade( @Gargoyle, 68%) 15px, fade( @Gargoyle, 68%) 30px );
+	background: -ms-repeating-linear-gradient( -45deg, fade( @Gargoyle, 70% ), fade( @Gargoyle, 70% ) 15px, fade( @Gargoyle, 68%) 15px, fade( @Gargoyle, 68%) 30px );
+	background: repeating-linear-gradient( -45deg, fade( @Gargoyle, 70% ), fade( @Gargoyle, 70% ) 15px, fade( @Gargoyle, 68%) 15px, fade( @Gargoyle, 68%) 30px );
 	cursor:     pointer;
 	display:    none;
 	height:     100%;
@@ -375,7 +584,7 @@ input {
 }
 
 #dialogue {
-	background:    url( "/resources/background.jpg" ) repeat fixed;
+	background:    url( "resources/background.jpg" ) repeat fixed;
 	border-radius: 4px;
 	box-shadow:    0 0 20px fade( @BlackInk, 80% );
 	display:       none;
@@ -392,38 +601,69 @@ input {
 			font-weight: bold;
 		}
 		.dialogue-close {
-			float: right;
-			font-size: @sub-font-size;
-			width: 60px;
+			display:       block;
+			font-size:     @sub-font-size;
+			height:        25px;
+			line-height:   25px;
+			margin-bottom: 5px;
+			position:      relative;
+			text-align:    center;
+			float:         right;
+			width:         60px;
+			span {
+				.disable-select();
+				border-radius: 3px;
+				box-sizing:    border-box;
+				color:         @sub-key-tone;
+				cursor:        pointer;
+				display:       inline-block;
+				line-height:   1.5;
+				padding:       0 10px;
+				&:hover  {
+					color:  @key-tone;
+					border: 1px solid transparent;
+				}
+			}
 		}
 
-.dialogue-button {
+.dialogue-content {
 	.disable-select();
-	border-radius: 3px;
-	cursor:        pointer;
-	display:       block;
-	font-size:     @sub-font-size;
-	height:        25px;
-	line-height:   25px;
-	margin-bottom: 5px;
-	position:      relative;
-	padding:       0 15px;
-	text-align:    center;
-	&:hover  { .laurus-gradient( @advisor-theme, 40% ); }
-	&:active { background: fade( @advisor-theme, 20% ); }
+	display: none;
+
+	&.advisor {
+		.dialogue-close span {
+			&:hover  { border-color: @advisor-theme; }
+			&:active { .slant-stripe-background( @advisor-theme, 25% ); }
+		}
+		.dialogue-expand-label {
+			&.less        { .laurus-gradient( @wardrobe-theme, 40% ); }
+			&.less:hover  { background: fade( @wardrobe-theme, 20% ); }
+			&.less:active { background: fade( @wardrobe-theme, 20% ); }
+			&.more        { .laurus-gradient( @advisor-theme,  40% ); }
+			&.more:hover  { background: fade( @advisor-theme,  20% ); }
+			&.more:active { background: fade( @advisor-theme,  20% ); }
+		}
+	}
+	&.wardrobe {
+		.dialogue-close span {
+			&:hover  { border-color: @wardrobe-theme; }
+			&:active { .slant-stripe-background( @wardrobe-theme, 25% ); }
+		}
+	}
 }
 
 .dialogue-expand-label {
 	.disable-select();
 	border-radius: 2px;
+	clear:         both;
 	cursor:        pointer;
 	display:       block;
 	font-size:     @sub-font-size;
-	margin-top:    20px;
-	&.less        { .laurus-gradient( @wardrobe-theme, 40% ); }
+	margin-top:    10px;
+	&.less        { .slant-stripe-background( @wardrobe-theme, 40% ); }
 	&.less:hover  { background: fade( @wardrobe-theme, 20% ); }
 	&.less:active { background: fade( @wardrobe-theme, 20% ); }
-	&.more        { .laurus-gradient( @advisor-theme,  40% ); }
+	&.more        { .slant-stripe-background( @advisor-theme,  40% ); }
 	&.more:hover  { background: fade( @advisor-theme,  20% ); }
 	&.more:active { background: fade( @advisor-theme,  20% ); }
 

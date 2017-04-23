@@ -5,9 +5,12 @@
 	margin-bottom: 20px;
 	overflow:      hidden;
 	div { overflow: hidden; }
+	div + div { margin-top: 5px; }
+
 	.label {
-		float:   left;
+		.disable-select();
 		display: block;
+		float:   left;
 		width:   90px;
 		&::before {
 			content: "■ ";
@@ -23,35 +26,6 @@
 		display:       block;
 		padding:       0 10px;
 		&:hover { .field-border( @wardrobe-theme ); }
-
-		&.category {
-			max-width: 790px;
-			span {
-				display: inline-block;
-			}
-			.filter-major, .filter-minor {
-				position: relative;
-				&::after {
-					bottom:     5px;
-					content:    "";
-					height:     3px;
-					left:       0;
-					position:   absolute;
-					width:      100%;
-				}
-			}
-				.category-identifier( @color ) {
-					background: -webkit-repeating-linear-gradient( -45deg, fade( @color, 50% ), fade( @color, 50% ) 2px, transparent 2px, transparent 4px );
-					background: repeating-linear-gradient( -45deg, fade( @color, 50% ), fade( @color, 50% ) 2px, transparent 2px, transparent 4px );
-				}
-				.filter-major::after { .category-identifier( @wardrobe-theme ); }
-				.filter-minor::after { .category-identifier( @purveyor-theme ); }
-		}
-	}
-	.filter-key-rarity {
-		color:       @rarity-color;
-		font-family: "Maven Pro";
-		.laurus-icon   { font-size: @tiny-font-size; }
 	}
 }
 	#filter-category,
@@ -61,27 +35,495 @@
 	}
 	#filter-name,
 	#filter-rarity,
-	#filter-score {
+	#sort-key {
 		width: 300px;
 		float: left;
 	}
 
-#display-style-option {
+	#filter-category .filter-key {
+		max-width: 790px;
+		span {
+			display:      inline-block;
+			line-height:  1.2;
+			margin-right: 5px;
+			padding:      0 7px;
+		}
+		.major { .slant-stripe-background( @wardrobe-theme, 25% ); }
+		.minor { .slant-stripe-background( @purveyor-theme, 25% ); }
+	}
+
+	#filter-tag .filter-key {
+		max-width: 790px;
+		span {
+			display:      inline-block;
+			line-height:  1.2;
+			margin-right: 5px;
+			padding:      0 7px;
+		}
+		.tag-color( @color ) {
+			.slant-stripe-background( @color, 10% );
+			color: @color;
+		}
+		.tag-none          { .tag-color( @TAG-NONE          ); }
+		.sun-care          { .tag-color( @SUN-CARE          ); }
+		.dance             { .tag-color( @DANCE             ); }
+		.floral            { .tag-color( @FLORAL            ); }
+		.winter            { .tag-color( @WINTER            ); }
+		.britain           { .tag-color( @BRITAIN           ); }
+		.swimsuit          { .tag-color( @SWIMSUIT          ); }
+		.shower            { .tag-color( @SHOWER            ); }
+		.kimono            { .tag-color( @KIMONO            ); }
+		.pajamas           { .tag-color( @PAJAMAS           ); }
+		.wedding           { .tag-color( @WEDDING           ); }
+		.army              { .tag-color( @ARMY              ); }
+		.office            { .tag-color( @OFFICE            ); }
+		.apron             { .tag-color( @APRON             ); }
+		.cheogsam          { .tag-color( @CHEOGSAM          ); }
+		.maiden            { .tag-color( @MAIDEN            ); }
+		.evening-gown      { .tag-color( @EVENING-GOWN      ); }
+		.navy              { .tag-color( @NAVY              ); }
+		.traditional       { .tag-color( @TRADITIONAL       ); }
+		.bunny             { .tag-color( @BUNNY             ); }
+		.lady              { .tag-color( @LADY              ); }
+		.lolita            { .tag-color( @LOLITA            ); }
+		.gothic            { .tag-color( @GOTHIC            ); }
+		.sports            { .tag-color( @SPORTS            ); }
+		.harajuku          { .tag-color( @HARAJUKU          ); }
+		.preppy            { .tag-color( @PREPPY            ); }
+		.unisex            { .tag-color( @UNISEX            ); }
+		.future            { .tag-color( @FUTURE            ); }
+		.fairy             { .tag-color( @FAIRY             ); }
+		.rock              { .tag-color( @ROCK              ); }
+		.denim             { .tag-color( @DENIM             ); }
+		.pet               { .tag-color( @PET               ); }
+		.goddess           { .tag-color( @GODDESS           ); }
+		.pop               { .tag-color( @POP               ); }
+		.homewear          { .tag-color( @HOMEWEAR          ); }
+		.chinese-classical { .tag-color( @CHINESE-CLASSICAL ); }
+		.hindu             { .tag-color( @HINDU             ); }
+		.republic-of-china { .tag-color( @REPUBLIC-OF-CHINA ); }
+		.european          { .tag-color( @EUROPEAN          ); }
+		.swordman          { .tag-color( @SWORDMAN          ); }
+		.rain              { .tag-color( @RAIN              ); }
+		.modern-china      { .tag-color( @MODERN-CHINA      ); }
+		.dryad             { .tag-color( @DRYAD             ); }
+		.bohemia           { .tag-color( @BOHEMIA           ); }
+		.paramedics        { .tag-color( @PARAMEDICS        ); }
+	}
+
+	#filter-word {
+		display: block;
+		float: left;
+		width: 180px;
+		padding: 0 5px;
+		margin-left: 5px;
+	}
+
+	#filter-rarity {
+		.rarity {
+			color:         @rarity-color;
+			font-family:   "Maven Pro";
+			padding-right: 3px;
+			.laurus-icon   { font-size: @tiny-font-size; }
+		}
+	}
+
+	#sort-key {
+		.rarity {
+			color: @rarity-color;
+		}
+		.laurus-icon {
+			font-size: @tiny-font-size;
+		}
+
+		.sun-care, .paramedics {
+			display:        inline-block;
+			background:     url( "resources/tags.png" ) no-repeat top left;
+			height:         @tag-height;
+			vertical-align: text-top;
+			width:          @card-icon-side;
+		}
+		.sun-care   { background-position:    0      0;   }
+		.paramedics { background-position: -120px -150px; }
+
+		.value {
+			font-family: "Maven Pro";
+			font-weight: bold;
+			&.none { color: @insparkly-color;    }
+			&.s    { color: @attributes-value-s; }
+		}
+	}
+
+.filter-controle {
 	.disable-select();
 	font-size:   @standard-font-size;
 	font-weight: normal;
-	span {
-		border:        1px solid transparent;
-		border-radius: 2px;
-		color:         @insparkly-color;
-		cursor:        pointer;
-		display:       inline-block;
-		margin-left:   10px;
-		padding:       0 15px;
-		&.sparkly, &:hover {
-			border-color: fade( @wardrobe-theme, 50% );
-			color:        @key-tone;
+	display:     inline-block;
+
+	.button-wrapper {
+		display:     inline-block;
+		margin-left: 10px;
+		text-align:  center;
+		span {
+			border-radius: 2px;
+			color:         @insparkly-color;
+			cursor:        pointer;
+			display:       inline-block;
+			box-sizing:    border-box;
+			padding:       0 15px;
+			&:hover  { border: 1px solid @wardrobe-theme; }
 		}
-		&:active  { background: fade( @wardrobe-theme, 10% ); }
 	}
 }
+
+#zero-records {
+	.disable-select();
+	color:      @wardrobe-theme;
+	display:    none;
+	height:     350px;
+	text-align: center;
+	span {
+		display: block;
+	}
+	.face {
+		font-family: "Maven Pro";
+		font-size:   150px;
+		opacity:     0.5;
+	}
+	.text {
+		font-size:     20px;
+		margin-bottom: 100px;
+	}
+}
+
+#wardrobe-card-area-box {
+	min-height: 350px;
+
+}
+	#card-more {
+		.disable-select();
+		border:        3px solid fade( @wardrobe-theme, 25% );
+		border-radius: @card-corner;
+		color:         @sub-key-tone;
+		cursor:        pointer;
+		float:         left;
+		height:        @card-height;
+		padding:       5px 20px;
+		margin:        @card-gap @card-gap 0 0;
+		width:         @card-width;
+		span {
+			display:       block;
+		}
+
+		.item-card-more {
+			font-weight:   bold;
+			margin-bottom: 10px;
+		}
+		.item-card-all, .item-card-current {
+			font-size:   @tiny-font-size;
+			line-height: 1.5;
+		}
+		&:hover {
+			color: @key-tone;
+		}
+		&:active {
+			background: @card-background;
+		}
+	}
+
+.dialogue-content.wardrobe .macro-button {
+	color:          @sub-key-tone;
+	display:        block;
+	float:          left;
+	font-size:      @sub-font-size;
+	height:         25px;
+	margin:         20px 0 0 10px;
+	text-align:     center;
+	width:          160px;
+	span {
+		border-radius: 3px;
+		cursor:        pointer;
+		display:       inline-block;
+		line-height:   1.5;
+		padding:       0 10px;
+		&:hover  {
+			color:  @key-tone;
+			border: 1px solid @wardrobe-theme;
+		}
+		&:active { .slant-stripe-background( @wardrobe-theme, 25% ); }
+	}
+}
+
+#filter-controle-buttons .button-wrapper {
+	width: 160px;
+	span:active {
+		.slant-stripe-background( @wardrobe-theme, 25% );
+		color:  @key-tone;
+	}
+}
+
+#display-style-option .button-wrapper {
+	width: 110px;
+	span {
+		&.sparkly {
+			.slant-stripe-background( @wardrobe-theme, 25% );
+			color:  @key-tone;
+		}
+	}
+}
+
+#hit-records-box {
+	color:          @key-tone;
+	display:        block;
+	float:          right;
+	font-family:    "Maven Pro";
+	font-size:      @sub-font-size;
+	font-weight:    normal;
+	margin-right:   20px;
+	margin-top:     5px;
+	vertical-align: sub;
+	&.no-records  { color: @AzaleaPink;  }
+	&.all-records { color: @ParrotGreen; }
+ }
+
+// dialogue
+.filter-dialogue-footer {
+	overflow: hidden;
+	.footer-text {
+		float:      right;
+		text-align: right;
+		margin-top: 20px;
+	}
+	.dialogue-close {
+		display: inline-block;
+		float:   none;
+	}
+	.filter-dialogue-footer-text {
+		font-size: @tiny-font-size;
+	}
+}
+
+#category-filter {
+	width: 800px;
+
+	.content {
+		clear:    both;
+		overflow: hidden;
+		padding:  20px 0 0 0;
+	}
+	.category-line {
+		clear: both;
+		overflow: hidden;
+	}
+	.slot {
+		cursor:        pointer;
+		display:       block;
+		float:         left;
+		margin-bottom: 5px;
+		text-align:    center;
+		width:         160px;
+	}
+	[data-slot] {
+		border-radius: 4px;
+		font-size:     @sub-font-size;
+		line-height:   1.3;
+		padding:       0 10px;
+		&:hover { border: 2px solid fade( @wardrobe-theme, 25% ); }
+		&.sparkly { .slant-stripe-background( @wardrobe-theme, 20% ); }
+	}
+	.fake-hover { border: 2px solid fade( @wardrobe-theme, 25% ); }
+	.sub-category {
+		float:    left;
+		position: relative;
+		&::after {
+			.slant-stripe-background( @purveyor-theme, 25% );
+			bottom:   2px;
+			content:  "";
+			left:     0;
+			height:   3px;
+			position: absolute;
+			width:    100%;
+		}
+		[data-slot]:hover { border: 2px solid fade( @purveyor-theme, 25% ); }
+		[data-slot].sparkly { .slant-stripe-background( @purveyor-theme, 20% ); }
+		.fake-hover { border: 2px solid fade( @purveyor-theme, 25% ); }
+	}
+	.has {
+		font-family: "Maven Pro";
+		font-size:   @tiny-font-size;
+		&::before { content: " ( "; }
+		&::after  { content: " )"; }
+	}
+}
+
+#tag-filter {
+	width: 800px;
+
+	.content {
+		clear:    both;
+		overflow: hidden;
+		padding:  20px 0 0 0;
+	}
+
+	.tag {
+		cursor:        pointer;
+		display:       block;
+		float:         left;
+		margin-bottom: 5px;
+		text-align:    center;
+		width:         200px;
+	}
+	[data-tag-id] {
+		border-radius: 4px;
+		line-height:   1.3;
+		padding:       0 10px;
+		.tag-color( @color ) {
+			color: @color;
+			&.sparkly {
+				.slant-stripe-background( @color, 10% );
+			}
+			&:hover   { border: 2px solid fade( @color, 25% ); }
+		}
+		&.tag-none          { .tag-color( @TAG-NONE          ); }
+		&.sun-care          { .tag-color( @SUN-CARE          ); }
+		&.dance             { .tag-color( @DANCE             ); }
+		&.floral            { .tag-color( @FLORAL            ); }
+		&.winter            { .tag-color( @WINTER            ); }
+		&.britain           { .tag-color( @BRITAIN           ); }
+		&.swimsuit          { .tag-color( @SWIMSUIT          ); }
+		&.shower            { .tag-color( @SHOWER            ); }
+		&.kimono            { .tag-color( @KIMONO            ); }
+		&.pajamas           { .tag-color( @PAJAMAS           ); }
+		&.wedding           { .tag-color( @WEDDING           ); }
+		&.army              { .tag-color( @ARMY              ); }
+		&.office            { .tag-color( @OFFICE            ); }
+		&.apron             { .tag-color( @APRON             ); }
+		&.cheogsam          { .tag-color( @CHEOGSAM          ); }
+		&.maiden            { .tag-color( @MAIDEN            ); }
+		&.evening-gown      { .tag-color( @EVENING-GOWN      ); }
+		&.navy              { .tag-color( @NAVY              ); }
+		&.traditional       { .tag-color( @TRADITIONAL       ); }
+		&.bunny             { .tag-color( @BUNNY             ); }
+		&.lady              { .tag-color( @LADY              ); }
+		&.lolita            { .tag-color( @LOLITA            ); }
+		&.gothic            { .tag-color( @GOTHIC            ); }
+		&.sports            { .tag-color( @SPORTS            ); }
+		&.harajuku          { .tag-color( @HARAJUKU          ); }
+		&.preppy            { .tag-color( @PREPPY            ); }
+		&.unisex            { .tag-color( @UNISEX            ); }
+		&.future            { .tag-color( @FUTURE            ); }
+		&.fairy             { .tag-color( @FAIRY             ); }
+		&.rock              { .tag-color( @ROCK              ); }
+		&.denim             { .tag-color( @DENIM             ); }
+		&.pet               { .tag-color( @PET               ); }
+		&.goddess           { .tag-color( @GODDESS           ); }
+		&.pop               { .tag-color( @POP               ); }
+		&.homewear          { .tag-color( @HOMEWEAR          ); }
+		&.chinese-classical { .tag-color( @CHINESE-CLASSICAL ); }
+		&.hindu             { .tag-color( @HINDU             ); }
+		&.republic-of-china { .tag-color( @REPUBLIC-OF-CHINA ); }
+		&.european          { .tag-color( @EUROPEAN          ); }
+		&.swordman          { .tag-color( @SWORDMAN          ); }
+		&.rain              { .tag-color( @RAIN              ); }
+		&.modern-china      { .tag-color( @MODERN-CHINA      ); }
+		&.dryad             { .tag-color( @DRYAD             ); }
+		&.bohemia           { .tag-color( @BOHEMIA           ); }
+		&.paramedics        { .tag-color( @PARAMEDICS        ); }
+	}
+	.has {
+		font-family: "Maven Pro";
+		font-size:   @tiny-font-size;
+		&::before { content: " ( "; }
+		&::after  { content: " )"; }
+	}
+}
+
+#rarity-filter {
+	width: 640px;
+
+	.content {
+		clear:    both;
+		overflow: hidden;
+		padding:  20px 0;
+		margin:   40px 50px 30px 50px;
+	}
+
+	@rarity-font-size: 20px;
+	.rarity {
+		border:        2px solid transparent;
+		border-radius: 15px;
+		color:         @sub-key-tone;
+		cursor:        pointer;
+		font-family:   "Maven Pro";
+		font-size:     @rarity-font-size;
+		display:       block;
+		float:         left;
+		line-height:   1;
+		padding:       5px 10px;
+		margin-left:   10px;
+		text-align:    center;
+		width:         80px;
+		&.sparkly    { color:        @rarity-color;              }
+		.laurus-icon { font-size:    @rarity-font-size - 2px;    }
+		&:hover      { border-color: fade( @rarity-color, 25% ); }
+	}
+	.has {
+		display:     block;
+		font-size:   @sub-font-size;
+		&::before { content: "( "; }
+		&::after  { content: " )"; }
+	}
+}
+
+#sort-filter {
+	width: 670px;
+
+	.content {
+		clear:    both;
+		overflow: hidden;
+		padding:  20px 0 20px 20px;
+	}
+
+	.item-group {
+		overflow: hidden;
+	}
+
+	.label {
+		display: blocl;
+		font-weight: bold;
+		float: left;
+		width: 100%;
+		font-size: @sub-font-size;
+	}
+
+	.sort-item {
+		color:         @sub-key-tone;
+		cursor:        pointer;
+		display:       block;
+		float:         left;
+		margin-bottom: 5px;
+		text-align:    center;
+		width:         130px;
+		[data-key] {
+			border-radius: 4px;
+			padding:       0 10px;
+			&.sparkly {
+				color: @key-tone;
+			}
+		}
+		.laurus-icon {
+			font-size: @sub-font-size;
+		}
+	}
+}
+	#sort-config-order {
+		overflow: hidden;
+		[data-key].sparkly { .slant-stripe-background( @wardrobe-theme, 20% ); }
+		[data-key]:hover   { border: 2px solid fade( @wardrobe-theme, 25% );   }
+	}
+	#sort-config-key {
+		margin-top: 20px;
+		overflow:   hidden;
+		[data-key].sparkly { .slant-stripe-background( @purveyor-theme, 20% ); }
+		[data-key]:hover   { border: 2px solid fade( @purveyor-theme, 25% );   }
+	}

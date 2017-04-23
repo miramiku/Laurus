@@ -1,7 +1,7 @@
 /* body
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 body {
-	background: url("/resources/background.jpg") repeat fixed;
+	background: url( "resources/background.jpg" ) repeat fixed;
 	color: @key-tone;
 	font-family: @standard-font-family;
 	font-size: @standard-font-size;
@@ -10,8 +10,8 @@ body {
 	margin: 0 auto;
 }
 
-::selection { background: @selection-color; }
-::-moz-selecttion { background: @selection-color; }
+::selection { background: fade( @selection-color, 20% ); }
+::-moz-selecttion { background: fade( @selection-color, 20% ); }
 
 /* header
  * ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -20,12 +20,12 @@ header {
 	height: 50px;
 	overflow: visible;
 	.disable-select();
-	&.advisor { border-color: fade( @advisor-theme, 40%) }
-	&.wardrobe { border-color: fade( @wardrobe-theme, 40%) }
-	&.purveyor { border-color: fade( @purveyor-theme, 40%) }
+	&.advisor    { border-color: fade( @advisor-theme,    40%) }
+	&.wardrobe   { border-color: fade( @wardrobe-theme,   40%) }
+	&.purveyor   { border-color: fade( @purveyor-theme,   40%) }
 	&.cheatsheet { border-color: fade( @cheatsheet-theme, 40%) }
-	&.credit { border-color: fade( @credit-theme, 40%) }
-	&.changelog { border-color: fade( @changelog-theme, 40%) }
+	&.credit     { border-color: fade( @credit-theme,     40%) }
+	&.changelog  { border-color: fade( @changelog-theme,  40%) }
 }
 	#header-area {
 		margin: 0 auto 20px;
@@ -42,80 +42,90 @@ header {
 			width: 300px;
 		}
 		#general-navgation {
-			float: left;
+			float:      left;
 			text-align: right;
-			width: 600px;
-			ul {
-				padding: 0;
-				margin: 0;
-			}
-			li {
-				cursor: pointer;
-				display: inline-block;
-				font-size: @sub-font-size;
-				padding: 0 10px;
-				vertical-align: top;
-				&:first-child { padding-left: 0; }
-				&+li { border-left: 1px solid @separate-color; }
-				&:last-child { padding-right: 0; }
+			width:      600px;
+			> ul {
+				letter-spacing: -0.4em;
+				padding:        0;
+				margin:         0;
+				> li {
+					cursor:         pointer;
+					display:        inline-block;
+					font-size:      @sub-font-size;
+					letter-spacing: 0.5px;
+					text-align:     center;
+					vertical-align: top;
+					&+li             { border-left:  1px solid @separate-color; }
+					&:last-child     { padding-left: 10px; }
+					&:nth-child( 1 ) { width: 103px; }
+					&:nth-child( 2 ) { width: 118px; }
+					&:nth-child( 3 ) { width: 111px; }
+				}
 			}
 			.ghost-button {
-				border: 1px solid transparent;
 				border-radius: 5px;
-				padding: 0 10px;
+				padding:       0 10px;
 			}
 		}
-		.button-active( @color ) {
-			border-color: @color;
-			transition: 0.2s linear;
-			-webkit-transition: 0.2s linear;
-			-moz-transition: 0.2s linear;
-			.laurus-icon {
-				color: @color;
-				-webkit-transition: 0.2s linear;
-				-moz-transition: 0.2s linear;
-				-o-transition: 0.2s linear;
-				transition: 0.2s linear;
-			}
-		}
-		#advisor-button:hover, #advisor-button.current-mode { .button-active( @advisor-theme ); }
-		#wardrobe-button:hover, #wardrobe-button.current-mode { .button-active( @wardrobe-theme ); }
-		#purveyor-button:hover, #purveyor-button.current-mode { .button-active( @purveyor-theme ); }
-		#cheatsheet-button:hover, #cheatsheet-button.current-mode { .button-active( @cheatsheet-theme ); }
-		#credit-button:hover, #credit-button.current-mode { .button-active( @credit-theme ); }
-		#changelog-button:hover, #changelog-button.current-mode { .button-active( @changelog-theme ); }
-
 		#more-menu {
 			overflow: hidden;
 			position: relative;
 			ul {
-				background: url("/resources/background.jpg") repeat fixed;
-				border: 0 solid @separate-color;
-				border-radius: 1px 1px 4px 4px;
-				box-shadow: 0 1px 4px @separate-color;
-				margin-right: -20px;
-				opacity: 0.9;
-				position: absolute;
-				right: 0;
-				top: 100%;
-				width: 130px;
+				background:     url( "resources/background.jpg" ) repeat fixed;
+				border:         0 solid @separate-color;
+				border-radius:  1px 1px 4px 4px;
+				box-shadow:     0 1px 4px @separate-color;
+				padding:        0;
+				margin:         0 -20px 0 0;
+				opacity:        0.9;
+				position:       absolute;
+				right:          0;
+				top:            100%;
+				width:          130px;
 			}
 			li {
-				height: 32px;
-				margin: 0 10px;
-				text-align: center;
-				padding: 5px 0;
+				cursor:         pointer;
+				display:        inline-block;
+				font-size:      @sub-font-size;
+				height:         32px;
+				margin:         0 10px;
+				text-align:     center;
+				padding:        5px 0;
 				vertical-align: middle;
-				width: 110px;
+				width:          110px;
 				&+li {
-					border-left: none;
 					border-top: 1px solid fade( @separate-color, 75%);
 				}
 			}
+			&:hover { overflow: visible; }
+		}
+		.tab-mode( @theme ) {
+			.icon () {
+				.laurus-icon {
+					color: @theme;
+					-webkit-transition: 0.2s linear;
+					-moz-transition:    0.2s linear;
+					-o-transition:      0.2s linear;
+					transition:         0.2s linear;
+				}
+			}
 			&:hover {
-				overflow: visible;
+				border: 1px solid @theme;
+				.icon();
+			}
+			&.current-mode {
+				.slant-stripe-background( @theme, 20% );
+				.icon();
 			}
 		}
+		#advisor-button    { .tab-mode( @advisor-theme    ); }
+		#wardrobe-button   { .tab-mode( @wardrobe-theme   ); }
+		#purveyor-button   { .tab-mode( @purveyor-theme   ); }
+		#cheatsheet-button { .tab-mode( @cheatsheet-theme ); }
+		#credit-button     { .tab-mode( @credit-theme     ); }
+		#changelog-button  { .tab-mode( @changelog-theme  ); }
+
 
 /* article
  * ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -124,6 +134,9 @@ header {
 	margin: 15px auto;
 	width: @horizontal-size;
 }
+	#wardrobe, #purveyor, #cheatsheet, #credit, #changelog {
+		display: none;
+	}
 
 /* footer
  * ----- ----- ----- ----- ----- ----- ----- ----- */

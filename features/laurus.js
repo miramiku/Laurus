@@ -1,43 +1,6 @@
 /*jshint devel: true */
 /*global toastr */
 
-// extend jQuery : event trigger "outerClick"
-( function ( $, elements, OUTER_CLICK ) {
-	"use strict";
-
-	function check( event ) {
-		for ( var i = 0, l = elements.length, target = event.target, el; i < l; i += 1 ) {
-			el = elements[ i ];
-			if ( el !== target && !( el.contains ? el.contains( target ) : el.compareDocumentPosition ? el.compareDocumentPosition( target ) & 16 : 1 ) ) {
-				$.event.trigger( OUTER_CLICK, event, el );
-			}
-		}
-	}
-	$.event.special[ OUTER_CLICK ] = {
-		setup: function () {
-			var i = elements.length;
-			if ( !i ) {
-				$.event.add( document, "click", check );
-			}
-			if ( $.inArray( this, elements ) < 0 ) {
-				elements[ i ] = this;
-			}
-		},
-		teardown: function () {
-			var i = $.inArray( this, elements );
-			if ( i >= 0 ) {
-				elements.splice( i, 1 );
-				if ( !elements.length ) {
-					jQuery( this ).unbind( "click", check );
-				}
-			}
-		}
-	};
-	$.fn[ OUTER_CLICK ] = function ( fn ) {
-		return fn ? this.bind( OUTER_CLICK, fn ) : this.trigger( OUTER_CLICK );
-	};
-} )( jQuery, [], "outerClick" );
-
 /** @type {Class} Laurus Package */
 var LAURUS = {};
 
@@ -48,11 +11,11 @@ LAURUS.STATIC_ITEMS = ( function () {
 	var /** @type {Number} 全アイテム数 */
 		_allRecords = 0,
 		/** @type {Array} 属性値の対応値 */
-		_valueIndex = [ "C", "B", "A", "S", "SS" ],
+		_valueIndex = [ "", "C", "B", "A", "S", "SS" ],
 
 		/** @type {Object} アイテム分類一覧兼オーダー */
 		_orderedList = {
-			/** @type {Array} カテゴリー */
+			/** @type {Array} カテゴリ */
 			CATEGORY: [
 				"ヘアスタイル", "ドレス", "コート", "トップス", "ボトムス",
 				"靴下", "シューズ", "ヘアアクセサリー", "耳飾り", "首飾り",
@@ -61,12 +24,12 @@ LAURUS.STATIC_ITEMS = ( function () {
 			/** @type {Array} スロット */
 			SLOT: [
 				"ヘアスタイル", "ドレス", "コート", "トップス", "ボトムス",
-				"靴下", "靴下+1", "シューズ", "ヘアアクセサリー", "ヘアアクセサリー+1",
-				"ヘアアクセサリー+2", "耳飾り", "首飾り", "首飾り+1", "両腕",
-				"右腕", "左腕", "右手", "左手", "腰飾り",
-				"顔", "肩掛け", "タトゥー", "背中", "尻尾",
-				"前景", "中景", "後景", "地面", "メイク",
-				"complex"
+				"靴下", "アンクレット", "シューズ", "ヘッドアクセ", "ヴェール",
+				"カチューシャ", "つけ耳", "耳飾り", "マフラー", "ネックレス",
+				"右手飾り", "左手飾り", "手袋", "右手持ち", "左手持ち",
+				"両手持ち", "腰飾り", "フェイス", "ボディ", "タトゥー",
+				"羽根", "しっぽ", "前景", "後景", "吊り",
+				"床", "肌", "メイク", "complex"
 			]
 		},
 		/** @type {Object} 数値範囲の定義 */
@@ -119,63 +82,6 @@ LAURUS.STATIC_ITEMS = ( function () {
 				SKILL: 7
 			}
 		},
-		/** @type {Object} コード逆引き */
-		_codeReverse = {
-			/** @type {Object} カテゴリー */
-			CATEGORY: {
-				0: "すべて",
-				1: "ヘアスタイル",
-				2: "ドレス",
-				3: "コート",
-				4: "トップス",
-				5: "ボトムス",
-				6: "靴下",
-				9: "シューズ",
-				11: "アクセサリー",
-				12: "ヘアアクセサリー",
-				16: "耳飾り",
-				17: "首飾り",
-				20: "腕飾り",
-				24: "手持品",
-				27: "腰飾り",
-				28: "特殊",
-				10: "メイク",
-				38: "complex"
-			},
-			/** @type {Object} スロット */
-			SLOT: {
-				1: "ヘアスタイル",
-				2: "ドレス",
-				3: "コート",
-				4: "トップス",
-				5: "ボトムス",
-				7: "靴下",
-				8: "靴下+1",
-				9: "シューズ",
-				13: "ヘアアクセサリー",
-				14: "ヘアアクセサリー+1",
-				15: "ヘアアクセサリー+2",
-				16: "耳飾り",
-				18: "首飾り",
-				19: "首飾り+1",
-				21: "両腕",
-				22: "右腕",
-				23: "左腕",
-				25: "右手",
-				26: "左手",
-				27: "腰飾り",
-				29: "顔",
-				30: "肩掛け",
-				31: "タトゥー",
-				32: "背中",
-				33: "尻尾",
-				34: "前景",
-				35: "中景",
-				36: "後景",
-				37: "地面",
-				10: "メイク"
-			}
-		},
 		/** @type {Object} スタイルの定義 */
 		_styleDefs = {
 			/** @type {Array} スタイルの対応値 */
@@ -195,8 +101,10 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"warm", "cool"
 			]
 		},
-		/** @type {Object} カテゴリーの定義 */
+		/** @type {Object} カテゴリの定義 */
 		_categoryDefs = {
+			/** @type {Number} スロットの総数 */
+			SLOT_COUNT: 40,
 			/** @type {Dictionary} アイテム分類の対応値 */
 			MAP: {
 				"ヘアスタイル": "hair",
@@ -232,13 +140,102 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"腰飾り": "accessory",
 				"特殊": "accessory",
 				"メイク": "makeup"
-			}
+			},
+			/** @type {Object} サブカテゴリを所持するカテゴリ */
+			HAS_SUB: {
+				hosiery: [ "hosiery", "anklet" ],
+				headwear: [ "head-accessory", "veil", "headband", "false-ears" ],
+				necklace: [ "scarf", "necklace" ],
+				bracelet: [ "right-arm", "left-arm", "glove" ],
+				handheld: [ "right-hand", "left-hand", "both-hand" ],
+				special: [
+					"face", "body", "tatoo", "wings", "tail",
+					"foreground", "background", "hanging", "ground", "skin"
+				]
+			},
+			/** @type {Object} コード正引き */
+			CODE: {
+				/** @type {Object} カテゴリ */
+				CATEGORY: {
+					hair: 1,
+					dress: 2,
+					coat: 3,
+					tops: 4,
+					bottoms: 5,
+					hosiery: 6,
+					shoes: 9,
+					accessory: 11,
+					headwear: 12,
+					earrings: 17,
+					necklace: 18,
+					bracelet: 21,
+					handheld: 25,
+					waist: 29,
+					special: 30,
+					makeup: 10
+				},
+				/** @type {Object} スロット */
+				SLOT: {
+					"hair": 1,
+					"dress": 2,
+					"coat": 3,
+					"tops": 4,
+					"bottoms": 5,
+					"hosiery": 7,
+					"anklet": 8,
+					"shoes": 9,
+					"head-accessory": 13,
+					"veil": 14,
+					"headband": 15,
+					"false-ears": 16,
+					"earrings": 17,
+					"scarf": 19,
+					"necklace": 20,
+					"right-arm": 22,
+					"left-arm": 23,
+					"glove": 24,
+					"right-hand": 26,
+					"left-hand": 27,
+					"both-hand": 28,
+					"waist": 29,
+					"face": 31,
+					"body": 32,
+					"tatoo": 33,
+					"wings": 34,
+					"tail": 35,
+					"foreground": 36,
+					"background": 37,
+					"hanging": 38,
+					"ground": 39,
+					"skin": 40,
+					"makeup": 10
+				}
+			},
+			/** @type {Object} コード逆引き */
+			REVERSE: [
+				"すべて", "ヘアスタイル", "ドレス", "コート", "トップス",
+				"ボトムス", "靴下", "靴下", "アンクレット", "シューズ",
+				"メイク", "アクセサリー", "ヘアアクセサリー", "ヘッドアクセ", "ヴェール",
+				"カチューシャ", "つけ耳", "耳飾り", "首飾り", "マフラー",
+				"ネックレス", "腕飾り", "右手飾り", "左手飾り", "手袋",
+				"手持品", "右手持ち", "左手持ち", "両手持ち", "腰飾り",
+				"特殊", "フェイス", "ボディ", "タトゥー", "羽根",
+				"しっぽ", "前景", "後景", "吊り", "床",
+				"肌", "complex"
+			]
 		},
 		/** @type {Object} タグの定義 */
 		_tagDefs = {
+			/** @type {Number} タグの総数 */
+			COUNT: 44,
+			/** @type {Object} タグなしオブジェクト定義 */
+			NONE_TAG: {
+				TAG: "タグ選択",
+				CLASS: "tag-none"
+			},
 			/** @type {Array} タグの対応値 */
 			MAP: [
-				"タグ選択",
+				"",
 				"UV対策", "ダンサー", "小花柄", "冬服",
 				"英国風", "水着", "バスタイム", "和風",
 				"ナイトウェア", "ウェディング", "ミリタリー", "OL",
@@ -298,6 +295,26 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"PRINCESS": 1
 			}
 		},
+		/** @type {Object} ソートキー対応表 */
+		_sortKeys = {
+			"serial": "ID [標準]",
+			"name": "名前",
+			"rarity": "レアリティ",
+			"tag-f": "タグF",
+			"tag-l": "タグL",
+			"tags": "タグ総合",
+			"score": "スコア",
+			"gorgeous": "華麗",
+			"elegance": "エレガント",
+			"mature": "大人",
+			"sexy": "セクシー",
+			"warm": "ウォーム",
+			"simple": "シンプル",
+			"lively": "アクティブ",
+			"cute": "キュート",
+			"pure": "ピュア",
+			"cool": "クール"
+		},
 		/** @type {Object} ステージ構造情報 */
 		_stageStructure = {},
 
@@ -316,7 +333,39 @@ LAURUS.STATIC_ITEMS = ( function () {
 			showMethod: "fadeIn",
 			hideMethod: "slideUp"
 		},
+		/** @type {Object} piety の Laurus カスタマイズオプション */
+		_pietyLaurusOptions = {
+			list: {
+				strokeWidth: 2,
+				height: 15,
+				width: 40,
+				delimiter: ",",
+				fill: "rgba( 141, 214, 141, 0.2 )",
+				max: 5,
+				min: -5,
+				stroke: "#8dd68d"
+			},
+			card: {
+				strokeWidth: 2,
+				height: 30,
+				width: 60,
+				delimiter: ",",
+				fill: "rgba( 141, 214, 141, 0.2 )",
+				max: 5,
+				min: -5,
+				stroke: "#8dd68d"
+			}
+		},
 
+		/** @summary 全角の数字を半角に変換する
+		 * @param  {String} number 全角数字の文字列
+		 * @returns {String} 半角数字に変換した数字文字列
+		 */
+		_digit2Half = function ( digit ) {
+			return digit.replace( /[０-９．]/g, function ( d ) {
+				return String.fromCharCode( d.charCodeAt( 0 ) - 0xfee0 );
+			} );
+		},
 		/** @summary 3桁コンマ区切りの数値（文字列）を取得する
 		 * @param  {Number} number 桁区切りをする数値
 		 * @returns {String} 桁区切りを施した文字列
@@ -370,15 +419,15 @@ LAURUS.STATIC_ITEMS = ( function () {
 
 				return [ complex % TAG_BASE, Math.floor( complex / TAG_BASE ) ];
 			},
-			/** @summary アイテムのシリアルコードからカテゴリーとアイテム ID 特殊タグを復元する
+			/** @summary アイテムのシリアルコードからカテゴリとアイテム ID 特殊タグを復元する
 			 * @param {Number} serial アイテムのシリアルコード
-			 * @returns {Object} カテゴリーと ID のペア
+			 * @returns {Object} カテゴリと ID のペア
 			 */
 			categoryAndId: function ( serial ) {
 				var CATEGORY_BASE = 10000;
 
 				return {
-					category: _codeReverse.CATEGORY[ Math.floor( serial / CATEGORY_BASE ) ],
+					category: _categoryDefs.REVERSE[ Math.floor( serial / CATEGORY_BASE ) ],
 					id: serial % CATEGORY_BASE
 				};
 			}
@@ -392,18 +441,20 @@ LAURUS.STATIC_ITEMS = ( function () {
 		ORDERED_LIST: _orderedList,
 		BOUNDS: _bounds,
 		COLUMN: _column,
-		CODE_REVERSE: _codeReverse,
 		STYLE_DEFS: _styleDefs,
 		CATEGORY_DEFS: _categoryDefs,
 		TAG_DEFS: _tagDefs,
 		SKILL_DEFS: _skillDefs,
+		SORT_KEYS: _sortKeys,
 		STAGE_STRUCTURE: _stageStructure,
 
 		FADE_DURATION: _fadeDuration,
 		TOASTR_LAURUS_OPTIONS: _toastrLaurusOptions,
+		PIETY_LAURUS_OPTIONS: _pietyLaurusOptions,
 
 		// static methods
 		digitGrouping: _digitGrouping,
+		digit2Half: _digit2Half,
 		isCloseTo: _isCloseTo,
 		getDatabase: _getDatabase,
 		restore: _restore
@@ -464,18 +515,36 @@ LAURUS.WARDROBE = ( function () {
 	return _wardrobe;
 }() );
 
+/** @summary アイテムフィルタ
+ * @param {Function} request フィルタ条件
+ * @returns フィルタ結果のアイテムの配列
+ */
+LAURUS.filter = function ( request ) {
+	"use strict";
+
+	var items = [];
+
+	$.each( LAURUS.WARDROBE, function ( serial ) {
+		if ( request( this ) ) {
+			items.push( serial );
+		}
+	} );
+
+	return items;
+};
+
 /** @summary アイテムカードの生成
  * @param {Number} serial アイテムのシリアルコード
  * @returns {HTML} アイテムカードの HTML コード
  */
-LAURUS.itemCard = function ( serial ) {
+LAURUS.itemLine = function ( serial ) {
 	"use strict";
 
 	var // dependence
-		WRODROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
-		CATEGORY_MAP = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.MAP,
-		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
-		TAGS_CLASSES = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
+		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
+		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
+		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
 
 		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
 		restore = LAURUS.STATIC_ITEMS.restore,
@@ -484,8 +553,83 @@ LAURUS.itemCard = function ( serial ) {
 		item = LAURUS.WARDROBE[ serial ],
 		itemScore = LAURUS.SCORE[ serial ],
 		keys = restore.categoryAndId( serial ),
-		attributes = restore.attributes( item[ WRODROBE.ATTRIBUTES ] ),
-		tag = restore.tag( item[ WRODROBE.TAGS ] ),
+		restoreAttributes = restore.attributes( item[ WARDROBE.ATTRIBUTES ] ),
+		tag = restore.tag( item[ WARDROBE.TAGS ] ),
+
+		// concrete HTML
+		category = "<td><span class=\"" + CATEGORY_DEFS.MAP[ keys.category ] + "\"></span></td>",
+		id = "<td>" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</td>",
+		name = "<td title=\"" + item[ WARDROBE.NAME ] + "\">" + item[ WARDROBE.NAME ] + "</span>",
+		slot = ( function () {
+			var
+				slots = ( function () {
+					var s = [];
+
+					$.each( item[ WARDROBE.SLOTS ], function () {
+						s.push( CATEGORY_DEFS.REVERSE[ this ] );
+					} );
+
+					return s;
+				}() ),
+				title = "",
+				text = "";
+
+			if ( 1 < item[ WARDROBE.SLOTS ].length ) {
+				title = slots.join( ", " );
+				text = "複合スロット";
+			} else {
+				title = "";
+				text = slots[ 0 ];
+			}
+
+			return "<td title=\"" + title + "\">" + text + "</td>";
+		}() ),
+		rarity = "<td><span class=\"" + ( item[ WARDROBE.RARITY ] < 0 ? "with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ WARDROBE.RARITY ] ) + "</span></td>",
+		attributes = ( function () {
+			var a = "";
+
+			$.each( restore.attributes( item[ WARDROBE.ATTRIBUTES ] ), function () {
+				var v = VALUE_INDEX[ Math.abs( this ) ];
+
+				if ( 0 < this ) {
+					a += "<td class=\"attributes-" + v + "\">" + v + "</td><td class=\"insparkly\">-</td>";
+				} else {
+					a += "<td class=\"insparkly\">-</td><td class=\"attributes-" + v + "\">" + v + "</td>";
+				}
+			} );
+
+			return a;
+		}() ),
+		sparkline = "<td><span class=\"sparkline\">" + restoreAttributes.join( "," ) + "</span></td>",
+		tags = "<td><span class=\"tag-" + TAG_DEFS.CLASSES[ tag[ 0 ] ] + "\"></span></td><td><span class=\"tag-" + TAG_DEFS.CLASSES[ tag[ 1 ] ] + "\"></span></td>",
+		score = "<td>" + ( 0 < itemScore ? digitGrouping( itemScore ) : "-" ) + "</td>";
+
+	return "<tr data-serial=\"" + serial + "\">" + category + id + name + slot + rarity + attributes + sparkline + tags + score + "</tr>";
+};
+
+/** @summary アイテムカードの生成
+ * @param {Number} serial アイテムのシリアルコード
+ * @returns {HTML} アイテムカードの HTML コード
+ */
+LAURUS.itemCard = function ( serial ) {
+	"use strict";
+
+	var // dependence
+		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		CATEGORY_MAP = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.MAP,
+		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
+		TAGS_CLASSES = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
+		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
+
+		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
+		restore = LAURUS.STATIC_ITEMS.restore,
+
+		// item
+		item = LAURUS.WARDROBE[ serial ],
+		itemScore = LAURUS.SCORE[ serial ],
+		keys = restore.categoryAndId( serial ),
+		attributes = restore.attributes( item[ WARDROBE.ATTRIBUTES ] ),
+		tag = restore.tag( item[ WARDROBE.TAGS ] ),
 
 		// concrete HTML
 		icon = ( function () {
@@ -505,12 +649,11 @@ LAURUS.itemCard = function ( serial ) {
 			return "<span class=\"item-icon " + CATEGORY_MAP[ keys.category ] + "\"></span>";
 		}() ),
 		tags = "<span class=\"item-tags-box\"><span class=\"item-tags item-tags-" + TAGS_CLASSES[ tag[ 0 ] ] + "\"></span><span class=\"item-tags item-tags-" + TAGS_CLASSES[ tag[ 1 ] ] + "\"></span></span>",
-		name = "<span class=\"item-name\"><span class=\"item-id\">" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</span>" + item[ WRODROBE.NAME ] + "</span>",
-		rarity = "<span class=\"item-rarity " + ( item[ WRODROBE.RARITY ] < 0 ? " with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ WRODROBE.RARITY ] ) + "</span>",
+		name = "<span class=\"item-name\" title=\"" + item[ WARDROBE.NAME ] + "\"><span class=\"item-id\">" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</span>" + item[ WARDROBE.NAME ] + "</span>",
+		rarity = "<span class=\"item-rarity " + ( item[ WARDROBE.RARITY ] < 0 ? " with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ WARDROBE.RARITY ] ) + "</span>",
 		attributesTable = ( function () {
 			var HEADER = "<table class=\"item-attributes\"><tbody>",
 				FOOTER = "</tbody></table>",
-				VALUES = [ "", "C", "B", "A", "S", "SS" ],
 				table = {
 					t: { // top
 						h: "<tr>", // header
@@ -523,16 +666,16 @@ LAURUS.itemCard = function ( serial ) {
 				};
 
 			$.each( attributes, function () {
-				var v = VALUES[ Math.abs( this ) ];
+				var v = VALUE_INDEX[ Math.abs( this ) ];
 
 				if ( 0 < this ) {
 					table.t.h += "<th></th>";
 					table.t.b += "<td class=\"attributes-" + v + "\">●" + v + "</td>";
-					table.b.h += "<th class=\"inactive\"></th>";
-					table.b.b += "<td class=\"inactive\">-</td>";
+					table.b.h += "<th class=\"insparkly\"></th>";
+					table.b.b += "<td class=\"insparkly\">-</td>";
 				} else {
-					table.t.h += "<th class=\"inactive\"></th>";
-					table.t.b += "<td class=\"inactive\">-</td>";
+					table.t.h += "<th class=\"insparkly\"></th>";
+					table.t.b += "<td class=\"insparkly\">-</td>";
 					table.b.h += "<th></th>";
 					table.b.b += "<td class=\"attributes-" + v + "\">●" + v + "</td>";
 				}
@@ -545,17 +688,17 @@ LAURUS.itemCard = function ( serial ) {
 
 			return HEADER + table.t.h + table.t.b + table.b.h + table.b.b + FOOTER;
 		}() ),
-		sparkline = "<span class=\"item-sparkline-box\"><span class=\"item-sparkline\">" + attributes.join( "," ) + "</span></span>",
+		sparkline = "<span class=\"item-sparkline-box\"><span class=\"sparkline\">" + attributes.join( "," ) + "</span></span>",
 		score = "<span class=\"item-score\">" + ( 0 < itemScore ? digitGrouping( itemScore ) : "-" ) + "</span>";
 
-	return "<div class=\"item-card\">" +
+	return "<div class=\"item-card\" data-serial=\"" + serial + "\">" +
 		"<div class=\"item-icon-box\">" + icon + tags + "</div>" +
 		name + rarity +
 		attributesTable + sparkline + score +
 		"</div>";
 };
 
-/** @type {MethodCollection} ダイアログ表示 */
+/** @type {Class} ダイアログ */
 LAURUS.dialogue = ( function () {
 	"use strict";
 
@@ -567,6 +710,7 @@ LAURUS.dialogue = ( function () {
 		_$dialogue = null, // #dialogue
 		_$dialoguePane = null, // #dialogue-pane, #dialogue
 		_invoker = null,
+		_disposeEvent = null,
 
 		// methods
 		/** @summary ダイアログにコンテンツをセット
@@ -589,6 +733,10 @@ LAURUS.dialogue = ( function () {
 					_$dialogue.empty();
 					_invoker = null;
 				} );
+
+			if ( _disposeEvent ) {
+				_disposeEvent();
+			}
 		},
 		/** @summary ダイアログの再描画 */
 		_reposition = function () {
@@ -601,8 +749,10 @@ LAURUS.dialogue = ( function () {
 		/** @summary ダイアログを表示する
 		 * @param {String} id ダイアログコンテンツの ID
 		 */
-		_invoke = function ( id, invoker ) {
+		_invoke = function ( id, invoker, disposeEvent ) {
 			var $content = _dialogueContents[ id ];
+
+			_disposeEvent = disposeEvent || null;
 
 			_invoker = invoker;
 
@@ -654,7 +804,7 @@ LAURUS.dialogue = ( function () {
 						behave( "&#x2626;", "slideUp", "more", "less" );
 					}
 				} )
-				.on( "click", ".dialogue-close", LAURUS.dialogue.dispose );
+				.on( "click", ".dialogue-close span", LAURUS.dialogue.dispose );
 
 			$( "#dialogue-pane" )
 				.on( "click", LAURUS.dialogue.dispose );
@@ -669,23 +819,6 @@ LAURUS.dialogue = ( function () {
 		invoke: _invoke
 	};
 }() );
-
-/** @summary モード（ページ）チェンジ */
-LAURUS.changeMode = function () {
-	"use strict";
-
-	var mode = $( this ).data( "mode" );
-
-	$( "#general-navgation .ghost-button" ).removeClass( "current-mode" );
-
-	$( this ).addClass( "current-mode" );
-	$( "#header" ).attr( "class", mode );
-
-	$( "#current-mode" ).text( mode.charAt( 0 ).toUpperCase() + mode.substring( 1 ) );
-
-	$( ".tab" ).hide();
-	$( "#" + mode ).show();
-};
 
 /** @type {MethodCollection} Advisor 用メソッドコレクション */
 LAURUS.advisor = ( function () {
@@ -703,6 +836,7 @@ LAURUS.advisor = ( function () {
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
 
+		digit2Half = LAURUS.STATIC_ITEMS.digit2Half,
 		isCloseTo = LAURUS.STATIC_ITEMS.isCloseTo,
 
 		// private static variables
@@ -795,10 +929,10 @@ LAURUS.advisor = ( function () {
 					text: weight,
 					label: "addClass"
 				} : {
-					indicator: "",
-					text: "-",
-					label: "removeClass"
-				};
+						indicator: "",
+						text: "-",
+						label: "removeClass"
+					};
 
 			$criteriaStyle
 				.removeClass( "reduce increase" )
@@ -848,7 +982,7 @@ LAURUS.advisor = ( function () {
 				.removeClass()
 				.addClass( "tag " + TAG_DEFS.CLASSES[ tagId ] );
 			$tag
-				.text( TAG_DEFS.MAP[ tagId ] );
+				.text( tagId === 0 ? "タグ選択" : TAG_DEFS.MAP[ tagId ] );
 
 			if ( tagId === 0 ) {
 				_setTagAddValue( channel, "S" );
@@ -1047,7 +1181,7 @@ LAURUS.advisor = ( function () {
 				/** @type {Object} ステージ選択用ボタンの生成 */
 				writeStages = function () {
 					var buildStageButton = function ( key, stage ) {
-						return "<span class=\"select-stage\" data-key=\"" + key + "\">" + stage + "</span>";
+						return "<span class=\"select-stage\" data-key=\"" + key + "\"><span>" + stage + "</span></span>";
 					};
 
 					$.each( STRUCTURE, function ( section ) {
@@ -1070,7 +1204,7 @@ LAURUS.advisor = ( function () {
 					$.each( STAGES, function () {
 						$( "#" + _mapForIdString( this[ STAGE.CHAPTER ] ) )
 							.append(
-								this[ STAGE.SECTION ] === "colosseum" ?
+							this[ STAGE.SECTION ] === "colosseum" ?
 								buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
 								buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
 							);
@@ -1152,7 +1286,7 @@ LAURUS.advisor = ( function () {
 					// edit after
 					$( "#advisor" )
 						.on( "blur", "#input-" + style + " input", function () {
-							var value = $inputField.val(),
+							var value = digit2Half( $inputField.val() ),
 								weight = parseFloat( value ),
 								successProcess = function () {
 									$criteriaStyle
@@ -1167,7 +1301,7 @@ LAURUS.advisor = ( function () {
 									$inputField
 										.focus()
 										.select();
-									toastr.error( "0 から 99 までの数値（半角）または \"-\" を入力してください" );
+									toastr.error( "0 から 99 までの数値または \"-\" を入力してください" );
 								};
 
 							if ( value === "" || value === "-" ) {
@@ -1212,7 +1346,7 @@ LAURUS.advisor = ( function () {
 					// edit after
 					$( "#advisor" )
 						.on( "blur", "#input-tag-product-" + channel + " input", function () {
-							var value = $inputField.val(),
+							var value = digit2Half( $inputField.val() ),
 								product = parseFloat( value ),
 								successProcess = function () {
 									$tagProduct
@@ -1227,7 +1361,7 @@ LAURUS.advisor = ( function () {
 									$inputField
 										.focus()
 										.select();
-									toastr.error( "0 から 99 までの数値（半角）を入力してください" );
+									toastr.error( "0 から 99 までの数値を入力してください" );
 								};
 
 							if ( value === "" ) {
@@ -1335,8 +1469,8 @@ LAURUS.advisor = ( function () {
 
 			$( "#dialogue" )
 				// ステージ選択
-				.on( "click", ".select-stage", function () {
-					_setStage( $( this ).data( "key" ) );
+				.on( "click", ".select-stage span", function () {
+					_setStage( $( this ).parent().data( "key" ) );
 					LAURUS.dialogue.dispose();
 				} )
 				.on( "click", "#custom-input-determination", function () {
@@ -1354,8 +1488,8 @@ LAURUS.advisor = ( function () {
 				.on( "focus", "#custom-request-chapter", thisSelect )
 
 				// タグ選択
-				.on( "click", ".tag span", function () {
-					_setTag( ( $( LAURUS.dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
+				.on( "click", "#tag-select .tag span", function () {
+					_setTag(( $( LAURUS.dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
 					LAURUS.dialogue.dispose();
 				} );
 
@@ -1372,90 +1506,1046 @@ LAURUS.advisor = ( function () {
 LAURUS.wardrobe = ( function () {
 	"use strict";
 
-	var _wakeup = function () {
-		var Medium = ( function () {
-				var _currentStyle = "item",
+	var // dependence
+		ALL_RECORDS = LAURUS.STATIC_ITEMS.ALL_RECORDS,
+		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
+		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
+		SORT_KEYS = LAURUS.STATIC_ITEMS.SORT_KEYS,
+		PIETY_LAURUS_OPTIONS = LAURUS.STATIC_ITEMS.PIETY_LAURUS_OPTIONS,
+		CATEGORY = CATEGORY_DEFS.CODE.CATEGORY,
+		SLOT = CATEGORY_DEFS.CODE.SLOT,
 
-					_changeStyle = function ( style ) {
-						_currentStyle = style;
+		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
+		restore = LAURUS.STATIC_ITEMS.restore,
 
-						if ( _currentStyle === "item" ) {
-							$( "#list-item-style" )
-								.addClass( "sparkly" );
-							$( "#card-item-style" )
-								.removeClass();
-						} else {
-							$( "#card-item-style" )
-								.addClass( "sparkly" );
-							$( "#list-item-style" )
-								.removeClass();
-						}
+		/** @type {Class} フィルタ条件の管理・編集操作に関するクラス */
+		Medium = ( function () {
+			var /** @type {Array} レアリティマスク */
+				_RARITY_MASK = [ 1, 2, 4, 8, 16, 32 ],
+				/** @type {String} 現在のアイテム描写スタイル */
+				_currentStyle = "list",
+				/** @type {Object} フィルタ条件 */
+				_condition = {
+					slots: [],
+					tags: [],
+					word: "",
+					rarity: 0
+				},
+				/** @type {Object} ソート条件 */
+				_sortConfig = {
+					key: "",
+					order: ""
+				},
+				/** @type {Array} フィルタ結果 */
+				_myWardrobe = [],
+
+				/** @summary メディウムに設定されているフィルタ内容からカスタムフィルタを生成する
+				 * @returns {Function} 設定項目に対応したカスタムフィルタ
+				 */
+				_makeFilterRequest = function () {
+					var
+						/** @type {MethodCollection} 各種フィルタの定義 */
+						Filter = {
+							category: ( function () {
+								var slots = [];
+
+								$.each( SLOT, function () {
+									if ( _condition.slots[ this ] ) {
+										slots.push( this );
+									}
+								} );
+
+								if ( slots.length !== 0 && slots.length !== CATEGORY_DEFS.SLOT_COUNT ) {
+									return function ( record ) {
+										var isContain = true;
+
+										$.each( record[ WARDROBE.SLOTS ], function () {
+											isContain = isContain && ( 0 <= $.inArray( this, slots ) );
+										} );
+
+										return isContain;
+									};
+								} else {
+									return function () {
+										return true;
+									};
+								}
+							}() ),
+							tag: ( function () {
+								var tags = [];
+
+								$.each( _condition.tags, function ( id ) {
+									if ( this ) {
+										tags.push( id );
+									}
+								} );
+
+								if ( tags.length === 0 ) {
+									return function () {
+										return true;
+									};
+								} else if ( tags.length === TAG_DEFS.COUNT ) {
+									return function ( record ) {
+										return 0 < record[ WARDROBE.TAGS ];
+									};
+								} else {
+									return function ( record ) {
+										var hasTag = restore.tag( record[ WARDROBE.TAGS ] );
+
+										switch ( hasTag ) {
+											case 0:
+												return false;
+											case 1:
+												return 0 <= $.inArray( hasTag[ 0 ], tags );
+											default:
+												return ( 0 <= $.inArray( hasTag[ 0 ], tags ) ) || ( 0 <= $.inArray( hasTag[ 1 ], tags ) );
+										}
+									};
+								}
+							}() ),
+							word: ( function () {
+								if ( _condition.word === "" ) {
+									return function () {
+										return true;
+									};
+								} else {
+									return function ( record ) {
+										return record[ WARDROBE.NAME ].match( _condition.word ) !== null;
+									};
+								}
+							}() ),
+							rarity: ( function () {
+								if ( _condition.rarity === 0 || _condition.rarity === 63 ) {
+									return function () {
+										return true;
+									};
+								} else {
+									return function ( record ) {
+										return 0 < ( _condition.rarity & _RARITY_MASK[ Math.abs( record[ WARDROBE.RARITY ] ) - 1 ] );
+									};
+								}
+							}() )
+						};
+
+					return function ( record ) {
+						return Filter.word( record ) &&
+							Filter.category( record ) &&
+							Filter.tag( record ) &&
+							Filter.rarity( record );
 					};
+				},
+				/** @summary メディウムに設定されているソート設定から Array.sort() 用の比較関数を生成する
+				 * @returns {Function} 設定項目に対応した比較関数
+				 */
+				_makeSortCompareFunction = function () {
+					var order = _sortConfig.order === "asc" ? 1 : -1,
+						tag = function ( position ) {
+							return function ( a, b ) {
+								return ( restore.tag( LAURUS.WARDROBE[ a ][ WARDROBE.TAGS ] )[ position ] - restore.tag( LAURUS.WARDROBE[ b ][ WARDROBE.TAGS ] )[ position ] ) * order;
+							};
+						},
+						attributes = function ( style, inv ) {
+							return function ( a, b ) {
+								var attrA = restore.attributes( LAURUS.WARDROBE[ a ][ WARDROBE.ATTRIBUTES ] )[ style ] * inv,
+									attrB = restore.attributes( LAURUS.WARDROBE[ b ][ WARDROBE.ATTRIBUTES ] )[ style ] * inv;
 
-				return {
-					changStyle: _changeStyle
-				};
-			}() ),
-			changeStyleFor = function ( style ) {
-				return function () {
-					Medium.changStyle( style );
-				};
-			},
-			/** @summary ダイアログの呼び出し
-			 * @param {String} dialogue 呼び出すダイアログの ID
-			 * @param {Function} callback コールバック関数（省略可））
-			 */
-			invokeDialogue = function ( dialogue, callback ) {
-				return function () {
-					// if ( Medium.isEditing() ) {
-					// 	Medium.rollbackEdit();
-					// }
-					// toastr.remove();
+								attrA = attrA < 0 ? 0 : attrA;
+								attrB = attrB < 0 ? 0 : attrB;
 
-					LAURUS.dialogue.invoke( dialogue, this );
+								return ( attrA - attrB ) * order;
+							};
+						},
+						compare = {
+							"serial": function ( a, b ) {
+								return ( LAURUS.WARDROBE[ a ][ WARDROBE.SERIAL ] - LAURUS.WARDROBE[ b ][ WARDROBE.SERIAL ] ) * order;
+							},
+							"name": function ( a, b ) {
+								var nameA = LAURUS.WARDROBE[ a ][ WARDROBE.NAME ],
+									nameB = LAURUS.WARDROBE[ b ][ WARDROBE.NAME ];
 
-					if ( callback ) {
-						callback();
+								return ( nameA < nameB ? -1 : nameA > nameB ? 1 : 0 ) * order;
+							},
+							"rarity": function ( a, b ) {
+								return ( Math.abs( LAURUS.WARDROBE[ a ][ WARDROBE.RARITY ] ) - Math.abs( LAURUS.WARDROBE[ b ][ WARDROBE.RARITY ] ) ) * order;
+							},
+							"tag-f": tag( 0 ),
+							"tag-l": tag( 1 ),
+							"tags": function ( a, b ) {
+								var tagsA = restore.tag( LAURUS.WARDROBE[ a ][ WARDROBE.TAGS ] ),
+									tagsB = restore.tag( LAURUS.WARDROBE[ b ][ WARDROBE.TAGS ] );
+
+								return ( ( !LAURUS.WARDROBE[ a ] ? 0 : ( tagsA[ 0 ] && tagsA[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsA[ 0 ], tagsA[ 1 ] ) : ( tagsA[ 0 ] || tagsA[ 1 ] ) ) -
+									( !LAURUS.WARDROBE[ a ] ? 0 : ( tagsB[ 0 ] && tagsB[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsB[ 0 ], tagsB[ 1 ] ) : ( tagsB[ 0 ] || tagsB[ 1 ] ) ) ) * order;
+							},
+							"score": function ( a, b ) {
+								console.log( "未実装" );
+								return ( LAURUS.WARDROBE[ a ][ WARDROBE.SERIAL ] - LAURUS.WARDROBE[ b ][ WARDROBE.SERIAL ] ) * order;
+							},
+							"gorgeous": attributes( 0, 1 ),
+							"elegance": attributes( 0, -1 ),
+							"mature": attributes( 1, 1 ),
+							"sexy": attributes( 1, -1 ),
+							"warm": attributes( 2, 1 ),
+							"simple": attributes( 2, -1 ),
+							"lively": attributes( 3, 1 ),
+							"cute": attributes( 3, -1 ),
+							"pure": attributes( 4, 1 ),
+							"cool": attributes( 4, -1 )
+						};
+
+					return compare[ _sortConfig.key ];
+				},
+				/** @summary フィルタリングされたアイテムを表示する */
+				_display = ( function () {
+					var _current = 0,
+						_ITEMS = {
+							list: function () {
+								return 50;
+							},
+							card: function () {
+								if ( _current === 0 ) {
+									return 47;
+								} else {
+									return 48;
+								}
+							}
+						},
+
+						_isTerminate = function () {
+							return _current === _myWardrobe.length;
+						},
+						_getToRecords = function () {
+							var items = _ITEMS[ _currentStyle ]();
+
+							return ( _current + items ) < _myWardrobe.length ? ( _current + items ) : _myWardrobe.length;
+						},
+						_write = function ( from, to ) {
+							var html = "",
+								proc = _currentStyle === "list" ? "itemLine" : "itemCard",
+								more = {
+									list: function () {
+										var toRecords = _getToRecords();
+
+										if ( toRecords === _myWardrobe.length ) {
+											return "残りすべて表示する（全 " + digitGrouping( _myWardrobe.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
+										} else {
+											return "さらに " + ( toRecords - _current ) + " 件表示する（全 " + digitGrouping( _myWardrobe.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
+										}
+									},
+									card: function () {
+										var toRecords = _getToRecords();
+
+										if ( toRecords === _myWardrobe.length ) {
+											return "<span class=\"item-card-more\">残りすべて表示する</span>" +
+												"<span class=\"item-card-current\">表示中：" + digitGrouping( _current ) + " 件</span>" +
+												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _myWardrobe.length ) + " 件</span>";
+										} else {
+											return "<span class=\"item-card-more\">さらに " + ( _getToRecords() - _current ) + " 件表示する</span>" +
+												"<span class=\"item-card-current\">表示中：" + digitGrouping( _current ) + " 件</span>" +
+												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _myWardrobe.length ) + " 件</span>";
+										}
+									}
+								};
+
+							for ( var i = from; i < to; i += 1 ) {
+								html += LAURUS[ proc ]( _myWardrobe[ i ] );
+							}
+
+							$( "#wardrobe-" + _currentStyle + "-area" )
+								.append( html );
+							$( "#wardrobe-" + _currentStyle + "-area .sparkline" )
+								.peity( "line", PIETY_LAURUS_OPTIONS[ _currentStyle ] );
+
+							_current = to;
+
+							if ( !_isTerminate() ) {
+								$( "#" + _currentStyle + "-more" )
+									.html( more[ _currentStyle ]() )
+									.show();
+							}
+						},
+						_reset = function () {
+							$( "#wardrobe-list-area, #wardrobe-card-area" )
+								.empty();
+							$( "#zero-records, #wardrobe-list-area-box, #wardrobe-card-area-box, #list-more, #card-more" )
+								.hide();
+
+							_current = 0;
+
+							if ( _myWardrobe.length === 0 ) {
+								$( "#zero-records" ).show();
+							} else {
+								$( "#wardrobe-" + _currentStyle + "-area-box" )
+									.show();
+								_write( _current, _getToRecords() );
+							}
+						},
+						_init = function () {
+							_myWardrobe.sort( _makeSortCompareFunction() );
+							_reset();
+						},
+						_more = function () {
+							$( "#list-more, #card-more" )
+								.hide();
+
+							_write( _current, _getToRecords() );
+						};
+
+					return {
+						init: _init,
+						more: _more,
+						reset: _reset,
+						isTerminate: _isTerminate
+					};
+				}() ),
+				/** @summary フィルタリングでヒットしたレコード数を描写する
+				 * @param {Number} records フィルタリングでヒットしたレコード
+				 */
+				_writeRecords = function ( records ) {
+					var mode = records === 0 ? "no" : records === ALL_RECORDS ? "all" : "ord";
+
+					$( "#hit-records-box" )
+						.removeClass()
+						.addClass( {
+							no: "no-records",
+							all: "all-records",
+							ord: ""
+						}[ mode ] );
+					$( "#hit-records" )
+						.text( {
+							no: "no",
+							all: ALL_RECORDS + " (all)",
+							ord: records
+						}[ mode ] );
+				},
+				/** @summary メディウムに記録されているフィルタ項目からフィルタリングして結果を描写する */
+				_execFilter = function () {
+					_myWardrobe = LAURUS.filter( _makeFilterRequest() );
+					_writeRecords( _myWardrobe.length );
+					_display.init();
+				},
+				/** @type {MethodCollection} カテゴリフィルタの操作 */
+				_category = ( function () {
+					var
+						/** @summary 該当するカテゴリボタンを活性化させる
+						 * @param {Number} slot スロット ID
+						 */
+						_on = function ( slot ) {
+							$( "#category-filter [data-slot=\"" + slot + "\"]" )
+								.addClass( "sparkly" );
+						},
+						/** @summary 該当するカテゴリボタンを不活性化させる
+						 * @param {Number} slot スロット ID
+						 */
+						_off = function ( slot ) {
+							$( "#category-filter [data-slot=\"" + slot + "\"]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary 該当するカテゴリボタンの活性 / 不活性化状態を切り替え、メディウムのカテゴリフィルタ条件に登録する
+						 * @param {Number} slot スロット ID
+						 */
+						_change = function ( slot ) {
+							var $sub = $( "#category-filter [data-slot=\"" + slot + "\"]" ).parent().parent(),
+								toOn = function ( s ) {
+									_condition.slots[ s ] = true;
+									_on( s );
+								},
+								toOff = function ( s ) {
+									_condition.slots[ s ] = false;
+									_off( s );
+								},
+								changeBase = function ( proc, supplementary, isAccessorySlot ) {
+									proc( slot );
+
+									$( "#category-filter .fake-hover" ).each( function () {
+										proc( $( this ).data( "slot" ) );
+									} );
+
+									if ( $sub.hasClass( "sub-category" ) && supplementary() ) {
+										proc( $sub.data( "parent" ) );
+									}
+
+									if ( isAccessorySlot() ) {
+										proc( CATEGORY.accessory );
+									}
+								};
+
+							if ( !_condition.slots[ slot ] ) {
+								changeBase( toOn, function () {
+									return $sub.find( "[data-slot]" ).length === $sub.find( ".sparkly" ).length;
+								}, function () {
+									return $( "#category-filter [data-accessory] [data-slot]" ).length === $( "#category-filter [data-accessory] .sparkly" ).length;
+								} );
+							} else {
+								changeBase( toOff, function () {
+									return true;
+								}, function () {
+									return $( "#category-filter [data-slot=\"" + slot + "\"]" ).parents( ".category-line" ).data( "accessory" );
+								} );
+							}
+						},
+						/** @summary すべてのカテゴリを活性化または不活性化させる */
+						_all = function () {
+							var i = 0,
+								count = 0,
+								parameter = false,
+								proc = null;
+
+							for ( i = 1; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								count += _condition.slots[ i ] ? 1 : 0;
+							}
+
+							if ( count === CATEGORY_DEFS.SLOT_COUNT ) { // すべて解除
+								parameter = false;
+								proc = _off;
+							} else { // すべて選択
+								parameter = true;
+								proc = _on;
+							}
+
+							for ( i = 1; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								_condition.slots[ i ] = parameter;
+								proc( i );
+							}
+						},
+						/** @summary メディウムのカテゴリフィルタ条件および UI の活性状態をリセットする */
+						_clear = function () {
+							for ( var i = 0; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								_condition.slots[ i ] = false;
+							}
+							$( "#category-filter [data-slot]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary メディウムのカテゴリフィルタ条件から UI 表示用ラベルを生成する */
+						_setLabel = function () {
+							var count = 0,
+								$label = $( "#filter-category .filter-key" ),
+								/** @summary スロットラベルのファクトリ
+								 * @param {Object} dic スロット参照ディクショナリ
+								 * @param {String} cat カテゴリクラス（ "major" or "minor"）
+								 * @param {Function} childProc 子スロットに対する処理定義
+								 */
+								labelFactory = function ( dic, cat, childProc ) {
+									return function ( nonuse, slot ) {
+										var code = dic[ slot ];
+
+										if ( _condition.slots[ code ] ) {
+											$label.append( "<span class=\"" + cat + "\">" + CATEGORY_DEFS.REVERSE[ code ] + "</span>" );
+										} else if ( childProc ) {
+											childProc( slot );
+										}
+									};
+								},
+								/** @summary 独身スロット処理
+								 * @param {null} nonuse 不使用（ jQuery.each 処理の引数用）
+								 * @param {String} slot スロット名
+								 */
+								singleSlot = labelFactory( CATEGORY, "major" ),
+								/** @summary 子持ちスロット処理生成ファクトリ
+								 * @param {Function} children 子スロットに対する処理定義
+								 */
+								familySlotFactory = function ( children ) {
+									return labelFactory( CATEGORY, "major", function ( slot ) {
+										children( slot );
+									} );
+								},
+								/** @summary 子持ちスロット処理
+								 * @param {null} nonuse 不使用（ jQuery.each 処理の引数用）
+								 * @param {String} slot スロット名
+								 */
+								familySlot = familySlotFactory( function ( family ) {
+									$.each( CATEGORY_DEFS.HAS_SUB[ family ], labelFactory( SLOT, "minor" ) );
+								} ),
+								/** @summary ラベルを生成する
+								 * @param {Object} 各スロット処理定義オブジェクト
+								 */
+								colony = function ( slots ) {
+									$.each( slots, function ( slot, proc ) {
+										proc( null, slot );
+									} );
+								};
+
+							for ( var i = 1; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								count += _condition.slots[ i ] ? 1 : 0;
+							}
+
+							if ( count === 0 || count === CATEGORY_DEFS.SLOT_COUNT ) {
+								$label.text( "すべて" );
+							} else {
+								$label.empty();
+
+								colony( {
+									hair: singleSlot,
+									dress: singleSlot,
+									coat: singleSlot,
+									tops: singleSlot,
+									bottoms: singleSlot,
+									hosiery: familySlot,
+									shoes: singleSlot,
+									accessory: familySlotFactory( function () {
+										colony( {
+											headwear: familySlot,
+											earrings: singleSlot,
+											necklace: familySlot,
+											bracelet: familySlot,
+											handheld: familySlot,
+											waist: singleSlot,
+											special: familySlot
+										} );
+									} ),
+									makeup: singleSlot
+								} );
+							}
+
+						},
+						/** @summary サブカテゴリを持つスロット伝搬用疑似 hover（開始）イベントファクトリ
+						 * @param {Number} slot スロット
+						 * @returns {Function} スロット伝搬用イベント
+						 */
+						_fakeMouseenter = function ( slot ) {
+							return function () {
+								$( "#category-filter .sub-category[data-" + slot + "] [data-slot]" )
+									.addClass( "fake-hover" );
+							};
+						},
+						/** @summary サブカテゴリを持つスロット伝搬用疑似 hover（終了）イベントファクトリ
+						 * @param {Number} slot スロット
+						 * @returns {function} スロット伝搬用イベント
+						 */
+						_fakeMouseleave = function ( slot ) {
+							return function () {
+								$( "#category-filter .sub-category[data-" + slot + "] [data-slot]" )
+									.removeClass( "fake-hover" );
+							};
+						},
+						/** @summary メディウムに保持されているカテゴリフィルタの条件から UI をセットする */
+						_setUIs = function () {
+							for ( var i = 1; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								if ( _condition.slots[ i ] ) {
+									_on( i );
+								} else {
+									_off( i );
+								}
+							}
+						},
+						/** @summary カテゴリフィルタダイアログの初期化 */
+						_initialize = function () {
+							var slots = [],
+								i = 0;
+
+							_setUIs();
+
+							for ( i = 0; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								slots[ i ] = 0;
+							}
+
+							$.each( LAURUS.WARDROBE, function () {
+								$.each( this[ WARDROBE.SLOTS ], function () {
+									slots[ this ] += 1;
+								} );
+							} );
+
+							$.each( CATEGORY_DEFS.HAS_SUB, function ( category ) {
+								$.each( this, function () {
+									slots[ CATEGORY[ category ] ] += slots[ SLOT[ this ] ];
+								} );
+							} );
+
+							slots[ CATEGORY.accessory ] = slots[ CATEGORY.headwear ] + slots[ CATEGORY.earrings ] + slots[ CATEGORY.necklace ] + slots[ CATEGORY.bracelet ] + slots[ CATEGORY.handheld ] + slots[ CATEGORY.waist ] + slots[ CATEGORY.special ];
+
+							for ( i = 1; i <= CATEGORY_DEFS.SLOT_COUNT; i += 1 ) {
+								$( "#category-filter [data-slot=\"" + i + "\"] .has" ).text( slots[ i ] );
+							}
+						};
+
+					return {
+						initialize: _initialize,
+						change: _change,
+						clear: _clear,
+						all: _all,
+						setLabel: _setLabel,
+						fakeMouseenter: _fakeMouseenter,
+						fakeMouseleave: _fakeMouseleave
+					};
+				}() ),
+				/** @type {MethodCollection} タグフィルタの操作 */
+				_tag = ( function () {
+					var
+						/** @summary 該当するタグボタンを活性化させる
+						 * @param {Number} tagId タグ ID
+						 */
+						_on = function ( tagId ) {
+							$( "#tag-filter [data-tag-id=\"" + tagId + "\"]" )
+								.addClass( "sparkly" );
+						},
+						/** @summary 該当するタグボタンを不活性化させる
+						 * @param {Number} tagId タグ ID
+						 */
+						_off = function ( tagId ) {
+							$( "#tag-filter [data-tag-id=\"" + tagId + "\"]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary 該当するタグボタンの活性 / 不活性化状態を切り替え、メディウムのタグフィルタ条件に登録する
+						 * @param {Number} tagId タグ ID
+						 */
+						_change = function ( tagId ) {
+							if ( !_condition.tags[ tagId ] ) {
+								_condition.tags[ tagId ] = true;
+								_on( tagId );
+							} else {
+								_condition.tags[ tagId ] = false;
+								_off( tagId );
+							}
+						},
+						/** @summary メディウムに保持されているタグフィルタの条件から UI をセットする */
+						_setUIs = function () {
+							for ( var i = 1; i <= TAG_DEFS.COUNT; i += 1 ) {
+								if ( _condition.tags[ i ] ) {
+									_on( i );
+								} else {
+									_off( i );
+								}
+							}
+						},
+						/** @summary すべてのタグを活性化または不活性化させる */
+						_all = function () {
+							var i = 0,
+								count = 0,
+								parameter = false,
+								proc = null;
+
+							for ( i = 1; i <= TAG_DEFS.COUNT; i += 1 ) {
+								count += _condition.tags[ i ] ? 1 : 0;
+							}
+
+							if ( count === TAG_DEFS.COUNT ) { // すべて解除
+								parameter = false;
+								proc = _off;
+							} else { // すべて選択
+								parameter = true;
+								proc = _on;
+							}
+
+							for ( i = 1; i <= TAG_DEFS.COUNT; i += 1 ) {
+								_condition.tags[ i ] = parameter;
+								proc( i );
+							}
+						},
+						/** @summary メディウムのタグフィルタ条件および UI の活性状態をリセットする */
+						_clear = function () {
+							for ( var i = 0; i <= TAG_DEFS.COUNT; i += 1 ) {
+								_condition.tags[ i ] = false;
+							}
+							$( "#tag-filter [data-tag-id]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary メディウムのタグフィルタ条件から UI 表示用ラベルを生成する */
+						_setLabel = function () {
+							var i = 0,
+								count = 0,
+								$label = $( "#filter-tag .filter-key" );
+
+							for ( i = 1; i <= TAG_DEFS.COUNT; i += 1 ) {
+								count += _condition.tags[ i ] ? 1 : 0;
+							}
+
+							if ( count === 0 ) {
+								$label.text( "指定なし" );
+							} else if ( count === TAG_DEFS.COUNT ) {
+								$label.text( "タグを持っているもの" );
+							} else {
+								$label.empty();
+
+								for ( i = 1; i <= TAG_DEFS.COUNT; i += 1 ) {
+									if ( _condition.tags[ i ] ) {
+										$label.append( "<span class=\"" + TAG_DEFS.CLASSES[ i ] + "\">" + TAG_DEFS.MAP[ i ] + "</span>" );
+									}
+								}
+							}
+						},
+						/** @summary タグフィルタダイアログの初期化 */
+						_initialize = function () {
+							var tags = [],
+								id = 0;
+
+							_setUIs();
+
+							for ( id = 0; id <= TAG_DEFS.COUNT; id += 1 ) {
+								tags[ id ] = 0;
+							}
+
+							$.each( LAURUS.WARDROBE, function () {
+								var t = restore.tag( this[ WARDROBE.TAGS ] );
+
+								tags[ t[ 0 ] ] += 1;
+								tags[ t[ 1 ] ] += 1;
+							} );
+
+							for ( id = 1; id <= TAG_DEFS.COUNT; id += 1 ) {
+								$( "#tag-filter [data-tag-id=\"" + id + "\"] .has" ).text( tags[ id ] );
+							}
+						};
+
+					return {
+						initialize: _initialize,
+						change: _change,
+						clear: _clear,
+						all: _all,
+						setLabel: _setLabel
+					};
+				}() ),
+				/** @type {MethodCollection} ワードフィルタの操作 */
+				_word = ( function () {
+					var
+						/** @summary 初期動作 */
+						_initialize = function () {
+							$( "#filter-word" ).select();
+						},
+						/** @summary ワードフィルタの内容をメディウムに登録する */
+						_change = function () {
+							_condition.word = $( "#filter-word" ).val();
+							_execFilter();
+						},
+						/** @summary 空メソッド。resetUI で呼び出されるため */
+						_setLabel = function () { },
+						/** @summary メディウムのワードフィルタ条件および UI の入力内容をリセットする */
+						_clear = function () {
+							_condition.word = "";
+							$( "#filter-word" ).val( "" );
+						};
+
+					return {
+						initialize: _initialize,
+						change: _change,
+						clear: _clear,
+						setLabel: _setLabel
+					};
+				}() ),
+				/** @type {MethodCollection} レアリティフィルタの操作 */
+				_rarity = ( function () {
+					var
+						/** @summary 該当するレアリティボタンを活性化させる
+						 * @param {Number} rarity レアリティ
+						 */
+						_on = function ( rarity ) {
+							$( "#rarity-filter [data-rarity=\"" + rarity + "\"]" )
+								.addClass( "sparkly" );
+						},
+						/** @summary 該当するレアリティボタンを不活性化させる
+						 * @param {Number} rarity レアリティ
+						 */
+						_off = function ( rarity ) {
+							$( "#rarity-filter [data-rarity=\"" + rarity + "\"]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary 該当するレアリティボタンの活性 / 不活性化状態を切り替え、メディウムのレアリティフィルタ条件に登録する
+						 * @param {Number} rarity レアリティ
+						 */
+						_change = function ( rarity ) {
+							var mask = _RARITY_MASK[ rarity - 1 ];
+
+							if ( !( _condition.rarity & mask ) ) {
+								_condition.rarity += mask;
+								_on( rarity );
+							} else {
+								_condition.rarity -= mask;
+								_off( rarity );
+							}
+						},
+						/** @summary メディウムに保持されているレアリティフィルタの条件から UI をセットする */
+						_setUIs = function () {
+							$.each( _RARITY_MASK, function ( index ) {
+								if ( _condition.rarity & this ) {
+									_on( index + 1 );
+								} else {
+									_off( index + 1 );
+								}
+							} );
+						},
+						/** @summary メディウムのレアリティフィルタ条件および UI の活性状態をリセットする */
+						_clear = function () {
+							_condition.rarity = 0;
+							$( "#rarity-filter [data-rarity]" )
+								.removeClass( "sparkly" );
+						},
+						/** @summary メディウムのレアリティフィルタ条件から UI 表示用ラベルを生成する */
+						_setLabel = function () {
+							var rarity = _condition.rarity,
+								$label = $( "#filter-rarity .filter-key" );
+
+							if ( rarity === 0 || rarity === 63 ) {
+								$( "#filter-rarity .filter-key" ).text( "すべて" );
+							} else {
+								$label.empty();
+
+								$.each( _RARITY_MASK, function ( index ) {
+									if ( _condition.rarity & this ) {
+										$label.append( "<span class=\"rarity\"><span class=\"laurus-icon\">&#x2606;</span>" + ( index + 1 ) + "</span>" );
+									}
+								} );
+							}
+						},
+						/** @summary レアリティフィルタダイアログの初期化 */
+						_initialize = function () {
+							var count = [ 0, 0, 0, 0, 0, 0 ];
+
+							_setUIs();
+
+							$.each( LAURUS.WARDROBE, function () {
+								count[ Math.abs( this[ WARDROBE.RARITY ] ) - 1 ] += 1;
+							} );
+
+							$.each( count, function ( rarity ) {
+								$( "#rarity-filter [data-rarity=\"" + ( rarity + 1 ) + "\"] .has" ).text( this );
+							} );
+						};
+
+					return {
+						initialize: _initialize,
+						change: _change,
+						clear: _clear,
+						setLabel: _setLabel
+					};
+				}() ),
+				_sort = ( function () {
+					var
+						/** @summary ソートオーダー / ソートキーを選択してメディウムに登録する
+						 * @param {String} key ソートオーダー / ソートキー
+						 */
+						_change = function ( key ) {
+							var target = /asc|desc/.test( key ) ? "order" : "key";
+
+							_sortConfig[ target ] = key;
+							$( "#sort-config-" + target + " [data-key]" )
+								.removeClass();
+							$( "#sort-config-" + target + " [data-key=\"" + key + "\"]" )
+								.addClass( "sparkly" );
+						},
+						/** @summary メディウムのソート条件から UI 表示用ラベルを生成する */
+						_setLabel = function () {
+							var
+								NUMERIC = {
+									asc: "1 → 9",
+									desc: "9 → 1"
+								},
+								LEXICOGRAPHIC = {
+									asc: "A → Z",
+									desc: "Z → A"
+								},
+								RARITY = {
+									asc: "<span class=\"rarity\"><span class=\"laurus-icon\">&#x2606;</span>1</span> → <span class=\"rarity\"><span class=\"laurus-icon\">&#x2606;</span>6</span>",
+									desc: "<span class=\"rarity\"><span class=\"laurus-icon\">&#x2606;</span>6</span> → <span class=\"rarity\"><span class=\"laurus-icon\">&#x2606;</span>1</span>"
+								},
+								TAG = {
+									asc: "<span class=\"sun-care\"></span> → <span class=\"paramedics\"></span>",
+									desc: "<span class=\"paramedics\"></span> → <span class=\"sun-care\"></span>"
+								},
+								STYLE = {
+									asc: "<span class=\"value none\">-</span> → <span class=\"value s\">SS</span>",
+									desc: "<span class=\"value s\">SS</span> → <span class=\"value none\">-</span>"
+								},
+								orderText = {
+									"serial": NUMERIC,
+									"name": LEXICOGRAPHIC,
+									"rarity": RARITY,
+									"tag-f": TAG,
+									"tag-l": TAG,
+									"tags": TAG,
+									"score": NUMERIC,
+									"gorgeous": STYLE,
+									"elegance": STYLE,
+									"mature": STYLE,
+									"sexy": STYLE,
+									"warm": STYLE,
+									"simple": STYLE,
+									"lively": STYLE,
+									"cute": STYLE,
+									"pure": STYLE,
+									"cool": STYLE
+								};
+
+							$( "#sort-key .filter-key" )
+								.html( SORT_KEYS[ _sortConfig.key ] + " ( " + orderText[ _sortConfig.key ][ _sortConfig.order ] + " )" );
+						},
+						/** @summary メディウムのソート条件をリセットする */
+						_clear = function () {
+							_sortConfig.key = "serial";
+							_sortConfig.order = "asc";
+						},
+						/** @summary メディウムに保持されているソート条件から UI をセットする */
+						_setUIs = function () {
+							_change( _sortConfig.order );
+							_change( _sortConfig.key );
+						},
+						/** @summary 並び替え設定ダイアログの初期化 */
+						_initialize = _setUIs;
+
+					return {
+						change: _change,
+						setLabel: _setLabel,
+						clear: _clear,
+						initialize: _initialize
+					};
+				}() ),
+				/** @summary アイテムデータ描写スタイルの変更する
+				 * @param {String} 描写スタイル識別子
+				 */
+				_changeStyle = function ( style ) {
+					_currentStyle = style;
+
+					if ( _currentStyle === "list" ) {
+						$( "#list-item-style" )
+							.addClass( "sparkly" );
+						$( "#card-item-style" )
+							.removeClass();
+					} else {
+						$( "#card-item-style" )
+							.addClass( "sparkly" );
+						$( "#list-item-style" )
+							.removeClass();
 					}
+
+					_display.reset();
+				},
+				/** @summary フィルタ条件編集 UI の初期化 */
+				_initialize = function () {
+					$.each( [ _category, _tag, _word, _rarity, _sort ], function () {
+						this.clear();
+						this.setLabel();
+					} );
+				},
+				/** @summary フィルタ条件編集 UI の初期化とフィルタ実行 */
+				_resetUI = function () {
+					_initialize();
+					_execFilter();
 				};
+
+			return {
+				category: _category,
+				tag: _tag,
+				word: _word,
+				rarity: _rarity,
+				sort: _sort,
+
+				initialize: _initialize,
+				resetUI: _resetUI,
+				changStyle: _changeStyle,
+				execFilter: _execFilter,
+				display: _display
 			};
+		}() ),
+		/** @summary Wardrobe の初期化処理 */
+		_wakeup = function () {
+			var /** @summary 描写スタイルの選択ボタンイベント用包括関数
+				 * @param {String} style 描写スタイル識別子
+				 */
+				changeStyleFor = function ( style ) {
+					return function () {
+						Medium.changStyle( style );
+					};
+				},
+				/** @summary メディウム変更イベント関数を生成する（ダイアログイベント用）
+				 * @param {String} 対象メディウム
+				 * @param {String} 参照するデータ属性値
+				 * @returns {Function} メディウム変更イベント
+				 */
+				mediumChangeEventFactory = function ( medium, dataAttribute ) {
+					return function () {
+						Medium[ medium ].change( $( this ).data( dataAttribute ) );
+					};
+				},
+				/** @summary ダイアログの呼び出し
+				 * @param {String} filter フィルター名
+				 * @returns {Function} ダイアログ呼び出しイベント関数
+				 */
+				invokeDialogue = function ( filter ) {
+					return function () {
+						LAURUS.dialogue.invoke( filter + "-filter", this, function () {
+							Medium[ filter ].setLabel();
+							Medium.execFilter();
+						} );
+						Medium[ filter ].initialize();
+					};
+				};
 
-		$( "#wardrobe" )
-			.on( "click", "#filter-category .filter-key", invokeDialogue( "category-filter" ) )
-			.on( "click", "#filter-style .filter-key", invokeDialogue( "style-filter" ) )
-			.on( "click", "#filter-tag .filter-key", invokeDialogue( "tag-filter" ) )
-			.on( "click", "#filter-rarity .filter-key", invokeDialogue( "rarity-filter" ) )
-			.on( "click", "#filter-score .filter-key", invokeDialogue( "score-filter" ) )
+			$( "#wardrobe" )
+				.on( "click", "#filter-reset", Medium.resetUI )
+				.on( "click", "#filter-category .filter-key", invokeDialogue( "category" ) )
+				.on( "click", "#filter-tag .filter-key", invokeDialogue( "tag" ) )
+				.on( "focus", "#filter-word", Medium.word.initialize )
+				.on( "blur", "#filter-word", Medium.word.change )
+				.on( "click", "#filter-rarity .filter-key", invokeDialogue( "rarity" ) )
+				.on( "click", "#sort-key .filter-key", invokeDialogue( "sort" ) )
+				.on( "click", "#list-item-style", changeStyleFor( "list" ) )
+				.on( "click", "#card-item-style", changeStyleFor( "card" ) )
+				.on( "click", "#list-more, #card-more", Medium.display.more );
 
-			.on( "click", "#list-item-style", changeStyleFor( "item" ) )
-			.on( "click", "#card-item-style", changeStyleFor( "card" ) );
+			$( "#dialogue" )
+				// カテゴリフィルタ
+				.on( "click", "[data-slot]", mediumChangeEventFactory( "category", "slot" ) )
+				.on( "mouseenter", "[data-slot=\"" + CATEGORY.accessory + "\"]", function () {
+					$( "#category-filter [data-accessory] [data-slot]" ).addClass( "fake-hover" );
+				} )
+				.on( "mouseleave", "[data-slot=\"" + CATEGORY.accessory + "\"]", function () {
+					$( "#category-filter [data-accessory] [data-slot]" ).removeClass( "fake-hover" );
+				} )
+				.on( "click", "#category-filter-all span", Medium.category.all )
+				// タグフィルタ
+				.on( "click", "[data-tag-id]", mediumChangeEventFactory( "tag", "tag-id" ) )
+				.on( "click", "#tag-filter-all span", Medium.tag.all )
+				// レアリティフィルタ
+				.on( "click", ".rarity", mediumChangeEventFactory( "rarity", "rarity" ) )
+				.on( "click", "#rarity-filter-reset span", Medium.rarity.clear )
+				// ソートフィルタ
+				.on( "click", "[data-key]", mediumChangeEventFactory( "sort", "key" ) );
 
-		// constructor
-		$.each( [
-			"10001", "10004", "20001", "20002", "30001", "30002", "40001", "40002", "50001", "50002",
-			"60001", "60002"
-		], function () {
-			$( "#wardrobe-card-area" ).append( LAURUS.itemCard( this ) );
-		} );
+			$( "#laurus" )
+				.on( "click", "[data-serial]", function () {
+					console.log( $( this ).data( "serial" ) );
+				} );
 
-		$( ".item-sparkline" )
-			.peity( "line", {
-				strokeWidth: 2,
-				height: 30,
-				width: 60,
-				delimiter: ",",
-				fill: "rgba( 141, 214, 141, 0.2 )",
-				max: 5,
-				min: -5,
-				stroke: "#8dd68d"
+			$.each( CATEGORY_DEFS.HAS_SUB, function ( category ) {
+				$( "#dialogue" )
+					.on( "mouseenter", "[data-slot=\"" + CATEGORY[ category ] + "\"]", Medium.category.fakeMouseenter( category ) )
+					.on( "mouseleave", "[data-slot=\"" + CATEGORY[ category ] + "\"]", Medium.category.fakeMouseleave( category ) );
 			} );
 
-	};
+			// constructor
+			Medium.initialize();
+		},
+
+		/** @summary Wardrobe のモード切替時処理 */
+		_changeMode = Medium.execFilter;
 
 	return {
-		wakeup: _wakeup
+		wakeup: _wakeup,
+		changeMode: _changeMode
 	};
 }() );
+
+/** @summary モード（ページ）チェンジ */
+LAURUS.changeMode = function () {
+	"use strict";
+
+	var mode = $( this ).data( "mode" );
+
+	toastr.remove();
+
+	$( "#general-navgation .ghost-button" ).removeClass( "current-mode" );
+
+	$( this ).addClass( "current-mode" );
+	$( "#header" ).attr( "class", mode );
+
+	$( "#current-mode" ).text( mode.charAt( 0 ).toUpperCase() + mode.substring( 1 ) );
+
+	$( ".tab" ).hide();
+	$( "#" + mode ).show();
+
+	if ( LAURUS[ mode ].changeMode ) {
+		LAURUS[ mode ].changeMode();
+	}
+};
 
 /** @type {Object} 各ページ初期化処理 */
 LAURUS.wakeup = {
@@ -1468,9 +2558,9 @@ LAURUS.wakeup = {
 	},
 	advisor: LAURUS.advisor.wakeup,
 	wardrobe: LAURUS.wardrobe.wakeup,
-	purveyor: function () {},
-	credit: function () {},
-	changelog: function () {},
+	purveyor: function () { },
+	credit: function () { },
+	changelog: function () { },
 	dialogue: LAURUS.dialogue.wakeup
 };
 
@@ -1492,6 +2582,7 @@ $( document ).ready( function () {
 	$( "#dialogue" ).perfectScrollbar();
 
 	// $( "#advisor-button" ).click();
-	$( "#wardrobe-button" ).click();
 	// LAURUS.advisor.setStage( "8-1" );
+
+	$( "#wardrobe-button" ).click();
 } );
