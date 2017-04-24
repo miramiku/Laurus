@@ -1,5 +1,5 @@
 {
-	/* Enforcing options */
+	// Enforcing options
 	"bitwise": false,
 	"camelcase": true,
 	"curly": true,
@@ -18,16 +18,13 @@
 	"unused": true,
 	"strict": true,
 	"trailing": true,
-
 	"quotmark": "double",
-
 	"indent": 4,
 	//"maxparams": 5,
 	//"maxdepth": 5
 	//"maxstatements": 10,
 	//"maxcomplexity": 10,
 	//"maxlen": 90,
-
 	/* Relaxing options */
 	"asi": false,
 	"boss": false,
@@ -53,14 +50,11 @@
 	"sub": false,
 	"supernew": false,
 	"validthis": false,
-
-	/* Environments */
-	"browser": true,
-	/* true */
+	// Environments
+	"browser": true, // true
 	"devel": false,
 	"dojo": false,
-	"jquery": true,
-	/* true */
+	"jquery": true, // true
 	"mootools": false,
 	"node": false,
 	"nonstandard": false,

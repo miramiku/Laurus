@@ -223,9 +223,10 @@
 				<span class="button-wrapper"><span id="list-item-style" class="sparkly">リスト形式</span></span>
 			<span class="button-wrapper"><span id="card-item-style">カード形式</span></span>
 			</span>
-			<span id="hit-records-box">
-				<span id="hit-records"></span> records
+			<span id="edit-lock-controle" class="filter-controle">
+				<span class="button-wrapper"><span id="edit-lock">編集ロック</span></span>
 			</span>
+			<span id="hit-records-box"><span id="hit-records"></span> records</span>
 		</h3>
 		<div id="zero-records">
 			<span class="face">( &gt;﹏&lt;。)</span>
@@ -269,7 +270,11 @@
 			<div id="card-more"></div>
 		</div>
 
-		<h3>データ入出力</h3>
+		<h3>アイテム所持状況の入出力</h3>
+		<div id="file-imex">
+			<span class="imex-button-wrapper"><a id="file-import" href="#">アイテム所持状況の読み込み</a></span>
+			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json">アイテム所持状況の書き出し</a></span>
+		</div>
 	</div>
 
 	<div id="purveyor" class="tab">
@@ -666,7 +671,7 @@
 			<div id="sort-config-key">
 				<h6>並べ替え基準</h6>
 				<div class="item-group">
-					<span class="sort-item"><span data-key="serial">ID [標準]</span></span>
+					<span class="sort-item"><span data-key="serial">シリアル</span></span>
 					<span class="sort-item"><span data-key="name">名前</span></span>
 					<span class="sort-item"><span data-key="rarity">レアリティ</span></span>
 					<span class="sort-item"><span data-key="tag-f">タグF</span></span>
@@ -687,6 +692,21 @@
 					<span class="sort-item"><span data-key="cool">クール</span></span>
 				</div>
 			</div>
+			<div id="possession-options">
+				<h6>未所持アイテムに関する設定</h6>
+				<span class="possession-option"><span id="display-impossession">未所持アイテムを表示する</span></span>
+				<span class="possession-option"><span id="display-impossession-only">未所持アイテムのみ表示</span></span>
+			</div>
+		</div>
+	</div>
+
+	<div id="file-import" class="dialogue-content wardrobe">
+		<div class="dialogue-header">
+			<span class="dialogue-title">アイテム所持状況の読み込み</span>
+			<span class="dialogue-close"><span>close</span></span>
+		</div>
+		<div class="content">
+			<div id="file-droppable"></div>
 		</div>
 	</div>
 

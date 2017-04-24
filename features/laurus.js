@@ -1,5 +1,5 @@
 /*jshint devel: true */
-/*global toastr */
+/*global toastr, JSON */
 
 /** @type {Class} Laurus Package */
 var LAURUS = {};
@@ -297,7 +297,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		},
 		/** @type {Object} ソートキー対応表 */
 		_sortKeys = {
-			"serial": "ID [標準]",
+			"serial": "シリアル",
 			"name": "名前",
 			"rarity": "レアリティ",
 			"tag-f": "タグF",
@@ -386,6 +386,28 @@ LAURUS.STATIC_ITEMS = ( function () {
 				success: success
 			} );
 		},
+		/** @summary 不所持アイテムのリストを生成する */
+		_getImposes = function () {
+			var data = [];
+
+			$.each( LAURUS.POSSESSIONS, function ( serial ) {
+				if ( !this ) {
+					data.push( serial );
+				}
+			} );
+
+			return data;
+		},
+		/** @summary 不所持アイテムリストから所持情況を登録する
+		 * @param {Array} 不所持アイテムリスト
+		 */
+		_setImposes = function ( imPoses ) {
+			var POSSESSIONS = LAURUS.POSSESSIONS;
+
+			$.each( imPoses, function () {
+				POSSESSIONS[ this ] = false;
+			} );
+		},
 		/** @summary 数値が範囲内に収まっているか検査する
 		 * @param {Number} value 検査値
 		 * @param {Object} bounds 境界オブジェクト
@@ -457,6 +479,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 		digit2Half: _digit2Half,
 		isCloseTo: _isCloseTo,
 		getDatabase: _getDatabase,
+		getImposes: _getImposes,
+		setImposes: _setImposes,
 		restore: _restore
 	};
 }() );
@@ -491,11 +515,15 @@ LAURUS.STAGES = ( function () {
 /** @type {Object} スコア保持用オブジェクト */
 LAURUS.SCORE = {};
 
+/** @type {Object} アイテム所持管理用オブジェクト */
+LAURUS.POSSESSIONS = {};
+
 /** @type {ObjectDatabase} ワードロープ */
 LAURUS.WARDROBE = ( function () {
 	"use strict";
 
 	var SCORE = LAURUS.SCORE,
+		POSSESSIONS = LAURUS.POSSESSIONS,
 		_wardrobe = {};
 
 	LAURUS.STATIC_ITEMS.getDatabase(
@@ -506,6 +534,7 @@ LAURUS.WARDROBE = ( function () {
 
 				_wardrobe[ serial ] = this;
 				SCORE[ serial ] = -1;
+				POSSESSIONS[ serial ] = true;
 			} );
 
 			LAURUS.STATIC_ITEMS.ALL_RECORDS = data.length;
@@ -541,9 +570,9 @@ LAURUS.itemLine = function ( serial ) {
 	"use strict";
 
 	var // dependence
-		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
-		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
+		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
 		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
 
 		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
@@ -551,21 +580,22 @@ LAURUS.itemLine = function ( serial ) {
 
 		// item
 		item = LAURUS.WARDROBE[ serial ],
+		possession = LAURUS.POSSESSIONS[ serial ],
 		itemScore = LAURUS.SCORE[ serial ],
 		keys = restore.categoryAndId( serial ),
-		restoreAttributes = restore.attributes( item[ WARDROBE.ATTRIBUTES ] ),
-		tag = restore.tag( item[ WARDROBE.TAGS ] ),
+		restoreAttributes = restore.attributes( item[ COLUMN.ATTRIBUTES ] ),
+		tag = restore.tag( item[ COLUMN.TAGS ] ),
 
 		// concrete HTML
 		category = "<td><span class=\"" + CATEGORY_DEFS.MAP[ keys.category ] + "\"></span></td>",
 		id = "<td>" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</td>",
-		name = "<td title=\"" + item[ WARDROBE.NAME ] + "\">" + item[ WARDROBE.NAME ] + "</span>",
+		name = "<td title=\"" + item[ COLUMN.NAME ] + "\">" + item[ COLUMN.NAME ] + "</span>",
 		slot = ( function () {
 			var
 				slots = ( function () {
 					var s = [];
 
-					$.each( item[ WARDROBE.SLOTS ], function () {
+					$.each( item[ COLUMN.SLOTS ], function () {
 						s.push( CATEGORY_DEFS.REVERSE[ this ] );
 					} );
 
@@ -574,7 +604,7 @@ LAURUS.itemLine = function ( serial ) {
 				title = "",
 				text = "";
 
-			if ( 1 < item[ WARDROBE.SLOTS ].length ) {
+			if ( 1 < item[ COLUMN.SLOTS ].length ) {
 				title = slots.join( ", " );
 				text = "複合スロット";
 			} else {
@@ -584,11 +614,11 @@ LAURUS.itemLine = function ( serial ) {
 
 			return "<td title=\"" + title + "\">" + text + "</td>";
 		}() ),
-		rarity = "<td><span class=\"" + ( item[ WARDROBE.RARITY ] < 0 ? "with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ WARDROBE.RARITY ] ) + "</span></td>",
+		rarity = "<td><span class=\"" + ( item[ COLUMN.RARITY ] < 0 ? "with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ COLUMN.RARITY ] ) + "</span></td>",
 		attributes = ( function () {
 			var a = "";
 
-			$.each( restore.attributes( item[ WARDROBE.ATTRIBUTES ] ), function () {
+			$.each( restore.attributes( item[ COLUMN.ATTRIBUTES ] ), function () {
 				var v = VALUE_INDEX[ Math.abs( this ) ];
 
 				if ( 0 < this ) {
@@ -601,10 +631,10 @@ LAURUS.itemLine = function ( serial ) {
 			return a;
 		}() ),
 		sparkline = "<td><span class=\"sparkline\">" + restoreAttributes.join( "," ) + "</span></td>",
-		tags = "<td><span class=\"tag-" + TAG_DEFS.CLASSES[ tag[ 0 ] ] + "\"></span></td><td><span class=\"tag-" + TAG_DEFS.CLASSES[ tag[ 1 ] ] + "\"></span></td>",
+		tags = "<td><span class=\"tag-" + TAG_CLASS[ tag[ 0 ] ] + "\"></span></td><td><span class=\"tag-" + TAG_CLASS[ tag[ 1 ] ] + "\"></span></td>",
 		score = "<td>" + ( 0 < itemScore ? digitGrouping( itemScore ) : "-" ) + "</td>";
 
-	return "<tr data-serial=\"" + serial + "\">" + category + id + name + slot + rarity + attributes + sparkline + tags + score + "</tr>";
+	return "<tr " + ( possession ? "" : "class=\"impos\" " ) + "data-serial=\"" + serial + "\">" + category + id + name + slot + rarity + attributes + sparkline + tags + score + "</tr>";
 };
 
 /** @summary アイテムカードの生成
@@ -615,10 +645,10 @@ LAURUS.itemCard = function ( serial ) {
 	"use strict";
 
 	var // dependence
-		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_MAP = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.MAP,
 		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
-		TAGS_CLASSES = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
+		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
 		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
 
 		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
@@ -626,10 +656,11 @@ LAURUS.itemCard = function ( serial ) {
 
 		// item
 		item = LAURUS.WARDROBE[ serial ],
+		possession = LAURUS.POSSESSIONS[ serial ],
 		itemScore = LAURUS.SCORE[ serial ],
 		keys = restore.categoryAndId( serial ),
-		attributes = restore.attributes( item[ WARDROBE.ATTRIBUTES ] ),
-		tag = restore.tag( item[ WARDROBE.TAGS ] ),
+		attributes = restore.attributes( item[ COLUMN.ATTRIBUTES ] ),
+		tag = restore.tag( item[ COLUMN.TAGS ] ),
 
 		// concrete HTML
 		icon = ( function () {
@@ -648,9 +679,9 @@ LAURUS.itemCard = function ( serial ) {
 			// return "<span class=\"item-icon " + iconFile + "\" style=\"background-position: " + rowPos + "px " + colPos + "px;\"></span>";
 			return "<span class=\"item-icon " + CATEGORY_MAP[ keys.category ] + "\"></span>";
 		}() ),
-		tags = "<span class=\"item-tags-box\"><span class=\"item-tags item-tags-" + TAGS_CLASSES[ tag[ 0 ] ] + "\"></span><span class=\"item-tags item-tags-" + TAGS_CLASSES[ tag[ 1 ] ] + "\"></span></span>",
-		name = "<span class=\"item-name\" title=\"" + item[ WARDROBE.NAME ] + "\"><span class=\"item-id\">" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</span>" + item[ WARDROBE.NAME ] + "</span>",
-		rarity = "<span class=\"item-rarity " + ( item[ WARDROBE.RARITY ] < 0 ? " with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ WARDROBE.RARITY ] ) + "</span>",
+		tags = "<span class=\"item-tags-box\"><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 0 ] ] + "\"></span><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 1 ] ] + "\"></span></span>",
+		name = "<span class=\"item-name\" title=\"" + item[ COLUMN.NAME ] + "\"><span class=\"item-id\">" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</span>" + item[ COLUMN.NAME ] + "</span>",
+		rarity = "<span class=\"item-rarity " + ( item[ COLUMN.RARITY ] < 0 ? " with-animate" : "" ) + "\"><span class=\"laurus-icon\">&#x2606;</span>" + Math.abs( item[ COLUMN.RARITY ] ) + "</span>",
 		attributesTable = ( function () {
 			var HEADER = "<table class=\"item-attributes\"><tbody>",
 				FOOTER = "</tbody></table>",
@@ -691,7 +722,7 @@ LAURUS.itemCard = function ( serial ) {
 		sparkline = "<span class=\"item-sparkline-box\"><span class=\"sparkline\">" + attributes.join( "," ) + "</span></span>",
 		score = "<span class=\"item-score\">" + ( 0 < itemScore ? digitGrouping( itemScore ) : "-" ) + "</span>";
 
-	return "<div class=\"item-card\" data-serial=\"" + serial + "\">" +
+	return "<div class=\"item-card" + ( possession ? "" : " impos" ) + "\" data-serial=\"" + serial + "\">" +
 		"<div class=\"item-icon-box\">" + icon + tags + "</div>" +
 		name + rarity +
 		attributesTable + sparkline + score +
@@ -1507,17 +1538,24 @@ LAURUS.wardrobe = ( function () {
 	"use strict";
 
 	var // dependence
+		WARDROBE = LAURUS.WARDROBE,
+		POSSESSIONS = LAURUS.POSSESSIONS,
+
 		ALL_RECORDS = LAURUS.STATIC_ITEMS.ALL_RECORDS,
-		WARDROBE = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		SORT_KEYS = LAURUS.STATIC_ITEMS.SORT_KEYS,
 		PIETY_LAURUS_OPTIONS = LAURUS.STATIC_ITEMS.PIETY_LAURUS_OPTIONS,
+
 		CATEGORY = CATEGORY_DEFS.CODE.CATEGORY,
 		SLOT = CATEGORY_DEFS.CODE.SLOT,
 
 		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
+		getImposes = LAURUS.STATIC_ITEMS.getImposes,
+		setImposes = LAURUS.STATIC_ITEMS.setImposes,
 		restore = LAURUS.STATIC_ITEMS.restore,
+		dialogue = LAURUS.dialogue,
 
 		/** @type {Class} フィルタ条件の管理・編集操作に関するクラス */
 		Medium = ( function () {
@@ -1539,6 +1577,10 @@ LAURUS.wardrobe = ( function () {
 				},
 				/** @type {Array} フィルタ結果 */
 				_myWardrobe = [],
+				/** @type {Boolean} 不所持アイテムの表示 */
+				_displayImpossession = false,
+				/** @type {Boolean} 不所持アイテム"のみ"の表示 */
+				_displayImpossessionOnly = false,
 
 				/** @summary メディウムに設定されているフィルタ内容からカスタムフィルタを生成する
 				 * @returns {Function} 設定項目に対応したカスタムフィルタ
@@ -1560,7 +1602,7 @@ LAURUS.wardrobe = ( function () {
 									return function ( record ) {
 										var isContain = true;
 
-										$.each( record[ WARDROBE.SLOTS ], function () {
+										$.each( record[ COLUMN.SLOTS ], function () {
 											isContain = isContain && ( 0 <= $.inArray( this, slots ) );
 										} );
 
@@ -1587,11 +1629,11 @@ LAURUS.wardrobe = ( function () {
 									};
 								} else if ( tags.length === TAG_DEFS.COUNT ) {
 									return function ( record ) {
-										return 0 < record[ WARDROBE.TAGS ];
+										return 0 < record[ COLUMN.TAGS ];
 									};
 								} else {
 									return function ( record ) {
-										var hasTag = restore.tag( record[ WARDROBE.TAGS ] );
+										var hasTag = restore.tag( record[ COLUMN.TAGS ] );
 
 										switch ( hasTag ) {
 											case 0:
@@ -1611,7 +1653,7 @@ LAURUS.wardrobe = ( function () {
 									};
 								} else {
 									return function ( record ) {
-										return record[ WARDROBE.NAME ].match( _condition.word ) !== null;
+										return record[ COLUMN.NAME ].match( _condition.word ) !== null;
 									};
 								}
 							}() ),
@@ -1622,7 +1664,7 @@ LAURUS.wardrobe = ( function () {
 									};
 								} else {
 									return function ( record ) {
-										return 0 < ( _condition.rarity & _RARITY_MASK[ Math.abs( record[ WARDROBE.RARITY ] ) - 1 ] );
+										return 0 < ( _condition.rarity & _RARITY_MASK[ Math.abs( record[ COLUMN.RARITY ] ) - 1 ] );
 									};
 								}
 							}() )
@@ -1642,13 +1684,13 @@ LAURUS.wardrobe = ( function () {
 					var order = _sortConfig.order === "asc" ? 1 : -1,
 						tag = function ( position ) {
 							return function ( a, b ) {
-								return ( restore.tag( LAURUS.WARDROBE[ a ][ WARDROBE.TAGS ] )[ position ] - restore.tag( LAURUS.WARDROBE[ b ][ WARDROBE.TAGS ] )[ position ] ) * order;
+								return ( restore.tag( WARDROBE[ a ][ COLUMN.TAGS ] )[ position ] - restore.tag( WARDROBE[ b ][ COLUMN.TAGS ] )[ position ] ) * order;
 							};
 						},
 						attributes = function ( style, inv ) {
 							return function ( a, b ) {
-								var attrA = restore.attributes( LAURUS.WARDROBE[ a ][ WARDROBE.ATTRIBUTES ] )[ style ] * inv,
-									attrB = restore.attributes( LAURUS.WARDROBE[ b ][ WARDROBE.ATTRIBUTES ] )[ style ] * inv;
+								var attrA = restore.attributes( WARDROBE[ a ][ COLUMN.ATTRIBUTES ] )[ style ] * inv,
+									attrB = restore.attributes( WARDROBE[ b ][ COLUMN.ATTRIBUTES ] )[ style ] * inv;
 
 								attrA = attrA < 0 ? 0 : attrA;
 								attrB = attrB < 0 ? 0 : attrB;
@@ -1658,29 +1700,28 @@ LAURUS.wardrobe = ( function () {
 						},
 						compare = {
 							"serial": function ( a, b ) {
-								return ( LAURUS.WARDROBE[ a ][ WARDROBE.SERIAL ] - LAURUS.WARDROBE[ b ][ WARDROBE.SERIAL ] ) * order;
+								return ( WARDROBE[ a ][ COLUMN.SERIAL ] - WARDROBE[ b ][ COLUMN.SERIAL ] ) * order;
 							},
 							"name": function ( a, b ) {
-								var nameA = LAURUS.WARDROBE[ a ][ WARDROBE.NAME ],
-									nameB = LAURUS.WARDROBE[ b ][ WARDROBE.NAME ];
+								var nameA = WARDROBE[ a ][ COLUMN.NAME ],
+									nameB = WARDROBE[ b ][ COLUMN.NAME ];
 
 								return ( nameA < nameB ? -1 : nameA > nameB ? 1 : 0 ) * order;
 							},
 							"rarity": function ( a, b ) {
-								return ( Math.abs( LAURUS.WARDROBE[ a ][ WARDROBE.RARITY ] ) - Math.abs( LAURUS.WARDROBE[ b ][ WARDROBE.RARITY ] ) ) * order;
+								return ( Math.abs( WARDROBE[ a ][ COLUMN.RARITY ] ) - Math.abs( WARDROBE[ b ][ COLUMN.RARITY ] ) ) * order;
 							},
 							"tag-f": tag( 0 ),
 							"tag-l": tag( 1 ),
 							"tags": function ( a, b ) {
-								var tagsA = restore.tag( LAURUS.WARDROBE[ a ][ WARDROBE.TAGS ] ),
-									tagsB = restore.tag( LAURUS.WARDROBE[ b ][ WARDROBE.TAGS ] );
+								var tagsA = restore.tag( WARDROBE[ a ][ COLUMN.TAGS ] ),
+									tagsB = restore.tag( WARDROBE[ b ][ COLUMN.TAGS ] );
 
-								return ( ( !LAURUS.WARDROBE[ a ] ? 0 : ( tagsA[ 0 ] && tagsA[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsA[ 0 ], tagsA[ 1 ] ) : ( tagsA[ 0 ] || tagsA[ 1 ] ) ) -
-									( !LAURUS.WARDROBE[ a ] ? 0 : ( tagsB[ 0 ] && tagsB[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsB[ 0 ], tagsB[ 1 ] ) : ( tagsB[ 0 ] || tagsB[ 1 ] ) ) ) * order;
+								return ( ( !WARDROBE[ a ] ? 0 : ( tagsA[ 0 ] && tagsA[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsA[ 0 ], tagsA[ 1 ] ) : ( tagsA[ 0 ] || tagsA[ 1 ] ) ) -
+									( !WARDROBE[ a ] ? 0 : ( tagsB[ 0 ] && tagsB[ 1 ] ) ? Math[ order === 1 ? "min" : "max" ]( tagsB[ 0 ], tagsB[ 1 ] ) : ( tagsB[ 0 ] || tagsB[ 1 ] ) ) ) * order;
 							},
 							"score": function ( a, b ) {
-								console.log( "未実装" );
-								return ( LAURUS.WARDROBE[ a ][ WARDROBE.SERIAL ] - LAURUS.WARDROBE[ b ][ WARDROBE.SERIAL ] ) * order;
+								return ( LAURUS.SCORE[ a ] - LAURUS.SCORE[ b ] ) * order;
 							},
 							"gorgeous": attributes( 0, 1 ),
 							"elegance": attributes( 0, -1 ),
@@ -1696,7 +1737,7 @@ LAURUS.wardrobe = ( function () {
 
 					return compare[ _sortConfig.key ];
 				},
-				/** @summary フィルタリングされたアイテムを表示する */
+				/** @type {MethodCollection} フィルタリングされたアイテムに関する操作 */
 				_display = ( function () {
 					var _current = 0,
 						_ITEMS = {
@@ -1722,6 +1763,7 @@ LAURUS.wardrobe = ( function () {
 						},
 						_write = function ( from, to ) {
 							var html = "",
+								i = 0,
 								proc = _currentStyle === "list" ? "itemLine" : "itemCard",
 								more = {
 									list: function () {
@@ -1746,10 +1788,20 @@ LAURUS.wardrobe = ( function () {
 												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _myWardrobe.length ) + " 件</span>";
 										}
 									}
-								};
+								},
+								withoutNotPosessions = function () {
+									html += POSSESSIONS[ _myWardrobe[ i ] ] ? LAURUS[ proc ]( _myWardrobe[ i ] ) : "";
+								},
+								withoutPosessions = function () {
+									html += POSSESSIONS[ _myWardrobe[ i ] ] ? "" : LAURUS[ proc ]( _myWardrobe[ i ] );
+								},
+								anyItems = function () {
+									html += LAURUS[ proc ]( _myWardrobe[ i ] );
+								},
+								posessionBranch = _displayImpossession ? _displayImpossessionOnly ? withoutPosessions : anyItems : withoutNotPosessions;
 
-							for ( var i = from; i < to; i += 1 ) {
-								html += LAURUS[ proc ]( _myWardrobe[ i ] );
+							for ( i = from; i < to; i += 1 ) {
+								posessionBranch();
 							}
 
 							$( "#wardrobe-" + _currentStyle + "-area" )
@@ -1785,6 +1837,18 @@ LAURUS.wardrobe = ( function () {
 							_myWardrobe.sort( _makeSortCompareFunction() );
 							_reset();
 						},
+						_notPossession = function () {
+							var proc = _displayImpossession ? "removeClass" : "addClass";
+
+							_displayImpossession = !_displayImpossession;
+
+							$( "#display-impossession" )[ proc ]( "sparkly" );
+							$( "#display-impossession-only" )[ proc ]( "enabled" );
+						},
+						_notPossessionOnly = function () {
+							$( "#display-impossession-only" )[ _displayImpossessionOnly ? "removeClass" : "addClass" ]( "sparkly" );
+							_displayImpossessionOnly = !_displayImpossessionOnly;
+						},
 						_more = function () {
 							$( "#list-more, #card-more" )
 								.hide();
@@ -1796,6 +1860,8 @@ LAURUS.wardrobe = ( function () {
 						init: _init,
 						more: _more,
 						reset: _reset,
+						notPossession: _notPossession,
+						notPossessionOnly: _notPossessionOnly,
 						isTerminate: _isTerminate
 					};
 				}() ),
@@ -2040,8 +2106,8 @@ LAURUS.wardrobe = ( function () {
 								slots[ i ] = 0;
 							}
 
-							$.each( LAURUS.WARDROBE, function () {
-								$.each( this[ WARDROBE.SLOTS ], function () {
+							$.each( WARDROBE, function () {
+								$.each( this[ COLUMN.SLOTS ], function () {
 									slots[ this ] += 1;
 								} );
 							} );
@@ -2175,8 +2241,8 @@ LAURUS.wardrobe = ( function () {
 								tags[ id ] = 0;
 							}
 
-							$.each( LAURUS.WARDROBE, function () {
-								var t = restore.tag( this[ WARDROBE.TAGS ] );
+							$.each( WARDROBE, function () {
+								var t = restore.tag( this[ COLUMN.TAGS ] );
 
 								tags[ t[ 0 ] ] += 1;
 								tags[ t[ 1 ] ] += 1;
@@ -2292,8 +2358,8 @@ LAURUS.wardrobe = ( function () {
 
 							_setUIs();
 
-							$.each( LAURUS.WARDROBE, function () {
-								count[ Math.abs( this[ WARDROBE.RARITY ] ) - 1 ] += 1;
+							$.each( WARDROBE, function () {
+								count[ Math.abs( this[ COLUMN.RARITY ] ) - 1 ] += 1;
 							} );
 
 							$.each( count, function ( rarity ) {
@@ -2308,6 +2374,7 @@ LAURUS.wardrobe = ( function () {
 						setLabel: _setLabel
 					};
 				}() ),
+				/** @type {MethodCollection} 並べ替え設定の操作 */
 				_sort = ( function () {
 					var
 						/** @summary ソートオーダー / ソートキーを選択してメディウムに登録する
@@ -2326,8 +2393,8 @@ LAURUS.wardrobe = ( function () {
 						_setLabel = function () {
 							var
 								NUMERIC = {
-									asc: "1 → 9",
-									desc: "9 → 1"
+									asc: "0 → 999",
+									desc: "999 → 0"
 								},
 								LEXICOGRAPHIC = {
 									asc: "A → Z",
@@ -2370,8 +2437,8 @@ LAURUS.wardrobe = ( function () {
 						},
 						/** @summary メディウムのソート条件をリセットする */
 						_clear = function () {
-							_sortConfig.key = "serial";
-							_sortConfig.order = "asc";
+							_sortConfig.key = "score";
+							_sortConfig.order = "desc";
 						},
 						/** @summary メディウムに保持されているソート条件から UI をセットする */
 						_setUIs = function () {
@@ -2386,6 +2453,80 @@ LAURUS.wardrobe = ( function () {
 						setLabel: _setLabel,
 						clear: _clear,
 						initialize: _initialize
+					};
+				}() ),
+				/** @type {MethodCollection} アイテム所持状況の入出力 */
+				_fileImex = ( function () {
+					var FILE_STANDBY_HTML = "ここにファイルを直接ドロップ！<br>または<br><input id=\"import-file\" type=\"file\">",
+						FILE_DETECTING_HTML = "ファイルを検知しました(｀・ω・´)<br>指の力をぬいてください",
+
+						/** @summary ブラウザへのイベント伝搬を防止
+						 * @param {Object} evt イベントオプジェクト
+						 */
+						_eventCancel = function ( evt ) {
+							evt.preventDefault();
+							evt.stopPropagation();
+						},
+						/** @summary ファイル読み込み処理
+						 * @param {Object} evt イベントオプジェクト
+						 * @param {Object} file ファイルオプジェクト
+						 */
+						_readFile = function ( evt, file ) {
+							var reader = new FileReader();
+
+							reader.readAsText( file );
+							reader.onload = function () {
+								setImposes( JSON.parse( reader.result ) );
+								localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+								_execFilter();
+								dialogue.dispose();
+							};
+
+							_eventCancel( evt );
+						},
+						/** @type {MethodCollection} ファイル読み込みのイベントハンドラ用イベント */
+						_event = {
+							dragover: _eventCancel,
+							dragenter: function ( evt ) {
+								$( this ).html( FILE_DETECTING_HTML );
+								_eventCancel( evt );
+							},
+							dragleave: function () {
+								$( this ).html( FILE_STANDBY_HTML );
+							},
+							drop: function ( evt ) {
+								_readFile( evt, evt.originalEvent.dataTransfer.files[ 0 ] );
+							},
+							input: function ( evt ) {
+								_readFile( evt, evt.target.files[ 0 ] );
+							}
+						},
+						/** @summary ファイル読み込みイベント
+						 * @param {Object} evt イベントオプジェクト
+						 */
+						_import = function ( evt ) {
+							_eventCancel( evt );
+							dialogue.invoke( "file-import", this );
+
+							$( "#file-droppable" )
+								.html( FILE_STANDBY_HTML );
+						},
+						/** @summary ファイル書き出しイベント */
+						_export = function () {
+							var blob = new Blob( [ JSON.stringify( getImposes() ) ], { "type": "application/json" } );
+
+							if ( navigator.msSaveBlob ) {
+								navigator.msSaveBlob( blob, "myLaurus.json" );
+								navigator.msSaveOrOpenBlob( blob, "myLaurus.json" );
+							} else {
+								$( this ).attr( "href", URL.createObjectURL( blob ) );
+							}
+						};
+
+					return {
+						event: _event,
+						"import": _import,
+						"export": _export
 					};
 				}() ),
 				/** @summary アイテムデータ描写スタイルの変更する
@@ -2408,6 +2549,24 @@ LAURUS.wardrobe = ( function () {
 
 					_display.reset();
 				},
+				/** @summary 所持情況を編集する */
+				_changePossession = function () {
+					var $this = $( this ),
+						serial = $this.data( "serial" ),
+						proc = POSSESSIONS[ serial ] ?
+							{
+								to: false,
+								cls: "addClass"
+							} : {
+								to: true,
+								cls: "removeClass"
+							};
+
+					POSSESSIONS[ serial ] = proc.to;
+					$this[ proc.cls ]( "impos" );
+
+					localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+				},
 				/** @summary フィルタ条件編集 UI の初期化 */
 				_initialize = function () {
 					$.each( [ _category, _tag, _word, _rarity, _sort ], function () {
@@ -2427,10 +2586,12 @@ LAURUS.wardrobe = ( function () {
 				word: _word,
 				rarity: _rarity,
 				sort: _sort,
+				fileImex: _fileImex,
 
 				initialize: _initialize,
 				resetUI: _resetUI,
 				changStyle: _changeStyle,
+				changePossession: _changePossession,
 				execFilter: _execFilter,
 				display: _display
 			};
@@ -2455,13 +2616,29 @@ LAURUS.wardrobe = ( function () {
 						Medium[ medium ].change( $( this ).data( dataAttribute ) );
 					};
 				},
+				/** @summary 所持情況編集のロック・解除 */
+				changeEditable = function () {
+					var $wardrobe = $( "#wardrobe" ),
+						proc = $wardrobe.hasClass( "editable" ) ?
+							{
+								cls: "removeClass",
+								text: "編集ロック"
+							} :
+							{
+								cls: "addClass",
+								text: "編集可能"
+							};
+
+					$wardrobe[ proc.cls ]( "editable" );
+					$( this ).text( proc.text );
+				},
 				/** @summary ダイアログの呼び出し
 				 * @param {String} filter フィルター名
 				 * @returns {Function} ダイアログ呼び出しイベント関数
 				 */
 				invokeDialogue = function ( filter ) {
 					return function () {
-						LAURUS.dialogue.invoke( filter + "-filter", this, function () {
+						dialogue.invoke( filter + "-filter", this, function () {
 							Medium[ filter ].setLabel();
 							Medium.execFilter();
 						} );
@@ -2479,7 +2656,10 @@ LAURUS.wardrobe = ( function () {
 				.on( "click", "#sort-key .filter-key", invokeDialogue( "sort" ) )
 				.on( "click", "#list-item-style", changeStyleFor( "list" ) )
 				.on( "click", "#card-item-style", changeStyleFor( "card" ) )
-				.on( "click", "#list-more, #card-more", Medium.display.more );
+				.on( "click", "#edit-lock", changeEditable )
+				.on( "click", "#list-more, #card-more", Medium.display.more )
+				.on( "click", "#file-import", Medium.fileImex[ "import" ] )
+				.on( "click", "#file-export", Medium.fileImex[ "export" ] );
 
 			$( "#dialogue" )
 				// カテゴリフィルタ
@@ -2498,12 +2678,18 @@ LAURUS.wardrobe = ( function () {
 				.on( "click", ".rarity", mediumChangeEventFactory( "rarity", "rarity" ) )
 				.on( "click", "#rarity-filter-reset span", Medium.rarity.clear )
 				// ソートフィルタ
-				.on( "click", "[data-key]", mediumChangeEventFactory( "sort", "key" ) );
+				.on( "click", "[data-key]", mediumChangeEventFactory( "sort", "key" ) )
+				.on( "click", "#display-impossession", Medium.display.notPossession )
+				.on( "click", "#display-impossession-only", Medium.display.notPossessionOnly )
+				// ファイル読み込み
+				.on( "dragover", "#file-droppable", Medium.fileImex.event.dragover )
+				.on( "dragenter", "#file-droppable", Medium.fileImex.event.dragenter )
+				.on( "dragleave", "#file-droppable", Medium.fileImex.event.dragleave )
+				.on( "drop", "#file-droppable", Medium.fileImex.event.drop )
+				.on( "change", "#import-file", Medium.fileImex.event.input );
 
 			$( "#laurus" )
-				.on( "click", "[data-serial]", function () {
-					console.log( $( this ).data( "serial" ) );
-				} );
+				.on( "click", ".editable [data-serial]", Medium.changePossession );
 
 			$.each( CATEGORY_DEFS.HAS_SUB, function ( category ) {
 				$( "#dialogue" )
@@ -2512,6 +2698,7 @@ LAURUS.wardrobe = ( function () {
 			} );
 
 			// constructor
+			setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
 			Medium.initialize();
 		},
 

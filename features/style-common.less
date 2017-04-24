@@ -147,9 +147,24 @@ input {
 }
 	#wardrobe-list-area {
 		tr {
-			cursor: pointer;
 			&:nth-child( 2n ) { background: fade( @purveyor-theme, 10% ); }
-			&:hover           { background: fade( @advisor-theme,  10% ); }
+			&.impos {
+				td:nth-child( 2 ) {
+					.slant-stripe-background( @insparkly-color, 25% );
+					border-radius:   4px;
+					color:           @insparkly-color;
+					text-decoration: line-through;
+				}
+				td:nth-child( 3 ) {
+					color: @insparkly-color;
+					&::before { content: "[未所持] "; }
+				}
+			}
+		}
+		.editable & tr { .disable-select(); }
+		.editable & tr:hover {
+			background: @edit-hover;
+			cursor:     pointer;
 		}
 
 		.text() {
@@ -303,14 +318,13 @@ input {
 			padding: 0 10px;
 			&:hover {
 				border: 2px solid fade( @wardrobe-theme, 50% );
+				color:  @key-tone;
 			}
 			&:active {
 				.slant-stripe-background( @wardrobe-theme, 25% );
 				color: @key-tone;
 			}
 		}
-
-
 
 /* Item Card
  * ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -334,13 +348,29 @@ input {
 .item-card {
 	background:    @card-background;
 	border-radius: @card-corner;
-	cursor:        pointer;
 	float:         left;
 	height:        @card-height;
 	margin:        @card-gap @card-gap 0 0;
 	padding:       @card-padding;
 	position:      relative;
 	width:         @card-width;
+	.editable &       { .disable-select(); }
+	.editable &:hover {
+		background: @edit-hover;
+		cursor:     pointer;
+	}
+	&.impos {
+		background: fade( @insparkly-color, 10% );
+
+		.item-id {
+			text-decoration: line-through;
+			&::after {
+				content:     "[未所持]";
+				display:     inline-block;
+				margin-left: 5px;
+			}
+		}
+	}
 }
 	.item-icon-box {
 		float:        left;
