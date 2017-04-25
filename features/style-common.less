@@ -91,6 +91,26 @@ input {
 	box-shadow:  1px  1px 1px 1px fade( @color, 25%) inset,
 				-1px -1px 1px 1px fade( @color, 25%) inset;
 }
+
+.big-face( @color ) {
+	.disable-select();
+	color:      @color;
+	height:     350px;
+	text-align: center;
+	span {
+		display: block;
+	}
+	.face {
+		font-family: "Maven Pro";
+		font-size:   150px;
+		opacity:     0.5;
+	}
+	.text {
+		font-size:     20px;
+		margin-bottom: 100px;
+	}
+}
+
 /* Item List
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 #wardrobe-list-area-box {

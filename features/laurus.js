@@ -10,8 +10,19 @@ LAURUS.STATIC_ITEMS = ( function () {
 
 	var /** @type {Number} 全アイテム数 */
 		_allRecords = 0,
-		/** @type {Array} 属性値の対応値 */
-		_valueIndex = [ "", "C", "B", "A", "S", "SS" ],
+		_values = {
+			/** @type {Array} 属性値の対応値 */
+			INDEX: [ "", "C", "B", "A", "S", "SS" ],
+			FACTOR: [ 0, 817.5, 1309.8, 1690.65, 2089.35, 2612.7 ],
+			CODE: {
+				"-": 0,
+				C: 1,
+				B: 2,
+				A: 3,
+				S: 4,
+				SS: 5
+			}
+		},
 
 		/** @type {Object} アイテム分類一覧兼オーダー */
 		_orderedList = {
@@ -80,6 +91,18 @@ LAURUS.STATIC_ITEMS = ( function () {
 				CRITERIA_STYLE: 5,
 				CRITERIA_TAGS: 6,
 				SKILL: 7
+			},
+			STYLE: {
+				GORGEOUS: 0,
+				SIMPLE: 1,
+				ELEGANCE: 2,
+				LIVELY: 3,
+				MATURE: 4,
+				CUTE: 5,
+				SEXY: 6,
+				PURE: 7,
+				WARM: 8,
+				COOL: 9
 			}
 		},
 		/** @type {Object} スタイルの定義 */
@@ -357,21 +380,69 @@ LAURUS.STATIC_ITEMS = ( function () {
 			}
 		},
 
-		/** @summary 全角の数字を半角に変換する
-		 * @param  {String} number 全角数字の文字列
-		 * @returns {String} 半角数字に変換した数字文字列
-		 */
-		_digit2Half = function ( digit ) {
-			return digit.replace( /[０-９．]/g, function ( d ) {
-				return String.fromCharCode( d.charCodeAt( 0 ) - 0xfee0 );
-			} );
-		},
-		/** @summary 3桁コンマ区切りの数値（文字列）を取得する
-		 * @param  {Number} number 桁区切りをする数値
-		 * @returns {String} 桁区切りを施した文字列
-		 */
-		_digitGrouping = function ( number ) {
-			return number.toString().replace( /(\d)(?=(\d\d\d)+$)/g, "$1," );
+		/** @type {MethodCollection} 全体的に共通して利用される普遍的な処理 */
+		_utils = {
+			/** @summary 全角の数字を半角に変換する
+			 * @param  {String} number 全角数字の文字列
+			 * @returns {String} 半角数字に変換した数字文字列
+			 */
+			digit2Half: function ( digit ) {
+				return digit.replace( /[０-９．]/g, function ( d ) {
+					return String.fromCharCode( d.charCodeAt( 0 ) - 0xfee0 );
+				} );
+			},
+			/** @summary 3桁コンマ区切りの数値（文字列）を取得する
+			 * @param  {Number} number 桁区切りをする数値
+			 * @returns {String} 桁区切りを施した文字列
+			 */
+			digitGrouping: function ( number ) {
+				return number.toString().replace( /(\d)(?=(\d\d\d)+$)/g, "$1," );
+			},
+			/** @summary 数値が範囲内に収まっているか検査する
+			 * @param {Number} value 検査値
+			 * @param {Object} bounds 境界オブジェクト
+			 * @returns {Boolean} true -> 検査値が境界内に収まっている
+			 */
+			isCloseTo: function ( value, bounds ) {
+				return bounds.floor <= value && value <= bounds.ceil;
+			},
+			/** @summary （主に入力された）文字列をサニタイズ処理する
+			 * @param {String} text サニタイズ対象文字列
+			 * @returns {String} サニタイズ処理を施した文字列
+			 */
+			sanitizeHTML: function ( text ) {
+				return text.replace( /[&'`"<>]/g, function ( match ) {
+					return {
+						"&": "&amp;",
+						"\'": "&#x27;",
+						"\"": "&quot;",
+						"<": "&lt;",
+						">": "&gt;"
+					}[ match ];
+				} );
+			},
+			/** @summary （主に入力された）サニタイズ処理した文字を復元する
+			 * @param {String} text 復元対象文字列
+			 * @returns {String} サニタイズ処理を復元した文字列
+			 */
+			unsanitizeHTML: function ( text ) {
+				return text.replace( /&amp;|&#x27;|&quot;|&lt;|&gt;/g, function ( match ) {
+					return {
+						"&amp;": "&",
+						"&#x27;": "\'",
+						"&quot;": "\"",
+						"&lt;": "<",
+						"&gt;": ">"
+					}[ match ];
+				} );
+			},
+			/** @summary ID 属性に適合する文字列に変換する
+			 * @param {String} id 変換対象の文字列
+			 * @returns {String} ID 属性に適合するように変換された文字列
+			 */
+			map4IdString: function ( id ) {
+				return id.replace( / /g, "-" );
+			}
 		},
 		/** @summary Laurus 用のデータベース取得用関数
 		 * @param {String} database データベース名
@@ -408,58 +479,72 @@ LAURUS.STATIC_ITEMS = ( function () {
 				POSSESSIONS[ this ] = false;
 			} );
 		},
-		/** @summary 数値が範囲内に収まっているか検査する
-		 * @param {Number} value 検査値
-		 * @param {Object} bounds 境界オブジェクト
-		 * @returns {Boolean} true -> 検査値が境界内に収まっている
-		 */
-		_isCloseTo = function ( value, bounds ) {
-			return bounds.floor <= value && value <= bounds.ceil;
-		},
 		/** @type {MethodCollection} コードから情報を復元するためのメソッド群 */
-		_restore = {
-			/** @summary スタイル属性のコードを復元する
-			 * @param {String} attributes コード化されたスタイル属性値
-			 * @returns {Array} 復元したスタイル属性値配列
-			 */
-			attributes: function ( attributes ) {
-				var a = [];
+		_restore = ( function () {
+			var /** @summary スタイル属性のコードを復元する
+				 * @param {String} attributes コード化されたスタイル属性値
+				 * @returns {Array} 復元したスタイル属性値配列
+				 */
+				_attributes = function ( attributes ) {
+					var a = [];
 
-				$.each( attributes.split( "" ), function ( index ) {
-					var v = parseInt( this, 16 );
-					a[ index ] = ( 0 < ( v & 8 ) ? -1 : 1 ) * ( ( v & 7 ) + 1 );
-				} );
+					$.each( attributes.split( "" ), function ( index ) {
+						var v = parseInt( this, 16 );
+						a[ index ] = ( 0 < ( v & 8 ) ? -1 : 1 ) * ( ( v & 7 ) + 1 );
+					} );
 
-				return a;
-			},
-			/** @summary 特殊タグを復元する
-			 * @param {Number} complex 複合化された特殊タグコード
-			 * @returns {Array} タグの単独コード
-			 */
-			tag: function ( complex ) {
-				var TAG_BASE = 45;
+					return a;
+				},
+				_attributes2serial = function ( attributes ) {
+					var a = [];
 
-				return [ complex % TAG_BASE, Math.floor( complex / TAG_BASE ) ];
-			},
-			/** @summary アイテムのシリアルコードからカテゴリとアイテム ID 特殊タグを復元する
-			 * @param {Number} serial アイテムのシリアルコード
-			 * @returns {Object} カテゴリと ID のペア
-			 */
-			categoryAndId: function ( serial ) {
-				var CATEGORY_BASE = 10000;
+					$.each( _attributes( attributes ), function ( index ) {
+						if ( 0 < this ) {
+							a[ index * 2 ] = this;
+							a[ index * 2 + 1 ] = 0;
+						} else {
+							a[ index * 2 ] = 0;
+							a[ index * 2 + 1 ] = this * -1;
+						}
+					} );
 
-				return {
-					category: _categoryDefs.REVERSE[ Math.floor( serial / CATEGORY_BASE ) ],
-					id: serial % CATEGORY_BASE
+					return a;
+				},
+				/** @summary 特殊タグを復元する
+				 * @param {Number} complex 複合化された特殊タグコード
+				 * @returns {Array} タグの単独コード
+				 */
+				_tag = function ( complex ) {
+					var TAG_BASE = 45;
+
+					return [ complex % TAG_BASE, Math.floor( complex / TAG_BASE ) ];
+				},
+				/** @summary アイテムのシリアルコードからカテゴリとアイテム ID 特殊タグを復元する
+				 * @param {Number} serial アイテムのシリアルコード
+				 * @returns {Object} カテゴリと ID のペア
+				 */
+				_categoryAndId = function ( serial ) {
+					var CATEGORY_BASE = 10000;
+
+					return {
+						category: _categoryDefs.REVERSE[ Math.floor( serial / CATEGORY_BASE ) ],
+						id: serial % CATEGORY_BASE
+					};
 				};
-			}
-		};
+
+			return {
+				attributes: _attributes,
+				attributes2serial: _attributes2serial,
+				tag: _tag,
+				categoryAndId: _categoryAndId
+			};
+		}() );
 
 	return {
 		// consts
 		ALL_RECORDS: _allRecords,
-		VALUE_INDEX: _valueIndex,
 
+		VALUES: _values,
 		ORDERED_LIST: _orderedList,
 		BOUNDS: _bounds,
 		COLUMN: _column,
@@ -475,9 +560,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		PIETY_LAURUS_OPTIONS: _pietyLaurusOptions,
 
 		// static methods
-		digitGrouping: _digitGrouping,
-		digit2Half: _digit2Half,
-		isCloseTo: _isCloseTo,
+		utils: _utils,
 		getDatabase: _getDatabase,
 		getImposes: _getImposes,
 		setImposes: _setImposes,
@@ -544,6 +627,62 @@ LAURUS.WARDROBE = ( function () {
 	return _wardrobe;
 }() );
 
+LAURUS.scoring = function ( objective ) {
+	"use strict";
+
+	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+
+		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+
+		restore = LAURUS.STATIC_ITEMS.restore,
+
+		OBJECTIVE = {
+			FORMER: 0,
+			LATTER: 1,
+			TAG_ID: 0,
+			TAG_VALUE: 1,
+			TAG_PRODUCT: 2
+		},
+		SCALE = {
+			"ヘアスタイル": 0.5,
+			"ドレス": 2,
+			"コート": 0.2,
+			"トップス": 1,
+			"ボトムス": 1,
+			"靴下": 0.3,
+			"シューズ": 0.4,
+			"ヘアアクセサリー": 0.2,
+			"耳飾り": 0.2,
+			"首飾り": 0.2,
+			"腕飾り": 0.2,
+			"手持品": 0.2,
+			"腰飾り": 0.2,
+			"特殊": 0.2,
+			"メイク": 0.1
+		};
+
+	$.each( LAURUS.WARDROBE, function () {
+		var attributes = restore.attributes2serial( this[ COLUMN.ATTRIBUTES ] ),
+			score = 0,
+			itemTags = restore.tag( this[ COLUMN.TAGS ] ),
+			bonusTags = objective.tags,
+			scale = SCALE[ restore.categoryAndId( this[ COLUMN.SERIAL ] ).category ],
+			addTagBonus = function ( channel ) {
+				return itemTags[ channel ] ?
+					( itemTags[ channel ] === bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_PRODUCT ] :
+						( itemTags[ channel ] === bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_PRODUCT ] : 0 :
+					0;
+			},
+			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) ) * scale;
+
+		$.each( objective.style, function ( index ) {
+			score += ( VALUES.FACTOR[ attributes[ index ] ] * scale + tagBonus ) * this;
+		} );
+
+		LAURUS.SCORE[ this[ COLUMN.SERIAL ] ] = Math.round( score );
+	} );
+};
+
 /** @summary アイテムフィルタ
  * @param {Function} request フィルタ条件
  * @returns フィルタ結果のアイテムの配列
@@ -573,10 +712,11 @@ LAURUS.itemLine = function ( serial ) {
 		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
-		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
+		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 
-		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
 		restore = LAURUS.STATIC_ITEMS.restore,
+
+		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
 
 		// item
 		item = LAURUS.WARDROBE[ serial ],
@@ -619,7 +759,7 @@ LAURUS.itemLine = function ( serial ) {
 			var a = "";
 
 			$.each( restore.attributes( item[ COLUMN.ATTRIBUTES ] ), function () {
-				var v = VALUE_INDEX[ Math.abs( this ) ];
+				var v = VALUES.INDEX[ Math.abs( this ) ];
 
 				if ( 0 < this ) {
 					a += "<td class=\"attributes-" + v + "\">" + v + "</td><td class=\"insparkly\">-</td>";
@@ -649,9 +789,10 @@ LAURUS.itemCard = function ( serial ) {
 		CATEGORY_MAP = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.MAP,
 		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
 		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
-		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
+		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 
-		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
+		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
+
 		restore = LAURUS.STATIC_ITEMS.restore,
 
 		// item
@@ -697,7 +838,7 @@ LAURUS.itemCard = function ( serial ) {
 				};
 
 			$.each( attributes, function () {
-				var v = VALUE_INDEX[ Math.abs( this ) ];
+				var v = VALUES.INDEX[ Math.abs( this ) ];
 
 				if ( 0 < this ) {
 					table.t.h += "<th></th>";
@@ -858,6 +999,8 @@ LAURUS.advisor = ( function () {
 	var // dependence
 		STAGES = LAURUS.STAGES,
 
+		STYLE = LAURUS.STATIC_ITEMS.COLUMN.STYLE,
+
 		BOUNDS = LAURUS.STATIC_ITEMS.BOUNDS,
 		FADE_DURATION = LAURUS.STATIC_ITEMS.FADE_DURATION,
 		SKILL_DEFS = LAURUS.STATIC_ITEMS.SKILL_DEFS,
@@ -865,354 +1008,405 @@ LAURUS.advisor = ( function () {
 		STYLE_DEFS = LAURUS.STATIC_ITEMS.STYLE_DEFS,
 		STRUCTURE = LAURUS.STATIC_ITEMS.STAGE_STRUCTURE,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
-		VALUE_INDEX = LAURUS.STATIC_ITEMS.VALUE_INDEX,
+		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 
-		digit2Half = LAURUS.STATIC_ITEMS.digit2Half,
-		isCloseTo = LAURUS.STATIC_ITEMS.isCloseTo,
+		digit2Half = LAURUS.STATIC_ITEMS.utils.digit2Half,
+		isCloseTo = LAURUS.STATIC_ITEMS.utils.isCloseTo,
+		sanitizeHTML = LAURUS.STATIC_ITEMS.utils.sanitizeHTML,
+		unsanitizeHTML = LAURUS.STATIC_ITEMS.utils.unsanitizeHTML,
+		map4IdString = LAURUS.STATIC_ITEMS.utils.map4IdString,
 
-		// private static variables
+		dialogue = LAURUS.dialogue,
+
 		_stage = [],
 
-		// utils
-		/** @summary （主に入力された）文字列をサニタイズ処理する
-		 * @param {String} text サニタイズ対象文字列
-		 * @returns {String} サニタイズ処理を施した文字列
-		 */
-		_sanitizeHTML = function ( text ) {
-			return text.replace( /[&'`"<>]/g, function ( match ) {
-				return {
-					"&": "&amp;",
-					"\'": "&#x27;",
-					"\"": "&quot;",
-					"<": "&lt;",
-					">": "&gt;"
-				}[ match ];
-			} );
-		},
-		/** @summary （主に入力された）サニタイズ処理した文字を復元する
-		 * @param {String} text 復元対象文字列
-		 * @returns {String} サニタイズ処理を復元した文字列
-		 */
-		_unsanitizeHTML = function ( text ) {
-			return text.replace( /&amp;|&#x27;|&quot;|&lt;|&gt;/g, function ( match ) {
-				return {
-					"&amp;": "&",
-					"&#x27;": "\'",
-					"&quot;": "\"",
-					"&lt;": "<",
-					"&gt;": ">"
-				}[ match ];
-			} );
-		},
-		/** @summary ID 属性に適合する文字列に変換する
-		 * @param {String} id 変換対象の文字列
-		 * @returns {String} ID 属性に適合するように変換された文字列
-		 */
-		_mapForIdString = function ( id ) {
-			return id.replace( / /g, "-" );
-		},
+		/** @type {Class} 編集中のオブジェクト保持及び操作に関するクラス */
+		Medium = ( function () {
+			var /** @type {?String} 現在編集中の項目 (ID) */
+				_currentEdit = null,
+				/** @type {?jQuery} 現在編集中の jQuery オブジェクト */
+				_$currentEditElement = null,
+				/** @type {*} 編集前の値 */
+				_preventValue = null,
 
-		// items
-		// foundation data
-		/** @summary ステージの基本情報を更新する
-		 * @param {String} stage ミッションタイトル
-		 * @param {String} chapter キャプター
-		 */
-		_setFoundationData = function ( stage, chapter ) {
-			$( "#request-stage-title" )
-				.text( stage );
-			$( "#request-chapter" )
-				.text( chapter );
-		},
+				/** @type {MethodCollection} 基礎データに関する操作 */
+				_fundamentals = ( function () {
+					var　/** @summary ステージの基本情報を更新する
+						 * @param {String} stage ミッションタイトル
+						 * @param {String} chapter キャプター
+						 */
+						_set = function ( stage, chapter ) {
+							$( "#request-stage-title" )
+								.text( stage );
+							$( "#request-chapter" )
+								.text( chapter );
+						},
+						/** @summary 空関数 */
+						_empty = function () { };
 
-		// criteria subject
-		/** @summary ミッションの説明を更新する
-		 * @param {String} subject ミッションの説明
-		 */
-		_setCriteriaSubject = function ( subject ) {
-			var sanitizedSubject = _sanitizeHTML( subject ).replace( /[\/]/g, "<br>" );
-
-			if ( sanitizedSubject === "" ) {
-				$( "#criteria-subject" )
-					.html( "[タスクヒント]" )
-					.addClass( "initial" );
-			} else {
-				$( "#criteria-subject" )
-					.html( sanitizedSubject )
-					.removeClass();
-			}
-		},
-		/** @summary ミッションの説明を消去する */
-		_clearCriteriaSubject = function () {
-			_setCriteriaSubject( "" );
-		},
-
-		// style weight
-		/** @summary スタイルの評価ウェイトを更新する
-		 * @param {String} style スタイル
-		 * @param {Number} weight スタイルの評価ウェイト
-		 */
-		_setStyleWeight = function ( style, weight ) {
-			var $criteriaStyle = $( "#criteria-" + style ),
-				$criteriaStyleLabel = $criteriaStyle.parent().prev(),
-				branch = 0 < weight ? {
-					indicator: weight < 1 ? "reduce" : "increase",
-					text: weight,
-					label: "addClass"
-				} : {
-						indicator: "",
-						text: "-",
-						label: "removeClass"
+					return {
+						set: _set,
+						clear: _empty,
+						reset: _empty
 					};
-
-			$criteriaStyle
-				.removeClass( "reduce increase" )
-				.addClass( branch.indicator )
-				.text( branch.text );
-			$criteriaStyleLabel[ branch.label ]( "sparkly" );
-		},
-		/** @summary スタイルの評価ウェイトを消去する
-		 * @param {Number} index 不使用（jQuery.each の引数用）
-		 * @param {String} style 消去するスタイル
-		 */
-		_clearStyleWeight = function ( index, style ) {
-			_setStyleWeight( style, 0 );
-		},
-		/** @summary すべてのスタイルの評価ウェイトを消去する */
-		_clearStyleWeightAll = function () {
-			$.each( STYLE_DEFS.LIST, _clearStyleWeight );
-		},
-
-		// tag bonus
-		/** @summary タグボーナスの加算評価値を更新する
-		 * @param {Number} channel タグチャネル
-		 * @param {String} value タグの加算評価値
-		 */
-		_setTagAddValue = function ( channel, value ) {
-			$( "#criteria-tag-box-" + channel + " .value" )
-				.text( value )
-				.attr( "class", "value " + value.toLowerCase() );
-		},
-		/** @summary タグボーナスの加算係数を更新する
-		 * @param {Number} channel タグチャネル
-		 * @param {Number} product 加算係数
-		 */
-		_setTagProduct = function ( channel, product ) {
-			$( "#criteria-tag-box-" + channel + " .product" )
-				.text( product );
-		},
-		/** @summary ダイアログから選んだタグをセットする
-		 * @param {String} channel タグのチャネル
-		 * @param {Number} tagId タグ ID
-		 */
-		_setTag = function ( channel, tagId ) {
-			var $target = $( "#criteria-tag-box-" + channel + " .tag" ),
-				$tag = $target.children();
-
-			$target
-				.removeClass()
-				.addClass( "tag " + TAG_DEFS.CLASSES[ tagId ] );
-			$tag
-				.text( tagId === 0 ? "タグ選択" : TAG_DEFS.MAP[ tagId ] );
-
-			if ( tagId === 0 ) {
-				_setTagAddValue( channel, "S" );
-				_setTagProduct( channel, 1 );
-			}
-		},
-		/** @summary タグボーナスの設定を消去する
-		 * @param {Number} channel 消去するチャネル
-		 */
-		_clearTag = function ( channel ) {
-			_setTag( channel, 0 );
-			_setTagAddValue( channel, "S" );
-			_setTagProduct( channel, 1 );
-		},
-
-		// skills
-		/** @summary シナリオ難易度選択ボタンを表示する */
-		_onScenarioClasses = function () {
-			$( "#scenario-classes" ).show();
-		},
-		/** @summary シナリオ難易度選択ボタンを隠す */
-		_offScenarioClasses = function () {
-			$( "#scenario-classes" ).hide();
-		},
-		/** @summary スキルアイコンの活性化させる
-		 * @param {Number} index 不使用（jQuery.each の引数用）
-		 * @param {String} skill スキル名
-		 */
-		_onSkill = function ( index, skill ) {
-			$( "#receive-skill-icons [data-skill=\"" + skill + "\"]" )
-				.addClass( "sparkly" );
-			$( "#receive-skill-names [data-skill=\"" + skill + "\"]" )
-				.show();
-		},
-		/** @summary スキルアイコンの不活性化にする
-		 * @param {Number} index 不使用（jQuery.each の引数用）
-		 * @param {String} skill スキル名
-		 */
-		_offSkill = function ( index, skill ) {
-			$( "#receive-skill-icons [data-skill=\"" + skill + "\"]" )
-				.removeClass( "sparkly" );
-			$( "#receive-skill-names [data-skill=\"" + skill + "\"]" )
-				.hide();
-		},
-		/** @summary スキルアイコンの活性/不活性状態を切り替える
-		 * @param {Number} index 不使用（jQuery.each の引数用）
-		 * @param {String} skill スキル名
-		 */
-		_switchSkill = function ( index, skill ) {
-			if ( $( "#receive-skill-icons [data-skill=\"" + skill + "\"]" ).hasClass( "sparkly" ) ) {
-				_offSkill( null, skill );
-			} else {
-				_onSkill( null, skill );
-			}
-		},
-		/** @summary すべてのスキルアイコンを不活性化させる */
-		_clearSkill = function () {
-			$.each( SKILL_DEFS.LIST, _offSkill );
-		},
-		/** @summary スキルアイコンをステージ情報に従って設定する
-		 * @param {Number} scenarioClass ステージ識別 ID
-		 */
-		_setSkill = function ( scenarioClass ) {
-			var skill = _stage[ STAGE.SKILL ][ scenarioClass ];
-
-			_clearSkill();
-			$.each( SKILL_DEFS.LIST, function () {
-				if ( SKILL_DEFS.MASK[ this ] & skill ) {
-					_onSkill( null, this );
-				}
-			} );
-
-			if ( scenarioClass === SKILL_DEFS.SCENARIO_CLASS.GIRL ) {
-				$( "#girl-class" )
-					.addClass( "sparkly" );
-				$( "#princess-class" )
-					.removeClass();
-			} else {
-				$( "#princess-class" )
-					.addClass( "sparkly" );
-				$( "#girl-class" )
-					.removeClass();
-			}
-		},
-
-		// reset
-		/** @summary UI を初期化する*/
-		_resetUI = function () {
-			_clearCriteriaSubject();
-			_clearStyleWeightAll();
-			_clearTag( 2 );
-			_clearTag( 1 );
-			_clearSkill();
-			_offScenarioClasses();
-		},
-
-		// stages
-		/** @summary ダイアログから選んだステージをセットする
-		 * @param {String} key ステージキー
-		 */
-		_setStage = function ( key ) {
-			_stage = STAGES[ key ];
-
-			_resetUI();
-			_setFoundationData(
-				_stage[ STAGE.STAGE ] + " " + _stage[ STAGE.TITLE ],
-				_stage[ STAGE.CHAPTER ]
-			);
-
-			_setCriteriaSubject( _stage[ STAGE.CRITERIA_SUBJECT ] );
-
-			$.each( _stage[ STAGE.CRITERIA_STYLE ], function ( index, weight ) {
-				_setStyleWeight( STYLE_DEFS.LIST[ index * 2 + ( weight < 0 ? 1 : 0 ) ], Math.abs( weight ) );
-			} );
-
-			$.each( _stage[ STAGE.CRITERIA_TAGS ], function ( channel ) {
-				_setTag( channel + 1, this[ 0 ] );
-				_setTagAddValue( channel + 1, VALUE_INDEX[ this[ 1 ] ] );
-				_setTagProduct( channel + 1, this[ 2 ] );
-			} );
-
-			if ( _stage[ STAGE.SECTION ] === "scenario" ) {
-				_onScenarioClasses();
-			}
-			_setSkill( SKILL_DEFS.SCENARIO_CLASS.GIRL );
-		},
-
-		/** @summary Advisor の初期化処理 */
-		_wakeup = function () {
-			var /** @type {Class} 編集中のオブジェクト保持及び操作に関するクラス */
-				Medium = ( function () {
-					var /** @type {?String} 現在編集中の項目 (ID) */
-						_currentEdit = null,
-						/** @type {?jQuery} 現在編集中の jQuery オブジェクト */
-						_$currentEditElement = null,
-						/** @type {*} 編集前の値 */
-						_preventValue = null,
-
-						/** @summary メディウムの値をリセット */
-						_clearMedium = function () {
-							_currentEdit = null;
-							_$currentEditElement = null;
-							_preventValue = null;
-						},
-						/** @summary 現在編集中の項目 (ID) を取得する
-						 * @returns {?String} 現在編集中の項目 (ID)
+				}() ),
+				/** @type {MethodCollection} ステージ課題に関する操作 */
+				_subject = ( function () {
+					var　/** @summary ミッションの説明を更新する
+						 * @param {String} subject ミッションの説明
 						 */
-						_getCurrentEdit = function () {
-							return _currentEdit;
+						_set = function ( subject ) {
+							var sanitizedSubject = sanitizeHTML( subject ).replace( /[\/]/g, "<br>" );
+
+							if ( sanitizedSubject === "" ) {
+								$( "#criteria-subject" )
+									.html( "[タスクヒント]" )
+									.addClass( "initial" );
+							} else {
+								$( "#criteria-subject" )
+									.html( sanitizedSubject )
+									.removeClass();
+							}
 						},
-						/** @summary 現在編集中の jQuery オブジェクトを取得する
-						 * @returns {?jQuery} 現在編集中の jQuery オブジェクト
-						 */
-						_get$CurrentEditElement = function () {
-							return _$currentEditElement;
-						},
-						/** @summary 編集前の値を取得する
-						 * @returns {?any} 編集前の値
-						 */
-						_getPreventValue = function () {
-							return _preventValue;
-						},
-						/** @summary 現在、いずれかの項目で編集中であるか状態を返す
-						 * @returns {Boolean} true -> 編集中
-						 */
-						_isEditing = function () {
-							return _currentEdit !== null;
-						},
-						/** @summary メディウムに値をセットする
-						 * @param {String} edit 現在編集中の項目 (ID)
-						 * @param {jQuery} $element 現在編集中の jQuery オブジェクト
-						 * @param {any} value 編集前の値
-						 */
-						_setMedium = function ( edit, $element, value ) {
-							_currentEdit = edit;
-							_$currentEditElement = $element;
-							_preventValue = value;
-						},
-						/** @summary 現在、いずれかの項目で編集中であるか状態を返す */
-						_rollbackEdit = function () {
-							_$currentEditElement.val( _preventValue );
-							_$currentEditElement.blur();
+						/** @summary ミッションの説明を消去する */
+						_clear = function () {
+							_set( "" );
 						};
 
 					return {
-						clearMedium: _clearMedium,
-						getCurrentEdit: _getCurrentEdit,
-						get$currentEditElement: _get$CurrentEditElement,
-						getPreventValue: _getPreventValue,
-						isEditing: _isEditing,
-						setMedium: _setMedium,
-						rollbackEdit: _rollbackEdit
+						set: _set,
+						clear: _clear,
+						reset: _clear
 					};
 				}() ),
+				/** @type {MethodCollection} スタイルの重みに関する操作 */
+				_weight = ( function () {
+					var　/** @summary スタイルの評価ウェイトを更新する
+						 * @param {String} style スタイル
+						 * @param {Number} weight スタイルの評価ウェイト
+						 */
+						_set = function ( style, weight ) {
+							var $criteriaStyle = $( "#criteria-" + style ),
+								$criteriaStyleLabel = $criteriaStyle.parent().prev(),
+								branch = 0 < weight ? {
+									indicator: weight < 1 ? "reduce" : "increase",
+									text: weight,
+									label: "addClass"
+								} : {
+										indicator: "",
+										text: "-",
+										label: "removeClass"
+									};
 
+							$criteriaStyle
+								.removeClass( "reduce increase" )
+								.addClass( branch.indicator )
+								.text( branch.text );
+							$criteriaStyleLabel[ branch.label ]( "sparkly" );
+						},
+						/** @summary スタイルの評価ウェイトを消去する
+						 * @param {Number} index 不使用（jQuery.each の引数用）
+						 * @param {String} style 消去するスタイル
+						 */
+						_clear = function ( index, style ) {
+							_set( style, 0 );
+						},
+						/** @summary すべてのスタイルの評価ウェイトを消去する */
+						_reset = function () {
+							$.each( STYLE_DEFS.LIST, _clear );
+						};
+
+					return {
+						set: _set,
+						clear: _clear,
+						reset: _reset
+					};
+				}() ),
+				/** @type {MethodCollection} タグボーナスに関する操作 */
+				_tag = ( function () {
+					var　/** @summary タグボーナスの加算評価値を更新する
+						 * @param {Number} channel タグチャネル
+						 * @param {String} value タグの加算評価値
+						 */
+						_setValue = function ( channel, value ) {
+							$( "#criteria-tag-box-" + channel + " .value" )
+								.text( value )
+								.attr( "class", "value " + value.toLowerCase() );
+						},
+						/** @summary タグボーナスの加算係数を更新する
+						 * @param {Number} channel タグチャネル
+						 * @param {Number} product 加算係数
+						 */
+						_setProduct = function ( channel, product ) {
+							$( "#criteria-tag-box-" + channel + " .product" )
+								.text( product );
+						},
+						/** @summary ダイアログから選んだタグをセットする
+						 * @param {String} channel タグのチャネル
+						 * @param {Number} tagId タグ ID
+						 */
+						_set = function ( channel, tagId ) {
+							var $target = $( "#criteria-tag-box-" + channel + " .tag" ),
+								$tag = $target.children();
+
+							$target
+								.removeClass()
+								.addClass( "tag " + TAG_DEFS.CLASSES[ tagId ] );
+							$tag
+								.data( "id", tagId )
+								.text( tagId === 0 ? "タグ選択" : TAG_DEFS.MAP[ tagId ] );
+
+							if ( tagId === 0 ) {
+								_setValue( channel, "S" );
+								_setProduct( channel, 1 );
+							}
+						},
+						/** @summary タグボーナスの設定を消去する
+						 * @param {Number} channel 消去するチャネル
+						 */
+						_clear = function ( channel ) {
+							_set( channel, 0 );
+							_setValue( channel, "S" );
+							_setProduct( channel, 1 );
+						},
+						/** @summary すべてのタグボーナスの設定を消去する */
+						_reset = function () {
+							_clear( 2 );
+							_clear( 1 );
+						};
+
+					return {
+						set: _set,
+						setValue: _setValue,
+						setProduct: _setProduct,
+						clear: _clear,
+						reset: _reset
+					};
+				}() ),
+				/** @type {MethodCollection} スキル情報に関する操作 */
+				_skill = ( function () {
+					var　/** @summary スキルアイコンの活性化させる
+						 * @param {Number} index 不使用（jQuery.each の引数用）
+						 * @param {String} skill スキル名
+						 */
+						_on = function ( index, skill ) {
+							$( "#receive-skill-icons [data-skill=\"" + skill + "\"]" )
+								.addClass( "sparkly" );
+							$( "#receive-skill-names [data-skill=\"" + skill + "\"]" )
+								.show();
+						},
+						/** @summary スキルアイコンの不活性化にする
+						 * @param {Number} index 不使用（jQuery.each の引数用）
+						 * @param {String} skill スキル名
+						 */
+						_off = function ( index, skill ) {
+							$( "#receive-skill-icons [data-skill=\"" + skill + "\"]" )
+								.removeClass( "sparkly" );
+							$( "#receive-skill-names [data-skill=\"" + skill + "\"]" )
+								.hide();
+						},
+						/** @summary スキルアイコンの活性/不活性状態を切り替える
+						 * @param {Number} index 不使用（jQuery.each の引数用）
+						 * @param {String} skill スキル名
+						 */
+						_change = function ( index, skill ) {
+							if ( $( "#receive-skill-icons [data-skill=\"" + skill + "\"]" ).hasClass( "sparkly" ) ) {
+								_off( null, skill );
+							} else {
+								_on( null, skill );
+							}
+						},
+						/** @summary すべてのスキルアイコンを不活性化させる */
+						_clear = function () {
+							$.each( SKILL_DEFS.LIST, _off );
+						},
+						/** @summary スキルアイコンをステージ情報に従って設定する
+						 * @param {Number} scenarioClass ステージ識別 ID
+						 */
+						_set = function ( scenarioClass ) {
+							var skill = _stage[ STAGE.SKILL ][ scenarioClass ];
+
+							_clear();
+							$.each( SKILL_DEFS.LIST, function () {
+								if ( SKILL_DEFS.MASK[ this ] & skill ) {
+									_on( null, this );
+								}
+							} );
+
+							if ( scenarioClass === SKILL_DEFS.SCENARIO_CLASS.GIRL ) {
+								$( "#girl-class" )
+									.addClass( "sparkly" );
+								$( "#princess-class" )
+									.removeClass();
+							} else {
+								$( "#princess-class" )
+									.addClass( "sparkly" );
+								$( "#girl-class" )
+									.removeClass();
+							}
+						};
+
+					return {
+						set: _set,
+						change: _change,
+						clear: _clear,
+						reset: _clear
+					};
+				}() ),
+				/** @type {MethodCollection} シナリオクラス選択ボタンに関する操作 */
+				_senarioClasses = {
+					/** @summary シナリオ難易度選択ボタンを表示する */
+					on: function () {
+						$( "#scenario-classes" ).show();
+					},
+					/** @summary シナリオ難易度選択ボタンを隠す */
+					off: function () {
+						$( "#scenario-classes" ).hide();
+					}
+				},
+				/** @type {Function} ステージデータをリセットする */
+				_resetUI = function () {
+					$.each( [ _subject, _weight, _tag, _skill ], function () {
+						this.reset();
+					} );
+					_senarioClasses.off();
+				},
+				/** @type {Function} UI からスコアリングを行う上で利用する目的オブジェクトを生成する */
+				_makeScoringObjective = function () {
+					return {
+						style: ( function () {
+							var a = [];
+
+							$.each( STYLE_DEFS.LIST, function () {
+								var val = $( "#criteria-" + this ).text();
+
+								a[ STYLE[ this.toUpperCase() ] ] = val === "-" ? 0 : parseFloat( val );
+							} );
+
+							return a;
+						}() ),
+						tags: [
+							[
+								$( "#criteria-tag-1" ).data( "id" ),
+								VALUES.CODE[ $( "#criteria-tag-box-1 .value" ).text() ],
+								parseFloat( $( "#criteria-tag-box-1 .product" ).text() )
+							],
+							[
+								$( "#criteria-tag-2" ).data( "id" ),
+								VALUES.CODE[ $( "#criteria-tag-box-2 .value" ).text() ],
+								parseFloat( $( "#criteria-tag-box-2 .product" ).text() )
+							]
+						]
+					};
+				},
+				/** @summary ダイアログから選んだステージをセットする
+				 * @param {String} key ステージキー
+				 */
+				_setStage = function ( key ) {
+					_stage = STAGES[ key ];
+
+					_resetUI();
+					_fundamentals.set(
+						_stage[ STAGE.STAGE ] + " " + _stage[ STAGE.TITLE ],
+						_stage[ STAGE.CHAPTER ]
+					);
+
+					_subject.set( _stage[ STAGE.CRITERIA_SUBJECT ] );
+
+					$.each( _stage[ STAGE.CRITERIA_STYLE ], function ( index, weight ) {
+						_weight.set( STYLE_DEFS.LIST[ index * 2 + ( weight < 0 ? 1 : 0 ) ], Math.abs( weight ) );
+					} );
+
+					$.each( _stage[ STAGE.CRITERIA_TAGS ], function ( channel ) {
+						_tag.set( channel + 1, this[ 0 ] );
+						_tag.setValue( channel + 1, VALUES.INDEX[ this[ 1 ] ] );
+						_tag.setProduct( channel + 1, this[ 2 ] );
+					} );
+
+					if ( _stage[ STAGE.SECTION ] === "scenario" ) {
+						_senarioClasses.on();
+					}
+					_skill.set( SKILL_DEFS.SCENARIO_CLASS.GIRL );
+
+					localStorage.setItem( "stage", key );
+
+					LAURUS.scoring( Medium.makeScoringObjective() );
+				},
+				/** @summary メディウムの値をリセット */
+				_clearMedium = function () {
+					_currentEdit = null;
+					_$currentEditElement = null;
+					_preventValue = null;
+				},
+				/** @summary 現在編集中の項目 (ID) を取得する
+				 * @returns {?String} 現在編集中の項目 (ID)
+				 */
+				_getCurrentEdit = function () {
+					return _currentEdit;
+				},
+				/** @summary 現在編集中の jQuery オブジェクトを取得する
+				 * @returns {?jQuery} 現在編集中の jQuery オブジェクト
+				 */
+				_get$CurrentEditElement = function () {
+					return _$currentEditElement;
+				},
+				/** @summary 編集前の値を取得する
+				 * @returns {?any} 編集前の値
+				 */
+				_getPreventValue = function () {
+					return _preventValue;
+				},
+				/** @summary 現在、いずれかの項目で編集中であるか状態を返す
+				 * @returns {Boolean} true -> 編集中
+				 */
+				_isEditing = function () {
+					return _currentEdit !== null;
+				},
+				/** @summary メディウムに値をセットする
+				 * @param {String} edit 現在編集中の項目 (ID)
+				 * @param {jQuery} $element 現在編集中の jQuery オブジェクト
+				 * @param {any} value 編集前の値
+				 */
+				_setMedium = function ( edit, $element, value ) {
+					_currentEdit = edit;
+					_$currentEditElement = $element;
+					_preventValue = value;
+				},
+				/** @summary 現在、いずれかの項目で編集中であるか状態を返す */
+				_rollbackEdit = function () {
+					_$currentEditElement.val( _preventValue );
+					_$currentEditElement.blur();
+				};
+
+			return {
+				fundamentals: _fundamentals,
+				subject: _subject,
+				weight: _weight,
+				tag: _tag,
+				skill: _skill,
+				senarioClasses: _senarioClasses,
+
+				resetUI: _resetUI,
+				makeScoringObjective: _makeScoringObjective,
+				setStage: _setStage,
+
+				clearMedium: _clearMedium,
+				getCurrentEdit: _getCurrentEdit,
+				get$currentEditElement: _get$CurrentEditElement,
+				getPreventValue: _getPreventValue,
+				isEditing: _isEditing,
+				setMedium: _setMedium,
+				rollbackEdit: _rollbackEdit
+			};
+		}() ),
+		/** @summary Advisor の初期化処理 */
+		_wakeup = function () {
+			var
+				loadStage = localStorage.getItem( "stage" ),
 				/** @type {Object} ステージ選択用ボタンの生成 */
 				writeStages = function () {
 					var buildStageButton = function ( key, stage ) {
-						return "<span class=\"select-stage\" data-key=\"" + key + "\"><span>" + stage + "</span></span>";
+						return "<span class=\"select-stage\" data-stage=\"" + key + "\"><span>" + stage + "</span></span>";
 					};
 
 					$.each( STRUCTURE, function ( section ) {
@@ -1227,13 +1421,13 @@ LAURUS.advisor = ( function () {
 								.append( $stageArea );
 							$stageArea
 								.data( "section", section )
-								.attr( "id", _mapForIdString( chapter ) )
+								.attr( "id", map4IdString( chapter ) )
 								.addClass( section );
 						} );
 					} );
 
 					$.each( STAGES, function () {
-						$( "#" + _mapForIdString( this[ STAGE.CHAPTER ] ) )
+						$( "#" + map4IdString( this[ STAGE.CHAPTER ] ) )
 							.append(
 							this[ STAGE.SECTION ] === "colosseum" ?
 								buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
@@ -1241,7 +1435,6 @@ LAURUS.advisor = ( function () {
 							);
 					} );
 				},
-
 				/** @summary ミッションの説明の編集 */
 				editCriteriaSubject = function () {
 					var $subject = $( "#criteria-subject" ),
@@ -1257,7 +1450,7 @@ LAURUS.advisor = ( function () {
 								if ( $subject.hasClass( "initial" ) ) {
 									$subject.removeClass();
 								} else {
-									subject = _unsanitizeHTML( $subject.html().replace( /<br>/g, "/" ) );
+									subject = unsanitizeHTML( $subject.html().replace( /<br>/g, "/" ) );
 								}
 
 								$subject
@@ -1282,7 +1475,7 @@ LAURUS.advisor = ( function () {
 							$inputContainer
 								.remove();
 
-							_setCriteriaSubject( $inputField.val() );
+							Medium.subject.set( $inputField.val() );
 							Medium.clearMedium();
 						} );
 				},
@@ -1325,7 +1518,7 @@ LAURUS.advisor = ( function () {
 									$inputContainer
 										.remove();
 
-									_setStyleWeight( style, weight );
+									Medium.weight.set( style, weight );
 									Medium.clearMedium();
 								},
 								errorProcess = function () {
@@ -1385,7 +1578,7 @@ LAURUS.advisor = ( function () {
 									$inputContainer
 										.remove();
 
-									_setTagProduct( channel, product );
+									Medium.tag.setProduct( channel, product );
 									Medium.clearMedium();
 								},
 								errorProcess = function () {
@@ -1436,24 +1629,23 @@ LAURUS.advisor = ( function () {
 
 					$( "#laurus" )
 						.on( "click", "#value-list .value", function () {
-							_setTagAddValue( _channel, $( this ).text() );
+							Medium.tag.setValue( _channel, $( this ).text() );
 
 							$( "#value-list" ).fadeOut( FADE_DURATION );
 						} );
 				},
-
 				/** @summary ダイアログの呼び出し
-				 * @param {String} dialogue 呼び出すダイアログの ID
+				 * @param {String} item 呼び出すダイアログの ID
 				 * @param {Function} callback コールバック関数（省略可））
 				 */
-				invokeDialogue = function ( dialogue, callback ) {
+				invokeDialogue = function ( item, callback ) {
 					return function () {
 						if ( Medium.isEditing() ) {
 							Medium.rollbackEdit();
 						}
 						toastr.remove();
 
-						LAURUS.dialogue.invoke( dialogue, this );
+						dialogue.invoke( item, this );
 
 						if ( callback ) {
 							callback();
@@ -1463,21 +1655,53 @@ LAURUS.advisor = ( function () {
 				/** @summary スキルアイコン一括設定のステージボタンイベント用包括関数
 				 * @param {Number} scenarioClass ステージ識別 ID
 				 */
-				setSkillFor = function ( scenarioClass ) {
+				setSkillForScenarioFactory = function ( scenarioClass ) {
 					return function () {
-						_setSkill( scenarioClass );
+						Medium.skill.set( scenarioClass );
 					};
 				},
 				/** @summary 内容を選択する（focus イベント用） */
 				thisSelect = function () {
 					$( this ).select();
+				},
+				/** @type {MethodCollection} イベントハンドラ用イベントのコレクション */
+				event = {
+					/** @summary 現在のステージタイトルをダイアログ側のカスタムステージ入力用のフィールドへ入力する */
+					setStageText: function () {
+						$( "#custom-stage-title" ).val( $( "#request-stage-title" ).text() );
+						$( "#custom-request-chapter" ).val( $( "#request-chapter" ).text() );
+					},
+					/** 選択したステージをセットする */
+					stageSelect: function () {
+						Medium.setStage( $( this ).parent().data( "stage" ) );
+						dialogue.dispose();
+					},
+					/** カスタム入力したステージをセットする */
+					customStageInput: function () {
+						_stage = null;
+						Medium.resetUI();
+
+						Medium.fundamentals.set(
+							$( "#custom-stage-title" ).val(),
+							$( "#custom-request-chapter" ).val()
+						);
+
+						dialogue.dispose();
+					},
+					/** 選択したタグをセットする */
+					tagSelect: function () {
+						Medium.tag.set(( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
+						dialogue.dispose();
+					},
+					/** スキルの活性 / 不活性化状態を入れ替える */
+					changeSkill: function () {
+						Medium.skill.change( null, $( this ).data( "skill" ) );
+					}
 				};
 
 			// constructor
-			// ダイアログに表示する内容の生成
 			writeStages();
 
-			// イベントフック
 			editCriteriaSubject();
 			$.each( LAURUS.STATIC_ITEMS.STYLE_DEFS.LIST, editCriteriaStyle );
 			$.each( [ 1, 2 ], editTagProduct );
@@ -1485,51 +1709,35 @@ LAURUS.advisor = ( function () {
 
 			$( "#advisor" )
 				// ダイアログの呼び出し
-				.on( "click", "#request-stage", invokeDialogue( "stage-select", function () {
-					$( "#custom-stage-title" ).val( $( "#request-stage-title" ).text() );
-					$( "#custom-request-chapter" ).val( $( "#request-chapter" ).text() );
-				} ) )
+				.on( "click", "#request-stage", invokeDialogue( "stage-select", event.setStageText ) )
 				.on( "click", "#criteria-tags .tag span", invokeDialogue( "tag-select" ) )
-
 				// スキルセット
-				.on( "click", "#girl-class", setSkillFor( SKILL_DEFS.SCENARIO_CLASS.GIRL ) )
-				.on( "click", "#princess-class", setSkillFor( SKILL_DEFS.SCENARIO_CLASS.PRINCESS ) )
-				.on( "click", "#receive-skill-icons span", function () {
-					_switchSkill( null, $( this ).data( "skill" ) );
+				.on( "click", "#girl-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.GIRL ) )
+				.on( "click", "#princess-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.PRINCESS ) )
+				.on( "click", "#receive-skill-icons span", event.changeSkill )
+				.on( "click", "#condition-determination", function () {
+					LAURUS.scoring( Medium.makeScoringObjective() );
 				} );
 
 			$( "#dialogue" )
 				// ステージ選択
-				.on( "click", ".select-stage span", function () {
-					_setStage( $( this ).parent().data( "key" ) );
-					LAURUS.dialogue.dispose();
-				} )
-				.on( "click", "#custom-input-determination", function () {
-					_stage = null;
-					_resetUI();
-
-					_setFoundationData(
-						$( "#custom-stage-title" ).val(),
-						$( "#custom-request-chapter" ).val()
-					);
-
-					LAURUS.dialogue.dispose();
-				} )
+				.on( "click", ".select-stage span", event.stageSelect )
+				.on( "click", "#custom-input-determination", event.customStageInput )
 				.on( "focus", "#custom-stage-title", thisSelect )
 				.on( "focus", "#custom-request-chapter", thisSelect )
-
 				// タグ選択
-				.on( "click", "#tag-select .tag span", function () {
-					_setTag(( $( LAURUS.dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
-					LAURUS.dialogue.dispose();
-				} );
+				.on( "click", "#tag-select .tag span", event.tagSelect );
 
-			_resetUI();
+			if ( loadStage ) {
+				Medium.setStage( loadStage );
+			} else {
+				Medium.resetUI();
+			}
 		};
 
 	return {
-		setStage: _setStage,
-		wakeup: _wakeup
+		wakeup: _wakeup,
+		changeMode: function () { }
 	};
 }() );
 
@@ -1551,7 +1759,8 @@ LAURUS.wardrobe = ( function () {
 		CATEGORY = CATEGORY_DEFS.CODE.CATEGORY,
 		SLOT = CATEGORY_DEFS.CODE.SLOT,
 
-		digitGrouping = LAURUS.STATIC_ITEMS.digitGrouping,
+		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
+
 		getImposes = LAURUS.STATIC_ITEMS.getImposes,
 		setImposes = LAURUS.STATIC_ITEMS.setImposes,
 		restore = LAURUS.STATIC_ITEMS.restore,
@@ -2273,6 +2482,14 @@ LAURUS.wardrobe = ( function () {
 							_condition.word = $( "#filter-word" ).val();
 							_execFilter();
 						},
+						/** @summary エンターが押されたときのイベント
+						 * @param {Object} evt イベントオプジェクト
+						 */
+						_enter2Blur = function ( evt ) {
+							if ( ( evt.which ? evt.which : evt.keyCode ) === 13 ) {
+								$( this ).blur();
+							}
+						},
 						/** @summary 空メソッド。resetUI で呼び出されるため */
 						_setLabel = function () { },
 						/** @summary メディウムのワードフィルタ条件および UI の入力内容をリセットする */
@@ -2284,6 +2501,7 @@ LAURUS.wardrobe = ( function () {
 					return {
 						initialize: _initialize,
 						change: _change,
+						enter2Blur: _enter2Blur,
 						clear: _clear,
 						setLabel: _setLabel
 					};
@@ -2652,6 +2870,7 @@ LAURUS.wardrobe = ( function () {
 				.on( "click", "#filter-tag .filter-key", invokeDialogue( "tag" ) )
 				.on( "focus", "#filter-word", Medium.word.initialize )
 				.on( "blur", "#filter-word", Medium.word.change )
+				.on( "keypress", "#filter-word", Medium.word.enter2Blur )
 				.on( "click", "#filter-rarity .filter-key", invokeDialogue( "rarity" ) )
 				.on( "click", "#sort-key .filter-key", invokeDialogue( "sort" ) )
 				.on( "click", "#list-item-style", changeStyleFor( "list" ) )
@@ -2768,8 +2987,7 @@ $( document ).ready( function () {
 
 	$( "#dialogue" ).perfectScrollbar();
 
-	// $( "#advisor-button" ).click();
-	// LAURUS.advisor.setStage( "8-1" );
+	$( "#advisor-button" ).click();
 
-	$( "#wardrobe-button" ).click();
+	// $( "#wardrobe-button" ).click();
 } );
