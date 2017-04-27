@@ -47,17 +47,22 @@
 						</span>
 					</li>
 					<li>
+						<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
+							<span class="laurus-icon">&#x2603;</span> cheatsheet
+						</span>
+					</li>
+					<!--<li>
 						<span id="purveyor-button" class="ghost-button" data-mode="purveyor">
 							<span class="laurus-icon">&#x2602;</span> Purveyor
 						</span>
-					</li>
+					</li>-->
 					<li id="more-menu"><img src="resources/more.png" alt="more">
 						<ul>
-							<li>
+							<!--<li>
 								<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
 									<span class="laurus-icon">&#x2603;</span> cheatsheet
 								</span>
-							</li>
+							</li>-->
 							<li>
 								<span id="credit-button" class="ghost-button" data-mode="credit">
 									<span class="laurus-icon">&#x2604;</span> credit
@@ -183,11 +188,220 @@
 			</div>
 		</div>
 
-		<h3>コーディネート候補</h3>
+		<h3>
+			推奨コーディネート
+			<span id="recommends-controle">
+				<span class="button-wrapper"><span id="rcm-reset">リセット</span></span>
+			<span class="button-wrapper"><span id="rcm-edit-lock">編集ロック</span></span>
+			</span>
+		</h3>
 		<div id="feasible">
-			<div id="standby">
+			<!--<div id="standby">
 				<span class="face">(,,•﹏•,,)</span>
 				<span class="text">ここに候補が表示されます</span>
+			</div>-->
+			<div id="recommends">
+				<div id="slot-hair" class="rcm-item" data-rcm-slot="hair">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">ヘアスタイル</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div class="rcm-item dummy"></div>
+				<div id="slot-dress" class="rcm-item" data-rcm-slot="dress">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">ドレス</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-coat" class="rcm-item" data-rcm-slot="coat">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">コート</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-tops" class="rcm-item" data-rcm-slot="tops">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">トップス</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-bottoms" class="rcm-item" data-rcm-slot="bottoms">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">ボトムス</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-hosiery" class="rcm-item" data-rcm-slot="hosiery">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">靴下</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-anklet" class="rcm-item" data-rcm-slot="anklet">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">アンクレット</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-shoes" class="rcm-item" data-rcm-slot="shoes">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">シューズ</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-makeup" class="rcm-item" data-rcm-slot="makeup">
+					<div class="slot-name"><span class="rcm-note"></span><span class="label">メイク</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-head-accessory" class="rcm-item" data-rcm-slot="accessory">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ヘッドアクセ</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-veil" class="rcm-item" data-rcm-slot="veil">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ヴェール</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-headband" class="rcm-item" data-rcm-slot="headband">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">カチューシャ</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-false-ears" class="rcm-item" data-rcm-slot="false-ears">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">つけ耳</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-earrings" class="rcm-item" data-rcm-slot="earrings">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">耳飾り</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div class="rcm-item dummy"></div>
+				<div id="slot-scarf" class="rcm-item" data-rcm-slot="scarf">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">マフラー</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-necklace" class="rcm-item" data-rcm-slot="necklace">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ネックレス</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-right-arm" class="rcm-item" data-rcm-slot="right-arm">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">右手飾り</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-left-arm" class="rcm-item" data-rcm-slot="left-arm">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">左手飾り</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-glove" class="rcm-item" data-rcm-slot="glove">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">手袋</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div class="rcm-item dummy"></div>
+				<div id="slot-right-hand" class="rcm-item" data-rcm-slot="right-hand">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">右手持ち</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-left-hand" class="rcm-item" data-rcm-slot="left-hand">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">左手持ち</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-both-hand" class="rcm-item" data-rcm-slot="both-hand">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">両手持ち</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-waist" class="rcm-item" data-rcm-slot="waist">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">腰飾り</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-face" class="rcm-item" data-rcm-slot="face">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">フェイス</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-body" class="rcm-item" data-rcm-slot="body">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ボディ</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-tatoo" class="rcm-item" data-rcm-slot="tatoo">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">タトゥー</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-wings" class="rcm-item" data-rcm-slot="wings">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">羽根</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-tail" class="rcm-item" data-rcm-slot="tail">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">しっぽ</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-foreground" class="rcm-item" data-rcm-slot="foreground">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">前景</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-background" class="rcm-item" data-rcm-slot="background">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">後景</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-hanging" class="rcm-item" data-rcm-slot="hanging">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">吊り</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-ground" class="rcm-item" data-rcm-slot="ground">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">床</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-skin" class="rcm-item" data-rcm-slot="skin">
+					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">肌</span><span class="rcm-page"></span></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
+					<div class="item-card-area"></div>
+					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -198,6 +412,7 @@
 			<span id="filter-controle-buttons" class="filter-controle">
 				<span class="button-wrapper"><span id="filter-reset">フィルタリセット</span></span>
 			</span>
+			<span id="hit-records-box"><span id="hit-records"></span> records</span>
 		</h3>
 		<div id="wardrobe-filter">
 			<div id="filter-category">
@@ -230,7 +445,7 @@
 			<span id="edit-lock-controle" class="filter-controle">
 				<span class="button-wrapper"><span id="edit-lock">編集ロック</span></span>
 			</span>
-			<span id="hit-records-box"><span id="hit-records"></span> records</span>
+			<span id="current-stage"></span>
 		</h3>
 		<div id="zero-records">
 			<span class="face">( &gt;﹏&lt;。)</span>
@@ -278,6 +493,7 @@
 		<div id="file-imex">
 			<span class="imex-button-wrapper"><a id="file-import" href="#">アイテム所持状況の読み込み</a></span>
 			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json">アイテム所持状況の書き出し</a></span>
+			<span class="imex-button-wrapper"><a id="dialogue-possessions-macro" href="#">アイテム所持状況の一括設定</a></span>
 		</div>
 	</div>
 
@@ -714,6 +930,20 @@
 		</div>
 	</div>
 
+	<div id="possessions-macro" class="dialogue-content wardrobe">
+		<div class="dialogue-header">
+			<span class="dialogue-title">アイテム所持状況の一括設定</span>
+			<span class="dialogue-close"><span>close</span></span>
+		</div>
+		<div class="content">
+			<span class="macro-command"><span id="all-poses" class="poses-option">すべて所持</span></span>
+			<span class="macro-command"><span id="all-imposes" class="poses-option">すべて不所持</span></span>
+			<span id="macro-text">↓に適当な文字を入力して「決定」を押してください（誤操作防止のため）</span>
+			<input id="confirm-input" type="text" disabled>
+			<span class="macro-command"><span id="poses-deter" class="disabled">決定</span></span>
+		</div>
+	</div>
+
 	<!-- popup contents -->
 	<ul id="value-list">
 	<li id="value-ss" class="value ss">SS</li>
@@ -725,10 +955,10 @@
 
 	<footer>
 		<ul class="enumeration">
-		<li><a href="http://miramiku.github.io/"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a></li>
-		<li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li>
-		<li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li>
-	</ul>
+			<li><a href="http://miramiku.github.io/"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a></li>
+			<li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li>
+			<li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li>
+		</ul>
 	</footer>
 
 	<!--

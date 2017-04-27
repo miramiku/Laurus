@@ -10,6 +10,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 
 	var /** @type {Number} 全アイテム数 */
 		_allRecords = 0,
+		/** @type {Object} スタイル評価値の定義 */
 		_values = {
 			/** @type {Array} 属性値の対応値 */
 			INDEX: [ "", "C", "B", "A", "S", "SS" ],
@@ -23,7 +24,6 @@ LAURUS.STATIC_ITEMS = ( function () {
 				SS: 5
 			}
 		},
-
 		/** @type {Object} アイテム分類一覧兼オーダー */
 		_orderedList = {
 			/** @type {Array} カテゴリ */
@@ -128,6 +128,38 @@ LAURUS.STATIC_ITEMS = ( function () {
 		_categoryDefs = {
 			/** @type {Number} スロットの総数 */
 			SLOT_COUNT: 40,
+			/** @type {Array} スロットリスト */
+			SLOT_LIST: [
+				"hair", "dress", "coat", "tops", "bottoms",
+				"hosiery", "anklet", "shoes", "makeup", "head-accessory",
+				"veil", "headband", "false-ears", "earrings", "scarf",
+				"necklace", "right-arm", "left-arm", "glove", "right-hand",
+				"left-hand", "both-hand", "waist", "face", "body",
+				"tatoo", "wings", "tail", "foreground", "background",
+				"hanging", "ground", "skin", "complex"
+			],
+			/** @type {Array} スロットコード対応表 */
+			SLOT: [
+				"all", "hair", "dress", "coat", "tops",
+				"bottoms", "hosiery", "hosiery", "anklet", "shoes",
+				"makeup", "accessory", "headwear", "head-accessory", "veil",
+				"headband", "false-ears", "earrings", "necklace", "scarf",
+				"necklace", "bracelet", "right-arm", "left-arm", "glove",
+				"handheld", "right-hand", "left-hand", "both-hand", "waist",
+				"special", "face", "body", "tatoo", "wings",
+				"tail", "foreground", "background", "hanging", "ground",
+				"skin", "complex"
+			],
+			/** @type {Array} アクセサリリスト */
+			ACCESSORY_LIST_WITHOUT_BOTH_HAND: [
+				/* headwear */ "head-accessory", "veil", "headband", "false-ears",
+				/* earrings */ "earrings",
+				/* necklace */ "scarf", "necklace",
+				/* bracelet */ "right-arm", "left-arm", "glove",
+				/* handheld */ "right-hand", "left-hand", // "both-hand",
+				/* waist    */ "waist",
+				/* special  */ "face", "body", "tatoo", "wings", "tail", "foreground", "background", "hanging", "ground", "skin"
+			],
 			/** @type {Dictionary} アイテム分類の対応値 */
 			MAP: {
 				"ヘアスタイル": "hair",
@@ -234,7 +266,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 					"makeup": 10
 				}
 			},
-			/** @type {Object} コード逆引き */
+			/** @type {Array} コード逆引き */
 			REVERSE: [
 				"すべて", "ヘアスタイル", "ドレス", "コート", "トップス",
 				"ボトムス", "靴下", "靴下", "アンクレット", "シューズ",
@@ -245,6 +277,18 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"特殊", "フェイス", "ボディ", "タトゥー", "羽根",
 				"しっぽ", "前景", "後景", "吊り", "床",
 				"肌", "complex"
+			],
+			/** @type {Array} スロットにおけるスコア倍率 */
+			SCALE: [
+				0,
+				0.5, 2, 0.2, 1, 1,
+				0, 0.3, 0.3, 0.4, 0.1,
+				0, 0, 0.2, 0.2, 0.2,
+				0.2, 0.2, 0, 0.2, 0.2,
+				0, 0.2, 0.2, 0.2, 0,
+				0.2, 0.2, 0.4, 0.2, 0,
+				0.2, 0.2, 0.2, 0.2, 0.2,
+				0.2, 0.2, 0.2, 0.2, 0.2
 			]
 		},
 		/** @type {Object} タグの定義 */
@@ -475,6 +519,10 @@ LAURUS.STATIC_ITEMS = ( function () {
 		_setImposes = function ( imPoses ) {
 			var POSSESSIONS = LAURUS.POSSESSIONS;
 
+			$.each( LAURUS.WARDROBE, function ( serial ) {
+				POSSESSIONS[ serial ] = true;
+			} );
+
 			$.each( imPoses, function () {
 				POSSESSIONS[ this ] = false;
 			} );
@@ -598,6 +646,9 @@ LAURUS.STAGES = ( function () {
 /** @type {Object} スコア保持用オブジェクト */
 LAURUS.SCORE = {};
 
+/** @type {Object} スコアリングのスロット別集計 */
+LAURUS.SCORING_BY_SLOT = {};
+
 /** @type {Object} アイテム所持管理用オブジェクト */
 LAURUS.POSSESSIONS = {};
 
@@ -631,55 +682,39 @@ LAURUS.scoring = function ( objective ) {
 	"use strict";
 
 	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
-
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
-
+		SCALE = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.SCALE,
 		restore = LAURUS.STATIC_ITEMS.restore,
-
 		OBJECTIVE = {
 			FORMER: 0,
 			LATTER: 1,
 			TAG_ID: 0,
 			TAG_VALUE: 1,
 			TAG_PRODUCT: 2
-		},
-		SCALE = {
-			"ヘアスタイル": 0.5,
-			"ドレス": 2,
-			"コート": 0.2,
-			"トップス": 1,
-			"ボトムス": 1,
-			"靴下": 0.3,
-			"シューズ": 0.4,
-			"ヘアアクセサリー": 0.2,
-			"耳飾り": 0.2,
-			"首飾り": 0.2,
-			"腕飾り": 0.2,
-			"手持品": 0.2,
-			"腰飾り": 0.2,
-			"特殊": 0.2,
-			"メイク": 0.1
 		};
 
-	$.each( LAURUS.WARDROBE, function () {
+	$.each( LAURUS.WARDROBE, function ( serial ) {
 		var attributes = restore.attributes2serial( this[ COLUMN.ATTRIBUTES ] ),
 			score = 0,
 			itemTags = restore.tag( this[ COLUMN.TAGS ] ),
 			bonusTags = objective.tags,
-			scale = SCALE[ restore.categoryAndId( this[ COLUMN.SERIAL ] ).category ],
 			addTagBonus = function ( channel ) {
 				return itemTags[ channel ] ?
 					( itemTags[ channel ] === bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_PRODUCT ] :
 						( itemTags[ channel ] === bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_PRODUCT ] : 0 :
 					0;
 			},
-			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) ) * scale;
+			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) );
 
-		$.each( objective.style, function ( index ) {
-			score += ( VALUES.FACTOR[ attributes[ index ] ] * scale + tagBonus ) * this;
+		$.each( this[ COLUMN.SLOTS ], function () {
+			var scale = SCALE[ this ];
+
+			$.each( objective.style, function ( index ) {
+				score += ( VALUES.FACTOR[ attributes[ index ] ] + tagBonus ) * scale * this;
+			} );
 		} );
 
-		LAURUS.SCORE[ this[ COLUMN.SERIAL ] ] = Math.round( score );
+		LAURUS.SCORE[ serial ] = Math.round( score );
 	} );
 };
 
@@ -997,18 +1032,25 @@ LAURUS.advisor = ( function () {
 	"use strict";
 
 	var // dependence
+		WARDROBE = LAURUS.WARDROBE,
 		STAGES = LAURUS.STAGES,
+		SCORE = LAURUS.SCORE,
+		SCORING_BY_SLOT = LAURUS.SCORING_BY_SLOT,
+		POSSESSIONS = LAURUS.POSSESSIONS,
 
+		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		STYLE = LAURUS.STATIC_ITEMS.COLUMN.STYLE,
+		STAGE = LAURUS.STATIC_ITEMS.COLUMN.STAGE,
 
 		BOUNDS = LAURUS.STATIC_ITEMS.BOUNDS,
 		FADE_DURATION = LAURUS.STATIC_ITEMS.FADE_DURATION,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		SKILL_DEFS = LAURUS.STATIC_ITEMS.SKILL_DEFS,
-		STAGE = LAURUS.STATIC_ITEMS.COLUMN.STAGE,
 		STYLE_DEFS = LAURUS.STATIC_ITEMS.STYLE_DEFS,
 		STRUCTURE = LAURUS.STATIC_ITEMS.STAGE_STRUCTURE,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+		PIETY_LAURUS_OPTIONS = LAURUS.STATIC_ITEMS.PIETY_LAURUS_OPTIONS,
 
 		digit2Half = LAURUS.STATIC_ITEMS.utils.digit2Half,
 		isCloseTo = LAURUS.STATIC_ITEMS.utils.isCloseTo,
@@ -1016,6 +1058,7 @@ LAURUS.advisor = ( function () {
 		unsanitizeHTML = LAURUS.STATIC_ITEMS.utils.unsanitizeHTML,
 		map4IdString = LAURUS.STATIC_ITEMS.utils.map4IdString,
 
+		scoring = LAURUS.scoring,
 		dialogue = LAURUS.dialogue,
 
 		_stage = [],
@@ -1040,6 +1083,8 @@ LAURUS.advisor = ( function () {
 								.text( stage );
 							$( "#request-chapter" )
 								.text( chapter );
+							$( "#current-stage" )
+								.text( stage );
 						},
 						/** @summary 空関数 */
 						_empty = function () { };
@@ -1271,6 +1316,186 @@ LAURUS.advisor = ( function () {
 					} );
 					_senarioClasses.off();
 				},
+				_recommend = ( function () {
+					var _pos = {},
+						/** @summary スロットから現在表示中候補のスコアを得る
+						 * @param {String} スロット
+						 * @returns {Number} 現在表示中候補のスコア
+						 */
+						getScoreBySlot = function ( slot ) {
+							var serial = SCORING_BY_SLOT[ slot ][ _pos[ slot ] ];
+							return serial === -1 ? 0 : SCORE[ serial ];
+						},
+						_isnpection4ExclusiveSlot = function () {
+							var
+								compareExclusive = function ( a, b ) {
+									var /** @summary スロットを総合してスコアの合計を求める
+										 * @param {Array} スロット
+										 * @returns {Number} 総合スコア
+										 */
+										scoreTotal = function ( slots ) {
+											var total = 0;
+
+											$.each( slots, function () {
+												total += getScoreBySlot( this );
+											} );
+
+											return total;
+										},
+										compareResult = [],
+										recommend = scoreTotal( b ) <= scoreTotal( a );
+
+									$.each( a, function () {
+										compareResult.push( {
+											slot: this,
+											recommend: recommend
+										} );
+									} );
+
+									recommend = !recommend;
+
+									$.each( b, function () {
+										compareResult.push( {
+											slot: this,
+											recommend: recommend
+										} );
+									} );
+
+									return compareResult;
+								},
+								setRecommendSlot = function ( compareResult ) {
+									$.each( compareResult, function () {
+										$( "#slot-" + this.slot )
+											.removeClass( "recommend deprecated" )
+											.addClass( this.recommend ? "recommend" : "deprecated" );
+									} );
+								};
+
+							setRecommendSlot( compareExclusive( [ "dress" ], [ "tops", "bottoms" ] ) );
+							setRecommendSlot( compareExclusive( [ "right-hand", "left-hand" ], [ "both-hand" ] ) );
+						},
+						_inspection4ComplexSlot = function () {
+							// みじっそー
+							// 複合スロットの検査
+						},
+						_accessoryRank = function () {
+							var accessories = [],
+								rank = 1;
+
+							$.each( CATEGORY_DEFS.ACCESSORY_LIST_WITHOUT_BOTH_HAND, function () {
+								accessories.push( {
+									slot: this,
+									score: getScoreBySlot( this )
+								} );
+							} );
+							accessories.push( {
+								slot: "both-hand",
+								score: getScoreBySlot( "both-hand" ) / 2
+							} );
+
+							accessories.sort( function ( a, b ) {
+								return b.score - a.score;
+							} );
+
+							$.each( accessories, function () {
+								$( "#slot-" + this.slot + " .rcm-acs-rank" )
+									.text( rank )
+									.attr( "data-rcm-rank", rank );
+								rank += 1;
+							} );
+						},
+						_observe = function () {
+							_isnpection4ExclusiveSlot();
+							_inspection4ComplexSlot();
+							_accessoryRank();
+						},
+						_write = function ( slot ) {
+							var pos = _pos[ slot ],
+								orderedItems = SCORING_BY_SLOT[ slot ],
+								serial = orderedItems[ pos ],
+								$slot = $( "#slot-" + slot ),
+								terminusBranch = ( serial === -1 ) ?
+									{
+										card: "<div class=\"terminus-item\"><span>推奨アイテムなし...</span> <span>( &gt;﹏&lt;。)</span></div>",
+										next: "addClass",
+										page: "terminus!"
+									} : {
+										card: LAURUS.itemCard( serial ),
+										next: "removeClass",
+										page: ( pos + 1 ) + " of " + ( orderedItems.length - 1 )
+									};
+
+							$slot
+								.find( ".item-card-area" )
+								.html( terminusBranch.card );
+							$slot
+								.find( ".rcm-page" )
+								.text( terminusBranch.page );
+							$slot
+								.find( ".rcm-next" )[ terminusBranch.next ]( "disabled" );
+							$slot
+								.find( ".rcm-prev" )[ pos === 0 ? "addClass" : "removeClass" ]( "disabled" );
+							$slot
+								.find( ".sparkline" )
+								.peity( "line", PIETY_LAURUS_OPTIONS.card );
+						},
+						_traversal = function () {
+							var $this = $( this ),
+								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
+
+							_pos[ slot ] += ( $this.hasClass( "rcm-next" ) ? 1 : -1 );
+							_write( slot );
+							_observe();
+						},
+						_init = function () {
+							var wardrobe = [];
+
+							$.each( WARDROBE, function ( serial ) {
+								wardrobe.push( serial );
+							} );
+
+							wardrobe.sort( function ( a, b ) {
+								return SCORE[ b ] - SCORE[ a ];
+							} );
+
+							SCORING_BY_SLOT = {};
+							$.each( CATEGORY_DEFS.SLOT_LIST, function () {
+								SCORING_BY_SLOT[ this ] = [];
+								_pos[ this ] = 0;
+							} );
+
+							$.each( wardrobe, function () {
+								var slots = WARDROBE[ this ][ COLUMN.SLOTS ],
+									slot = slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex";
+
+								// TODO: 所持情況の考慮
+								if ( POSSESSIONS[ this ] ) {
+									SCORING_BY_SLOT[ slot ].push( this );
+								}
+							} );
+
+							$.each( SCORING_BY_SLOT, function ( slot ) {
+								this.push( -1 );
+								_write( slot );
+							} );
+
+							_observe();
+						},
+						_reset = function () {
+							$.each( SCORING_BY_SLOT, function ( slot ) {
+								_pos[ slot ] = 0;
+								_write( slot );
+							} );
+
+							_observe();
+						};
+
+					return {
+						init: _init,
+						reset: _reset,
+						traversal: _traversal
+					};
+				}() ),
 				/** @type {Function} UI からスコアリングを行う上で利用する目的オブジェクトを生成する */
 				_makeScoringObjective = function () {
 					return {
@@ -1299,11 +1524,17 @@ LAURUS.advisor = ( function () {
 						]
 					};
 				},
-				/** @summary ダイアログから選んだステージをセットする
-				 * @param {String} key ステージキー
+				/** @summary UIに設定された目的条件からスコアリングして結果を描写する */
+				_execScoring = function () {
+					// scoring
+					scoring( _makeScoringObjective() );
+					_recommend.init();
+				},
+				/** @summary ステージデータを UI に書き込む
+				 * @param {String} stage ステージキー
 				 */
-				_setStage = function ( key ) {
-					_stage = STAGES[ key ];
+				_writeStage = function ( stage ) {
+					_stage = STAGES[ stage ];
 
 					_resetUI();
 					_fundamentals.set(
@@ -1327,10 +1558,15 @@ LAURUS.advisor = ( function () {
 						_senarioClasses.on();
 					}
 					_skill.set( SKILL_DEFS.SCENARIO_CLASS.GIRL );
+				},
+				/** @summary ダイアログから選んだステージをセットする
+				 * @param {String} stage ステージキー
+				 */
+				_setStage = function ( stage ) {
+					_writeStage( stage );
 
-					localStorage.setItem( "stage", key );
-
-					LAURUS.scoring( Medium.makeScoringObjective() );
+					localStorage.setItem( "stage", stage );
+					_execScoring();
 				},
 				/** @summary メディウムの値をリセット */
 				_clearMedium = function () {
@@ -1385,9 +1621,11 @@ LAURUS.advisor = ( function () {
 				tag: _tag,
 				skill: _skill,
 				senarioClasses: _senarioClasses,
+				recommend: _recommend,
 
 				resetUI: _resetUI,
-				makeScoringObjective: _makeScoringObjective,
+				execScoring: _execScoring,
+				writeStage: _writeStage,
 				setStage: _setStage,
 
 				clearMedium: _clearMedium,
@@ -1660,10 +1898,6 @@ LAURUS.advisor = ( function () {
 						Medium.skill.set( scenarioClass );
 					};
 				},
-				/** @summary 内容を選択する（focus イベント用） */
-				thisSelect = function () {
-					$( this ).select();
-				},
 				/** @type {MethodCollection} イベントハンドラ用イベントのコレクション */
 				event = {
 					/** @summary 現在のステージタイトルをダイアログ側のカスタムステージ入力用のフィールドへ入力する */
@@ -1696,6 +1930,26 @@ LAURUS.advisor = ( function () {
 					/** スキルの活性 / 不活性化状態を入れ替える */
 					changeSkill: function () {
 						Medium.skill.change( null, $( this ).data( "skill" ) );
+					},
+					/** @summary 内容を選択する（focus イベント用） */
+					thisSelect: function () {
+						$( this ).select();
+					},
+					/** @summary 所持情況編集のロック・解除 */
+					changeEditable: function () {
+						var $advisor = $( "#advisor" ),
+							proc = $advisor.hasClass( "editable" ) ?
+								{
+									cls: "removeClass",
+									text: "編集ロック"
+								} :
+								{
+									cls: "addClass",
+									text: "編集可能"
+								};
+
+						$advisor[ proc.cls ]( "editable" );
+						$( this ).text( proc.text );
 					}
 				};
 
@@ -1715,29 +1969,35 @@ LAURUS.advisor = ( function () {
 				.on( "click", "#girl-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.GIRL ) )
 				.on( "click", "#princess-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.PRINCESS ) )
 				.on( "click", "#receive-skill-icons span", event.changeSkill )
-				.on( "click", "#condition-determination", function () {
-					LAURUS.scoring( Medium.makeScoringObjective() );
-				} );
+				.on( "click", "#condition-determination", Medium.execScoring )
+				// コントロール
+				.on( "click", "#rcm-reset", Medium.recommend.reset )
+				.on( "click", "#rcm-edit-lock", event.changeEditable )
+				// 推奨コーディネート
+				.on( "click", "#recommends .rcm-prev:not( .disabled )", Medium.recommend.traversal )
+				.on( "click", "#recommends .rcm-next:not( .disabled )", Medium.recommend.traversal );
 
 			$( "#dialogue" )
 				// ステージ選択
 				.on( "click", ".select-stage span", event.stageSelect )
 				.on( "click", "#custom-input-determination", event.customStageInput )
-				.on( "focus", "#custom-stage-title", thisSelect )
-				.on( "focus", "#custom-request-chapter", thisSelect )
+				.on( "focus", "#custom-stage-title", event.thisSelect )
+				.on( "focus", "#custom-request-chapter", event.thisSelect )
 				// タグ選択
 				.on( "click", "#tag-select .tag span", event.tagSelect );
 
 			if ( loadStage ) {
-				Medium.setStage( loadStage );
+				Medium.writeStage( loadStage );
 			} else {
 				Medium.resetUI();
 			}
-		};
+		},
+		/** @summary Wardrobe のモード切替時処理 */
+		_changeMode = Medium.execScoring;
 
 	return {
 		wakeup: _wakeup,
-		changeMode: function () { }
+		changeMode: _changeMode
 	};
 }() );
 
@@ -1807,12 +2067,12 @@ LAURUS.wardrobe = ( function () {
 									}
 								} );
 
-								if ( slots.length !== 0 && slots.length !== CATEGORY_DEFS.SLOT_COUNT ) {
+								if ( ( slots.length !== 0 ) && ( slots.length !== CATEGORY_DEFS.SLOT_COUNT ) ) {
 									return function ( record ) {
-										var isContain = true;
+										var isContain = false;
 
 										$.each( record[ COLUMN.SLOTS ], function () {
-											isContain = isContain && ( 0 <= $.inArray( this, slots ) );
+											isContain = isContain || ( 0 <= $.inArray( this, slots ) );
 										} );
 
 										return isContain;
@@ -1948,7 +2208,11 @@ LAURUS.wardrobe = ( function () {
 				},
 				/** @type {MethodCollection} フィルタリングされたアイテムに関する操作 */
 				_display = ( function () {
-					var _current = 0,
+					var /** @type {Number} 現在の表示レコード数 */
+						_current = 0,
+						/** @type {Array} 表示するアイテムのシリアル */
+						_displayItems = [],
+						/** @type {Object} アイテムの一度に表示するレコード数 */
 						_ITEMS = {
 							list: function () {
 								return 50;
@@ -1962,14 +2226,44 @@ LAURUS.wardrobe = ( function () {
 							}
 						},
 
-						_isTerminate = function () {
-							return _current === _myWardrobe.length;
+						/** @summary フィルタリングでヒットしたレコード数を描写する
+						 * @param {Number} records フィルタリングでヒットしたレコード
+						 */
+						_writeRecords = function ( records ) {
+							var mode = records === 0 ? "no" : records === ALL_RECORDS ? "all" : "ord";
+
+							$( "#hit-records-box" )
+								.removeClass()
+								.addClass( {
+									no: "no-records",
+									all: "all-records",
+									ord: ""
+								}[ mode ] );
+							$( "#hit-records" )
+								.text( {
+									no: "no",
+									all: ALL_RECORDS + " (all)",
+									ord: records
+								}[ mode ] );
 						},
+						/** @summary アイテム表示が終端判定
+						 * @returns {Boolean} true -> 表示終端
+						 */
+						_isTerminate = function () {
+							return _current === _displayItems.length;
+						},
+						/** @summary 表示アイテムの終了位置の計算
+						 * @returns {Number} 終了位置
+						 */
 						_getToRecords = function () {
 							var items = _ITEMS[ _currentStyle ]();
 
-							return ( _current + items ) < _myWardrobe.length ? ( _current + items ) : _myWardrobe.length;
+							return ( _current + items ) < _displayItems.length ? ( _current + items ) : _displayItems.length;
 						},
+						/** @summary アイテムの描写
+						 * @param {Number} 開始位置
+						 * @param {Number} 終了位置
+						 */
 						_write = function ( from, to ) {
 							var html = "",
 								i = 0,
@@ -1978,39 +2272,29 @@ LAURUS.wardrobe = ( function () {
 									list: function () {
 										var toRecords = _getToRecords();
 
-										if ( toRecords === _myWardrobe.length ) {
-											return "残りすべて表示する（全 " + digitGrouping( _myWardrobe.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
+										if ( toRecords === _displayItems.length ) {
+											return "残りすべて表示する（全 " + digitGrouping( _displayItems.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
 										} else {
-											return "さらに " + ( toRecords - _current ) + " 件表示する（全 " + digitGrouping( _myWardrobe.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
+											return "さらに " + ( toRecords - _current ) + " 件表示する（全 " + digitGrouping( _displayItems.length ) + " 件うち " + digitGrouping( _current ) + " 件表示中）";
 										}
 									},
 									card: function () {
 										var toRecords = _getToRecords();
 
-										if ( toRecords === _myWardrobe.length ) {
+										if ( toRecords === _displayItems.length ) {
 											return "<span class=\"item-card-more\">残りすべて表示する</span>" +
 												"<span class=\"item-card-current\">表示中：" + digitGrouping( _current ) + " 件</span>" +
-												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _myWardrobe.length ) + " 件</span>";
+												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _displayItems.length ) + " 件</span>";
 										} else {
 											return "<span class=\"item-card-more\">さらに " + ( _getToRecords() - _current ) + " 件表示する</span>" +
 												"<span class=\"item-card-current\">表示中：" + digitGrouping( _current ) + " 件</span>" +
-												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _myWardrobe.length ) + " 件</span>";
+												"<span class=\"item-card-all\">ヒット数：" + digitGrouping( _displayItems.length ) + " 件</span>";
 										}
 									}
-								},
-								withoutNotPosessions = function () {
-									html += POSSESSIONS[ _myWardrobe[ i ] ] ? LAURUS[ proc ]( _myWardrobe[ i ] ) : "";
-								},
-								withoutPosessions = function () {
-									html += POSSESSIONS[ _myWardrobe[ i ] ] ? "" : LAURUS[ proc ]( _myWardrobe[ i ] );
-								},
-								anyItems = function () {
-									html += LAURUS[ proc ]( _myWardrobe[ i ] );
-								},
-								posessionBranch = _displayImpossession ? _displayImpossessionOnly ? withoutPosessions : anyItems : withoutNotPosessions;
+								};
 
 							for ( i = from; i < to; i += 1 ) {
-								posessionBranch();
+								html += LAURUS[ proc ]( _displayItems[ i ] );
 							}
 
 							$( "#wardrobe-" + _currentStyle + "-area" )
@@ -2026,6 +2310,7 @@ LAURUS.wardrobe = ( function () {
 									.show();
 							}
 						},
+						/** @summary 表示アイテムのリセット */
 						_reset = function () {
 							$( "#wardrobe-list-area, #wardrobe-card-area" )
 								.empty();
@@ -2034,7 +2319,7 @@ LAURUS.wardrobe = ( function () {
 
 							_current = 0;
 
-							if ( _myWardrobe.length === 0 ) {
+							if ( _displayItems.length === 0 ) {
 								$( "#zero-records" ).show();
 							} else {
 								$( "#wardrobe-" + _currentStyle + "-area-box" )
@@ -2042,10 +2327,44 @@ LAURUS.wardrobe = ( function () {
 								_write( _current, _getToRecords() );
 							}
 						},
+						/** @summary アイテム表示処理の初期化 */
 						_init = function () {
+							var
+								withoutNotPosessions = function () {
+									$.each( _myWardrobe, function () {
+										if ( POSSESSIONS[ this ] ) {
+											_displayItems.push( this );
+										}
+									} );
+								},
+								withoutPosessions = function () {
+									$.each( _myWardrobe, function () {
+										if ( !POSSESSIONS[ this ] ) {
+											_displayItems.push( this );
+										}
+									} );
+								},
+								anyItems = function () {
+									_displayItems = [].concat( _myWardrobe );
+								};
+
 							_myWardrobe.sort( _makeSortCompareFunction() );
+
+							_displayItems = [];
+							( _displayImpossession ? _displayImpossessionOnly ? withoutPosessions : anyItems : withoutNotPosessions )();
+
+							_writeRecords( _displayItems.length );
+
 							_reset();
 						},
+						/** @summary さらにアイテムを表示する */
+						_more = function () {
+							$( "#list-more, #card-more" )
+								.hide();
+
+							_write( _current, _getToRecords() );
+						},
+						/** @summary 未所持アイテムの表示可否（イベント） */
 						_notPossession = function () {
 							var proc = _displayImpossession ? "removeClass" : "addClass";
 
@@ -2054,15 +2373,10 @@ LAURUS.wardrobe = ( function () {
 							$( "#display-impossession" )[ proc ]( "sparkly" );
 							$( "#display-impossession-only" )[ proc ]( "enabled" );
 						},
+						/** @summary 未所持アイテム"のみ"の表示可否（イベント） */
 						_notPossessionOnly = function () {
 							$( "#display-impossession-only" )[ _displayImpossessionOnly ? "removeClass" : "addClass" ]( "sparkly" );
 							_displayImpossessionOnly = !_displayImpossessionOnly;
-						},
-						_more = function () {
-							$( "#list-more, #card-more" )
-								.hide();
-
-							_write( _current, _getToRecords() );
 						};
 
 					return {
@@ -2070,34 +2384,12 @@ LAURUS.wardrobe = ( function () {
 						more: _more,
 						reset: _reset,
 						notPossession: _notPossession,
-						notPossessionOnly: _notPossessionOnly,
-						isTerminate: _isTerminate
+						notPossessionOnly: _notPossessionOnly
 					};
 				}() ),
-				/** @summary フィルタリングでヒットしたレコード数を描写する
-				 * @param {Number} records フィルタリングでヒットしたレコード
-				 */
-				_writeRecords = function ( records ) {
-					var mode = records === 0 ? "no" : records === ALL_RECORDS ? "all" : "ord";
-
-					$( "#hit-records-box" )
-						.removeClass()
-						.addClass( {
-							no: "no-records",
-							all: "all-records",
-							ord: ""
-						}[ mode ] );
-					$( "#hit-records" )
-						.text( {
-							no: "no",
-							all: ALL_RECORDS + " (all)",
-							ord: records
-						}[ mode ] );
-				},
 				/** @summary メディウムに記録されているフィルタ項目からフィルタリングして結果を描写する */
 				_execFilter = function () {
 					_myWardrobe = LAURUS.filter( _makeFilterRequest() );
-					_writeRecords( _myWardrobe.length );
 					_display.init();
 				},
 				/** @type {MethodCollection} カテゴリフィルタの操作 */
@@ -2704,19 +2996,68 @@ LAURUS.wardrobe = ( function () {
 						},
 						/** @type {MethodCollection} ファイル読み込みのイベントハンドラ用イベント */
 						_event = {
+							/** @summary ファイルドラッグ時のイベント */
 							dragover: _eventCancel,
+							/** @summary ファイルが要素内に入った時のイベント
+							 * @param {Object} evt イベントオプジェクト
+							 */
 							dragenter: function ( evt ) {
 								$( this ).html( FILE_DETECTING_HTML );
 								_eventCancel( evt );
 							},
+							/** @summary ファイルが要素内から離れた時のイベント
+							 * @param {Object} evt イベントオプジェクト
+							 */
 							dragleave: function () {
 								$( this ).html( FILE_STANDBY_HTML );
 							},
+							/** @summary ファイルをドロップした時のイベント
+							 * @param {Object} evt イベントオプジェクト
+							 */
 							drop: function ( evt ) {
 								_readFile( evt, evt.originalEvent.dataTransfer.files[ 0 ] );
 							},
+							/** @summary ファイル選択ダイアログからファイルを選択した時のイベント
+							 * @param {Object} evt イベントオプジェクト
+							 */
 							input: function ( evt ) {
 								_readFile( evt, evt.target.files[ 0 ] );
+							},
+							/** @summary アイテム所持情況マクロ選択イベント */
+							posesOption: function () {
+								var $this = $( this );
+
+								if ( $this.hasClass( "sparkly" ) ) {
+									$this
+										.removeClass( "sparkly" );
+									$( "#confirm-input" )
+										.val( "" )
+										.change()
+										.prop( "disabled", true );
+								} else {
+									$( "#possessions-macro .poses-option" )
+										.removeClass( "sparkly" );
+									$this
+										.addClass( "sparkly" );
+									$( "#confirm-input" )
+										.prop( "disabled", false );
+								}
+							},
+							/** @summary 誤操作防止用入力イベント */
+							confirmInput: function () {
+								$( "#poses-deter" )[ $( this ).val() ? "removeClass" : "addClass" ]( "disabled" );
+							},
+							/** @summary 一括アイテム所持設定マクロの実行 */
+							posesDeter: function () {
+								var set = $( "#possessions-macro .sparkly" ).attr( "id" ) === "all-poses";
+
+								$.each( LAURUS.WARDROBE, function ( serial ) {
+									POSSESSIONS[ serial ] = set;
+								} );
+
+								localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+								_execFilter();
+								dialogue.dispose();
 							}
 						},
 						/** @summary ファイル読み込みイベント
@@ -2739,12 +3080,23 @@ LAURUS.wardrobe = ( function () {
 							} else {
 								$( this ).attr( "href", URL.createObjectURL( blob ) );
 							}
+						},
+						_possessionsMacro = function ( evt ) {
+							_eventCancel( evt );
+							dialogue.invoke( "possessions-macro", this );
+							$( "#possessions-macro .poses-option" )
+								.removeClass( "sparkly" );
+							$( "#confirm-input" )
+								.val( "" )
+								.change()
+								.prop( "disabled", true );
 						};
 
 					return {
 						event: _event,
 						"import": _import,
-						"export": _export
+						"export": _export,
+						possessionsMacro: _possessionsMacro
 					};
 				}() ),
 				/** @summary アイテムデータ描写スタイルの変更する
@@ -2878,7 +3230,8 @@ LAURUS.wardrobe = ( function () {
 				.on( "click", "#edit-lock", changeEditable )
 				.on( "click", "#list-more, #card-more", Medium.display.more )
 				.on( "click", "#file-import", Medium.fileImex[ "import" ] )
-				.on( "click", "#file-export", Medium.fileImex[ "export" ] );
+				.on( "click", "#file-export", Medium.fileImex[ "export" ] )
+				.on( "click", "#dialogue-possessions-macro", Medium.fileImex.possessionsMacro );
 
 			$( "#dialogue" )
 				// カテゴリフィルタ
@@ -2905,7 +3258,10 @@ LAURUS.wardrobe = ( function () {
 				.on( "dragenter", "#file-droppable", Medium.fileImex.event.dragenter )
 				.on( "dragleave", "#file-droppable", Medium.fileImex.event.dragleave )
 				.on( "drop", "#file-droppable", Medium.fileImex.event.drop )
-				.on( "change", "#import-file", Medium.fileImex.event.input );
+				.on( "change", "#import-file", Medium.fileImex.event.input )
+				.on( "click", ".poses-option", Medium.fileImex.event.posesOption )
+				.on( "change", "#confirm-input", Medium.fileImex.event.confirmInput )
+				.on( "click", "#poses-deter:not( .disabled )", Medium.fileImex.event.posesDeter );
 
 			$( "#laurus" )
 				.on( "click", ".editable [data-serial]", Medium.changePossession );
@@ -2920,7 +3276,6 @@ LAURUS.wardrobe = ( function () {
 			setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
 			Medium.initialize();
 		},
-
 		/** @summary Wardrobe のモード切替時処理 */
 		_changeMode = Medium.execFilter;
 
@@ -2988,6 +3343,4 @@ $( document ).ready( function () {
 	$( "#dialogue" ).perfectScrollbar();
 
 	$( "#advisor-button" ).click();
-
-	// $( "#wardrobe-button" ).click();
 } );

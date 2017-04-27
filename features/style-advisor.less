@@ -401,10 +401,148 @@
 	}
 
 // #feasible {}
+// #recommends {
+// }
+#recommends-controle {
+	.disable-select();
+	color:       @insparkly-color;
+	font-size:   @standard-font-size;
+	font-weight: normal;
+	display:     inline-block;
 
-#standby {
-	.big-face( @advisor-theme );
+	.button-wrapper {
+		display:     inline-block;
+		margin-left: 10px;
+		text-align:  center;
+		width:       120px;
+		span {
+			border-radius: 2px;
+			cursor:        pointer;
+			display:       inline-block;
+			box-sizing:    border-box;
+			padding:       0 15px;
+			&:hover {
+				border: 1px solid @advisor-theme;
+				color:  @key-tone;
+			}
+			&:active {
+				.slant-stripe-background( @advisor-theme, 25% );
+				color: @key-tone;
+			}
+		}
+	}
 }
+.editable #rcm-edit-lock {
+	.slant-stripe-background( @advisor-theme, 25% );
+	color: @key-tone;
+}
+	.rcm-item {
+		.disable-select();
+		float:  left;
+		height: 130px;
+		width:  410px;
+		margin: 0 20px;
+		.slot-name {
+			display:   block;
+			font-size: @sub-font-size;
+			&::before {
+				content: "■ ";
+				color:   @advisor-theme;
+				opacity: 0.4;
+			}
+		}
+		&.recommend {
+			.rcm-note::before {
+				color:       @accent-color;
+				content:     "[推奨] ";
+				font-weight: bold;
+			}
+			.item-card {
+				background-color: fade( @accent-color, 10% );
+			}
+		}
+		&.deprecated {
+			.label {
+				color:           @sub-key-tone;
+				text-decoration: line-through;
+			}
+			.rcm-note::before {
+				color:       @inaccent-color;
+				content:     "[非推奨] ";
+				font-weight: bold;
+			}
+			.item-card {
+				background-color: fade( @inaccent-color, 10% );
+			}
+		}
+	}
+		.rcm-acs-rank {
+			display: inline-block;
+			width: 25px;
+			color: @insparkly-color;
+			font-weight: bold;
+			text-align: center;
+			font-family: "Maven Pro";
+			line-height: 1.5;
+			border-radius: 4px;
+			margin-right: 5px;
+
+			&[data-rcm-rank="1"], &[data-rcm-rank="2"], &[data-rcm-rank="3"],
+			&[data-rcm-rank="4"], &[data-rcm-rank="5"], &[data-rcm-rank="6"],
+			&[data-rcm-rank="7"], &[data-rcm-rank="8"], &[data-rcm-rank="9"] {
+				color: @accent-color;
+				background-color: fade( @accent-color, 10% );
+			}
+
+			&::after {
+				content: ". ";
+			}
+		}
+		.rcm-page {
+			font-family: "Maven Pro";
+			display:     inline-block;
+			margin-left: 20px;
+			&::before { content: "( "; }
+			&::after  { content: " )"; }
+		}
+		.rcm-controle-wrapper {
+			display:     block;
+			float:       left;
+			line-height: @card-height;
+			overflow:    hidden;
+			text-align:  center;
+			width:       44px;
+		}
+		.rcm-prev, .rcm-next {
+			font-size: 24px;
+			&:hover {
+				color:              @advisor-theme;
+				cursor:             pointer;
+				-webkit-transition: 0.1s linear;
+				-moz-transition:    0.1s linear;
+				-o-transition:      0.1s linear;
+				transition:         0.1s linear;
+			}
+			&.disabled {
+				opacity: 0;
+				-webkit-transition: 0.1s linear;
+				-moz-transition:    0.1s linear;
+				-o-transition:      0.1s linear;
+				transition:         0.1s linear;
+			}
+		}
+	.terminus-item {
+		.disable-select();
+		background:    fade( @purveyor-theme, 10% );
+		border-radius: @card-corner;
+		float:         left;
+		height:        @card-height;
+		padding:       10px 20px;
+		width:         @card-width;
+		span:first-child {
+			font-weight: bold;
+		}
+	}
 
 // dialogue
 #stage-select {

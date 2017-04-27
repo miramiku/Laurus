@@ -184,8 +184,12 @@
 	.big-face( @wardrobe-theme );
 }
 
+@card-gap: 10px;
 #wardrobe-card-area-box {
 	min-height: 350px;
+	.item-card {
+		margin: @card-gap @card-gap 0 0;
+	}
 }
 	#card-more {
 		.disable-select();
@@ -289,12 +293,23 @@
 	&.all-records { color: @ParrotGreen; }
 }
 
+#current-stage {
+	color:          @key-tone;
+	display:        block;
+	float:          right;
+	font-size:      @sub-font-size;
+	font-weight:    normal;
+	margin-right:   10px;
+	margin-top:     5px;
+	vertical-align: sub;
+}
+
 // file imex
 #file-imex {
 	.disable-select();
 	font-weight: normal;
 	overflow:    hidden;
-	padding:     25px 150px;
+	padding:     25px 0;
 
 	.imex-button-wrapper {
 		display:     block;
@@ -609,4 +624,56 @@
 		vertical-align: middle;
 		width:          800px;
 		input { font-size: 18px; }
+	}
+
+#possessions-macro {
+	width: 500px;
+
+	.content {
+		clear:    both;
+		overflow: hidden;
+		padding:  50px;
+
+		.macro-command {
+			display:       block;
+			float:         left;
+			text-align:    center;
+			width:         200px;
+			span {
+				border-radius: 4px;
+				color:         @insparkly-color;
+				padding:       0 10px;
+				&.sparkly, &:active:not( .disabled ) {
+					.slant-stripe-background( @wardrobe-theme, 20% );
+					cursor: pointer;
+					color:  @key-tone;
+				}
+				&:hover:not( .disabled ) {
+					border: 2px solid fade( @wardrobe-theme, 25% );
+					cursor: pointer;
+					color:  @key-tone;
+				}
+				&.disabled {
+					.slant-stripe-background( @insparkly-color, 10% );
+				}
+			}
+		}
+		input {
+			.field-border( @wardrobe-theme );
+			display:   block;
+			float:     left;
+			font-size: @standard-font-size;
+			width:     200px;
+			&:disabled {
+				.slant-stripe-background( @insparkly-color, 10% );
+			}
+		}
+	}
+}
+	#macro-text {
+		display:   block;
+		float:     left;
+		font-size: @tiny-font-size;
+		margin:    30px 0 0 20px;
+		width:     380px;
 	}
