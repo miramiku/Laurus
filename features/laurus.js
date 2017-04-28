@@ -356,6 +356,22 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"gift-bounce": 2048,
 				"cinderella": 4096
 			},
+			/** @type {Objet} スキル名対応表 */
+			MAP: {
+				"smile": "ニキ・スマイル",
+				"critical-eye": "厳しい視線",
+				"pickly-immune": "視線無効",
+				"charming": "投げキッス",
+				"gift": "Xmasプレゼント",
+				"gift-immune": "プレゼント無効",
+				"clock": "シンデレラ",
+				"clock-immune": "シンデレラ無効",
+				"sleeping": "眠りの呪い",
+				"true-love": "愛の口づけ",
+				"pickly-bounce": "視線反射",
+				"gift-bounce": "プレゼントはじき",
+				"cinderella": "シンデレラ反射"
+			},
 			/** @type {Objet} シナリオクラス対応値 */
 			SCENARIO_CLASS: {
 				"GIRL": 0,
@@ -389,7 +405,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		_fadeDuration = 100,
 		/** @type {Object} toastr の Laurus カスタイマイズオプション */
 		_toastrLaurusOptions = {
-			positionClass: "toast-top-right",
+			positionClass: "toast-bottom-right",
 			preventDuplicates: true,
 			showDuration: "100",
 			hideDuration: "1000",
@@ -678,6 +694,9 @@ LAURUS.WARDROBE = ( function () {
 	return _wardrobe;
 }() );
 
+/** @summary スコアリングを行い LAURUS.SCORE に結果を格納する
+ * @param {Function} objective スコアリング条件
+ */
 LAURUS.scoring = function ( objective ) {
 	"use strict";
 
@@ -1062,6 +1081,8 @@ LAURUS.advisor = ( function () {
 		dialogue = LAURUS.dialogue,
 
 		_stage = [],
+		/** @type {Array} スコアによるソート済みワードロープ */
+		_sortedWardrobe = [],
 
 		/** @type {Class} 編集中のオブジェクト保持及び操作に関するクラス */
 		Medium = ( function () {
@@ -1302,11 +1323,15 @@ LAURUS.advisor = ( function () {
 				_senarioClasses = {
 					/** @summary シナリオ難易度選択ボタンを表示する */
 					on: function () {
-						$( "#scenario-classes" ).show();
+						$( "#scenario-classes" )
+							.show()
+							.data( "scenario", "on" );
 					},
 					/** @summary シナリオ難易度選択ボタンを隠す */
 					off: function () {
-						$( "#scenario-classes" ).hide();
+						$( "#scenario-classes" )
+							.hide()
+							.data( "scenario", "off" );
 					}
 				},
 				/** @type {Function} ステージデータをリセットする */
@@ -1316,8 +1341,10 @@ LAURUS.advisor = ( function () {
 					} );
 					_senarioClasses.off();
 				},
+				/** @type {MethodCollection} 推奨コーディネートに関する操作 */
 				_recommend = ( function () {
-					var _pos = {},
+					var /** @summary {Object} 現在表示中のアイテム */
+						_pos = {},
 						/** @summary スロットから現在表示中候補のスコアを得る
 						 * @param {String} スロット
 						 * @returns {Number} 現在表示中候補のスコア
@@ -1448,13 +1475,13 @@ LAURUS.advisor = ( function () {
 							_observe();
 						},
 						_init = function () {
-							var wardrobe = [];
+							_sortedWardrobe = [];
 
 							$.each( WARDROBE, function ( serial ) {
-								wardrobe.push( serial );
+								_sortedWardrobe.push( serial );
 							} );
 
-							wardrobe.sort( function ( a, b ) {
+							_sortedWardrobe.sort( function ( a, b ) {
 								return SCORE[ b ] - SCORE[ a ];
 							} );
 
@@ -1464,11 +1491,10 @@ LAURUS.advisor = ( function () {
 								_pos[ this ] = 0;
 							} );
 
-							$.each( wardrobe, function () {
+							$.each( _sortedWardrobe, function () {
 								var slots = WARDROBE[ this ][ COLUMN.SLOTS ],
 									slot = slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex";
 
-								// TODO: 所持情況の考慮
 								if ( POSSESSIONS[ this ] ) {
 									SCORING_BY_SLOT[ slot ].push( this );
 								}
@@ -1909,6 +1935,7 @@ LAURUS.advisor = ( function () {
 					stageSelect: function () {
 						Medium.setStage( $( this ).parent().data( "stage" ) );
 						dialogue.dispose();
+						toastr.info( "推奨コーディネートを更新しました" );
 					},
 					/** カスタム入力したステージをセットする */
 					customStageInput: function () {
@@ -1927,9 +1954,14 @@ LAURUS.advisor = ( function () {
 						Medium.tag.set(( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
 						dialogue.dispose();
 					},
-					/** スキルの活性 / 不活性化状態を入れ替える */
+					/** @summary スキルの活性 / 不活性化状態を入れ替える */
 					changeSkill: function () {
 						Medium.skill.change( null, $( this ).data( "skill" ) );
+					},
+					/** @summary 目的条件を確定する */
+					conditionDetermination: function () {
+						Medium.execScoring();
+						toastr.info( "推奨コーディネートを更新しました" );
 					},
 					/** @summary 内容を選択する（focus イベント用） */
 					thisSelect: function () {
@@ -1941,15 +1973,15 @@ LAURUS.advisor = ( function () {
 							proc = $advisor.hasClass( "editable" ) ?
 								{
 									cls: "removeClass",
-									text: "編集ロック"
+									html: "<span class=\"laurus-icon\">&#x2613;</span> 編集ロック"
 								} :
 								{
 									cls: "addClass",
-									text: "編集可能"
+									html: "<span class=\"laurus-icon\">&#x2612;</span> 編集可能"
 								};
 
 						$advisor[ proc.cls ]( "editable" );
-						$( this ).text( proc.text );
+						$( this ).html( proc.html );
 					}
 				};
 
@@ -1969,7 +2001,7 @@ LAURUS.advisor = ( function () {
 				.on( "click", "#girl-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.GIRL ) )
 				.on( "click", "#princess-class", setSkillForScenarioFactory( SKILL_DEFS.SCENARIO_CLASS.PRINCESS ) )
 				.on( "click", "#receive-skill-icons span", event.changeSkill )
-				.on( "click", "#condition-determination", Medium.execScoring )
+				.on( "click", "#condition-determination", event.conditionDetermination )
 				// コントロール
 				.on( "click", "#rcm-reset", Medium.recommend.reset )
 				.on( "click", "#rcm-edit-lock", event.changeEditable )
@@ -1992,12 +2024,24 @@ LAURUS.advisor = ( function () {
 				Medium.resetUI();
 			}
 		},
+		/** @summary 現在のステージ情報を返す
+		 * @returns {Object} 現在のステージ情報
+		 */
+		_getCurrentStage = function () {
+			return _stage;
+		},
+		/** @summary スコアによるソート済ワードロープを取得する */
+		_getSortedWardrobe = function () {
+			return _sortedWardrobe;
+		},
 		/** @summary Wardrobe のモード切替時処理 */
 		_changeMode = Medium.execScoring;
 
 	return {
 		wakeup: _wakeup,
-		changeMode: _changeMode
+		changeMode: _changeMode,
+		getCurrentStage: _getCurrentStage,
+		getSortedWardrobe: _getSortedWardrobe
 	};
 }() );
 
@@ -3192,15 +3236,15 @@ LAURUS.wardrobe = ( function () {
 						proc = $wardrobe.hasClass( "editable" ) ?
 							{
 								cls: "removeClass",
-								text: "編集ロック"
+								html: "<span class=\"laurus-icon\">&#x2613;</span> 編集ロック"
 							} :
 							{
 								cls: "addClass",
-								text: "編集可能"
+								html: "<span class=\"laurus-icon\">&#x2612;</span> 編集可能"
 							};
 
 					$wardrobe[ proc.cls ]( "editable" );
-					$( this ).text( proc.text );
+					$( this ).html( proc.html );
 				},
 				/** @summary ダイアログの呼び出し
 				 * @param {String} filter フィルター名
@@ -3285,6 +3329,214 @@ LAURUS.wardrobe = ( function () {
 	};
 }() );
 
+/** @type {MethodCollection} Cheetsheet 用メソッドコレクション */
+LAURUS.cheatsheet = ( function () {
+	"use strict";
+
+	var // dependence
+
+		WARDROBE = LAURUS.WARDROBE,
+		SCORE = LAURUS.SCORE,
+
+		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
+		STAGE = LAURUS.STATIC_ITEMS.COLUMN.STAGE,
+
+		STYLE_DEFS = LAURUS.STATIC_ITEMS.STYLE_DEFS,
+		SKILL_DEFS = LAURUS.STATIC_ITEMS.SKILL_DEFS,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
+
+		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
+		restore = LAURUS.STATIC_ITEMS.restore,
+
+		_wakeup = function () {
+
+		},
+		_changeMode = function () {
+			var
+				fundamentalData = function () {
+					$( "#cs-stage" ).text( $( "#request-stage-title" ).text() );
+					$( "#cs-chapter" ).text( $( "#request-chapter" ).text() );
+					$( "#cs-subject" ).html( $( "#criteria-subject" ).html() );
+				},
+				criteriaStyle = function () {
+					$.each( STYLE_DEFS.LIST, function ( index ) {
+						var weight = $( "#criteria-" + this ).text(),
+							branch = ( weight !== "-" ?
+								{
+									label: STYLE_DEFS.MAP[ index ],
+									weight: weight,
+									"class": ( weight < 1 ? "reduce" : 1 < weight ? "increase" : "same" )
+								} : {
+									label: "",
+									weight: "",
+									"class": ""
+								} );
+
+						$( "#cs-label-" + this ).text( branch.label );
+						$( "#cs-" + this )
+							.text( branch.weight )
+							.removeClass()
+							.addClass( branch[ "class" ] );
+					} );
+				},
+				tagBonus = function () {
+					$.each( [ 1, 2 ], function () {
+						var tag = $( "#criteria-tag-" + this ).text(),
+							value = $( "#criteria-tag-box-" + this + " .value" ).text(),
+							product = $( "#criteria-tag-box-" + this + " .product" ).text();
+
+						$( "#cs-tag-box-" + this + " .tag" )
+							.attr( "data-tag", tag )
+							.html( "<span>" + tag + "</span>" );
+						$( "#cs-tag-box-" + this + " .value" )
+							.attr( "data-value", value )
+							.text( value );
+						$( "#cs-tag-box-" + this + " .product" )
+							.text( product );
+					} );
+					$( "#none-tag-bonus" )[ $( "#cs-tag-bonus .tag-box .tag:visible" ).length === 0 ? "show" : "hide" ]();
+				},
+				skills = function () {
+					var currentStage = LAURUS.advisor.getCurrentStage(),
+						skill = {
+							girl: currentStage[ STAGE.SKILL ][ 0 ],
+							princess: currentStage[ STAGE.SKILL ][ 1 ]
+						},
+						NONE_SKILL = "</span><span class=\"cs-skill-name none\">スキルを使用しない または 不定</span>",
+						makeSkillItem = function ( skill ) {
+							return "<span class=\"cs-skill-icon " + skill + "\"></span><span class=\"cs-skill-name " + skill + "\">" + SKILL_DEFS.MAP[ skill ] + "</span>";
+						},
+						$receiveSkills = null;
+
+					$( "#cs-girl-class, #cs-princess-class, #cs-other-class" )
+						.hide();
+					$( "#cs-skills .cs-skills" )
+						.empty();
+
+					if ( $( "#scenario-classes" ).data( "scenario" ) === "on" ) {
+						$.each( [ "girl", "princess" ], function () {
+							var cls = this,
+								$skills = $( "#cs-" + this + "-class .cs-skills" );
+
+							if ( skill[ this ] === 0 ) {
+								$skills
+									.html( NONE_SKILL );
+							} else {
+								$.each( SKILL_DEFS.LIST, function () {
+									if ( SKILL_DEFS.MASK[ this ] & skill[ cls ] ) {
+										$skills
+											.append( makeSkillItem( this ) );
+									}
+								} );
+							}
+						} );
+
+						$( "#cs-girl-class, #cs-princess-class" ).show();
+					} else {
+						$receiveSkills = $( "#receive-skill-icons .sparkly" );
+
+						if ( $receiveSkills.length === 0 ) {
+							$( "#cs-other-class .cs-skills" )
+								.html( NONE_SKILL );
+						} else {
+							$receiveSkills
+								.each( function () {
+									$( "#cs-other-class .cs-skills" )
+										.append( makeSkillItem( $( this ).data( "skill" ) ) );
+								} );
+						}
+
+						$( "#cs-other-class" ).show();
+					}
+				},
+				slots = function () {
+					var criteriaTags = [ $( "#criteria-tag-1" ).data( "id" ), $( "#criteria-tag-2" ).data( "id" ) ],
+						sortedWardrobe = LAURUS.advisor.getSortedWardrobe(),
+						SCORING_BY_SLOT = {};
+
+					$.each( CATEGORY_DEFS.SLOT_LIST, function () {
+						SCORING_BY_SLOT[ this ] = [];
+					} );
+
+					$.each( sortedWardrobe, function () {
+						var slots = WARDROBE[ this ][ COLUMN.SLOTS ];
+
+						SCORING_BY_SLOT[ slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex" ].push( this );
+					} );
+
+					$( "#cs-recommends .cs-recommends-list" )
+						.empty();
+
+					$.each( CATEGORY_DEFS.SLOT_LIST, function () {
+						var $slot = $( "#cs-" + this + " .cs-recommends-list" ),
+							ITEMS = 6,
+							list = SCORING_BY_SLOT[ this ],
+							terminus = list.length < ITEMS ? list.length : ITEMS,
+							serial = 0,
+							score = 0,
+							before = -1,
+							compare = "",
+							matchTags = [],
+							tags = null,
+							item = null,
+							makeTagIcon = function ( matchs ) {
+								var html = "";
+
+								$.each( matchs, function () {
+									html += "<span class=\"cs-tag\" data-cs-tag=\"" + this + "\"></span>";
+								} );
+
+								return html;
+							};
+
+						if ( terminus === 0 ) {
+							$slot
+								.parent()
+								.hide();
+						} else {
+							for ( var i = 0; i < terminus; i += 1 ) {
+								serial = list[ i ];
+								item = WARDROBE[ serial ];
+								score = SCORE[ serial ];
+								compare = score < before ?
+									{
+										cls: "lesser",
+										character: "&lt;"
+									} : {
+										cls: "equal",
+										character: "="
+									};
+								tags = restore.tag( item[ COLUMN.TAGS ] );
+								matchTags = [];
+
+								$.each( tags, function () {
+									if ( this !== 0 && ( this === criteriaTags[ 0 ] || this === criteriaTags[ 1 ] ) ) {
+										matchTags.push( this );
+									}
+								} );
+
+								$slot
+									.append( "<span class=\"cs-item" + ( matchTags.length === 0 ? "" : " cs-has-tags" ) + "\"><span class=\"cs-compare " + compare.cls + "\">" + compare.character + "</span>" + makeTagIcon( matchTags ) + "<span class=\"cs-item-name\">" + item[ COLUMN.NAME ] + "</span><span class=\"cs-score\">" + digitGrouping( score ) + "</span></span>" );
+
+								before = score;
+							}
+						}
+					} );
+				};
+
+			fundamentalData();
+			criteriaStyle();
+			tagBonus();
+			skills();
+			slots();
+		};
+
+	return {
+		wakeup: _wakeup,
+		changeMode: _changeMode
+	};
+}() );
+
 /** @summary モード（ページ）チェンジ */
 LAURUS.changeMode = function () {
 	"use strict";
@@ -3314,12 +3566,14 @@ LAURUS.wakeup = {
 		"use strict";
 
 		// グローバルナビ
-		$( "#general-navgation .ghost-button" )
-			.on( "click", LAURUS.changeMode );
+		$( "#general-navgation" )
+			.on( "click", ".ghost-button:not( .usage )", LAURUS.changeMode )
+			.on( "click", ".usage", function () { console.log( "usage" ); } );
 	},
 	advisor: LAURUS.advisor.wakeup,
 	wardrobe: LAURUS.wardrobe.wakeup,
 	purveyor: function () { },
+	cheatsheet: LAURUS.cheatsheet.wakeup,
 	credit: function () { },
 	changelog: function () { },
 	dialogue: LAURUS.dialogue.wakeup
@@ -3343,4 +3597,5 @@ $( document ).ready( function () {
 	$( "#dialogue" ).perfectScrollbar();
 
 	$( "#advisor-button" ).click();
+	// $( "#cheatsheet-button" ).click();
 } );

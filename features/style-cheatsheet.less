@@ -1,0 +1,334 @@
+// #cheatsheet {}
+
+#cs-fundamental {
+	span {
+		display: block;
+	}
+}
+	#cs-stage {
+		font-size:   24px;
+		font-weight: bold;
+		line-height: 1;
+		margin-top:  50px;
+	}
+	// #cs-chapter {}
+	#cs-subject {
+		color:  @StrawberryPink;
+		margin: 15px 0;
+	}
+// #cs-style {}
+#cs-criteria-style {
+	width: 800px;
+	th {
+		font-weight: bold;
+		width:       120px;
+		&.gorgeous { color: @GORGEOUS; }
+		&.simple   { color: @SIMPLE;   }
+		&.elegance { color: @ELEGANCE; }
+		&.lively   { color: @LIVELY;   }
+		&.mature   { color: @MATURE;   }
+		&.cute     { color: @CUTE;     }
+		&.sexy     { color: @SEXY;     }
+		&.pure     { color: @PURE;     }
+		&.warm     { color: @WARM;     }
+		&.cool     { color: @COOL;     }
+	}
+	td {
+		color:         @same-scale;
+		font-family:   "Maven Pro";
+		font-weight:   bold;
+		text-align:    right;
+		text-overflow: ellipsis;
+		overflow:      hidden;
+		white-space:   nowrap;
+		width:         40px;
+		&.increase { color: @increase-scale; }
+		&.reduce   { color: @reduce-scale;   }
+	}
+}
+
+#cs-tag-bonus {
+	margin-bottom: 20px;
+	overflow:      hidden;
+	.tag {
+		.tag-factory();
+		display: block;
+		float:   left;
+		width:   170px;
+
+		.tag-color( @color ) {
+			span {
+				border: 2px solid fade( @color, 25% );
+				color:  @color;
+			}
+		}
+		&[data-tag="タグなし"] { .tag-color( @TAG-NONE ); }
+		&[data-tag="UV対策"] { .tag-color( @SUN-CARE ); }
+		&[data-tag="ダンサー"] { .tag-color( @DANCE ); }
+		&[data-tag="小花柄"] { .tag-color( @FLORAL ); }
+		&[data-tag="冬服"] { .tag-color( @WINTER ); }
+		&[data-tag="英国風"] { .tag-color( @BRITAIN ); }
+		&[data-tag="水着"] { .tag-color( @SWIMSUIT ); }
+		&[data-tag="バスタイム"] { .tag-color( @SHOWER ); }
+		&[data-tag="和風"] { .tag-color( @KIMONO ); }
+		&[data-tag="ナイトウェア"] { .tag-color( @PAJAMAS ); }
+		&[data-tag="ウェディング"] { .tag-color( @WEDDING ); }
+		&[data-tag="ミリタリー"] { .tag-color( @ARMY ); }
+		&[data-tag="OL"] { .tag-color( @OFFICE ); }
+		&[data-tag="エプロン"] { .tag-color( @APRON ); }
+		&[data-tag="チャイナドレス"] { .tag-color( @CHEOGSAM ); }
+		&[data-tag="メイド"] { .tag-color( @MAIDEN ); }
+		&[data-tag="フォーマル"] { .tag-color( @EVENING-GOWN ); }
+		&[data-tag="ネイビー"] { .tag-color( @NAVY ); }
+		&[data-tag="エスニック"] { .tag-color( @TRADITIONAL ); }
+		&[data-tag="バニー"] { .tag-color( @BUNNY ); }
+		&[data-tag="お嬢様"] { .tag-color( @LADY ); }
+		&[data-tag="ロリータ"] { .tag-color( @LOLITA ); }
+		&[data-tag="ゴシック"] { .tag-color( @GOTHIC ); }
+		&[data-tag="スポーティ"] { .tag-color( @SPORTS ); }
+		&[data-tag="原宿系"] { .tag-color( @HARAJUKU ); }
+		&[data-tag="学生風"] { .tag-color( @PREPPY ); }
+		&[data-tag="中性風"] { .tag-color( @UNISEX ); }
+		&[data-tag="近未来"] { .tag-color( @FUTURE ); }
+		&[data-tag="メルヘン"] { .tag-color( @FAIRY ); }
+		&[data-tag="ロック"] { .tag-color( @ROCK ); }
+		&[data-tag="デニム"] { .tag-color( @DENIM ); }
+		&[data-tag="小動物"] { .tag-color( @PET ); }
+		&[data-tag="女神"] { .tag-color( @GODDESS ); }
+		&[data-tag="POP"] { .tag-color( @POP ); }
+		&[data-tag="部屋着"] { .tag-color( @HOMEWEAR ); }
+		&[data-tag="クラシックチャイナ"] { .tag-color( @CHINESE-CLASSICAL ); }
+		&[data-tag="インド風"] { .tag-color( @HINDU ); }
+		&[data-tag="レトロチャイナ"] { .tag-color( @REPUBLIC-OF-CHINA ); }
+		&[data-tag="中世ヨーロッパ風"] { .tag-color( @EUROPEAN ); }
+		&[data-tag="ワル"] { .tag-color( @SWORDMAN ); }
+		&[data-tag="雨の日"] { .tag-color( @RAIN ); }
+		&[data-tag="モダンチャイナ"] { .tag-color( @MODERN-CHINA ); }
+		&[data-tag="森ガール"] { .tag-color( @DRYAD ); }
+		&[data-tag="ボヘミアン"] { .tag-color( @BOHEMIA ); }
+		&[data-tag="メディカル"] { .tag-color( @PARAMEDICS ); }
+	}
+	.value {
+		border-radius: 4px;
+		display:       block;
+		float:         left;
+		font-family:   "Maven Pro";
+		font-weight:   bold;
+		padding:       0 5px;
+		text-align:    center;
+		width:         50px;
+		&[data-value="SS"] { color: @attributes-value-s; }
+		&[data-value="S" ] { color: @attributes-value-s; }
+		&[data-value="A" ] { color: @attributes-value-a; }
+		&[data-value="B" ] { color: @attributes-value-b; }
+		&[data-value="C" ] { color: @attributes-value-c; }
+		&[data-tag="タグ選択"] {
+			display: none;
+		}
+	}
+	.product {
+		border-radius: 4px;
+		display:       block;
+		float:         left;
+		font-family:   "Maven Pro";
+		font-weight:   bold;
+		text-align:    right;
+		padding:       0 5px;
+		width:         50px;
+		&::before { content: "x"; }
+	}
+	.tag[data-tag="タグ選択"],
+	.tag[data-tag="タグ選択"] + .value,
+	.tag[data-tag="タグ選択"] + .value + .product {
+		display: none;
+	}
+}
+
+#cs-skills {
+	line-height: 40px;
+	overflow:    hidden;
+}
+	#cs-girl-class, #cs-princess-class {
+		clear: both;
+		.label {
+			display:     block;
+			float:       left;
+			margin-left: 20px;
+			text-align:  center;
+			span {
+				border-radius: 10px;
+				display:       inline-block;
+				line-height:   1.5;
+				padding:       0 20px;
+				width:         140px;
+			}
+		}
+		.cs-skills { width: 680px; }
+	}
+	#cs-girl-class     .label span { .slant-stripe-background( @girl-class-color,     25% ); }
+	#cs-princess-class .label span { .slant-stripe-background( @princess-class-color, 25% ); }
+
+	#cs-other-class .cs-skills { width: 850px; }
+
+	.cs-skills {
+		@skill-icon-width:  40px;
+		@skill-icon-height: 30px;
+
+		float:  left;
+		margin: 0 20px;
+
+		.cs-skill-icon {
+			.receive-skills ( @pos ) { background-position: ( -1 * @skill-icon-width * @pos ) 0; }
+			background:     url( "resources/receive-skills.png" );
+			display:        inline-block;
+			height:         @skill-icon-height;
+			vertical-align: middle;
+			width:          @skill-icon-width;
+			&.smile         { .receive-skills(  0 ); }
+			&.critical-eye  { .receive-skills(  1 ); }
+			&.pickly-immune { .receive-skills(  2 ); }
+			&.charming      { .receive-skills(  3 ); }
+			&.gift          { .receive-skills(  4 ); }
+			&.gift-immune   { .receive-skills(  5 ); }
+			&.clock         { .receive-skills(  6 ); }
+			&.clock-immune  { .receive-skills(  7 ); }
+			&.sleeping      { .receive-skills(  8 ); }
+			&.true-love     { .receive-skills(  9 ); }
+			&.pickly-bounce { .receive-skills( 10 ); }
+			&.gift-bounce   { .receive-skills( 11 ); }
+			&.cinderella    { .receive-skills( 12 ); }
+		}
+		.cs-skill-name {
+			border-radius: 4px;
+			display:       inline-block;
+			font-size:     @sub-font-size;
+			line-height:   1.5;
+			text-align:    center;
+			width:         130px;
+			&.none          {
+				.slant-stripe-background( @insparkly-color, 20% );
+				width: 230px;
+			}
+			&.smile         { .slant-stripe-background( @SMILE, 50% );         }
+			&.critical-eye  { .slant-stripe-background( @CRITICAL-EYE, 50% );  }
+			&.pickly-immune { .slant-stripe-background( @PICKLY-IMMUNE, 50% ); }
+			&.charming      { .slant-stripe-background( @CHARMING, 50% );      }
+			&.gift          { .slant-stripe-background( @GIFT, 50% );          }
+			&.gift-immune   { .slant-stripe-background( @GIFT-IMMUNE, 50% );   }
+			&.clock         { .slant-stripe-background( @CLOCK, 50% );         }
+			&.clock-immune  { .slant-stripe-background( @CLOCK-IMMUNE, 50% );  }
+			&.sleeping      { .slant-stripe-background( @SLEEPING, 50% );      }
+			&.true-love     { .slant-stripe-background( @TRUE-LOVE, 50% );     }
+			&.pickly-bounce { .slant-stripe-background( @PICKY-BOUNCE, 50% );  }
+			&.gift-bounce   { .slant-stripe-background( @GIFT-BOUNCE, 50% );   }
+			&.cinderella    { .slant-stripe-background( @CINDERELLA, 50% );    }
+		}
+	}
+
+.cs-slot {
+	clear: both;
+	.label {
+		display:    block;
+		float:      left;
+		text-align: center;
+		width:      140px;
+		span {
+			background:    fade( @cheatsheet-theme, 25% );
+			border-radius: 10px;
+			display:       inline-block;
+			line-height:   1.5;
+			min-width:     100px;
+			padding:       0 20px;
+		}
+	}
+	.cs-recommends-list {
+		float:  left;
+		margin: 0 10px 10px 10px;
+		width:  740px;
+		.cs-item:first-child .cs-compare {
+			display: none;
+		}
+	}
+}
+	.cs-item {
+		display: block;
+		float:   left;
+	}
+		.cs-has-tags .cs-item-name {
+			.slant-stripe-background( @accent-color, 10% );
+			border-radius: 4px;
+			padding:       0 10px;
+		}
+		.cs-compare {
+			display:     inline-block;
+			font-family: "Maven Pro";
+			margin:      0 10px;
+			text-align:  center;
+			&.lesser {
+				color:       @accent-color;
+				font-weight: bold;
+			}
+			&.equal {
+				color: @inaccent-color;
+			}
+		}
+		.cs-tag {
+			background:     url( "resources/tags.png" ) no-repeat top left;
+			display:        inline-block;
+			height:         15px;
+			text-align:     center;
+			vertical-align: middle;
+			width:          40px;
+
+			.setTag( @row, @col ) { background-position: ( -1 * 40px * @col ) ( -1 * 15px * @row ); }
+			&[data-cs-tag="1"]  { .setTag(  0, 0 ); }
+			&[data-cs-tag="2"]  { .setTag(  0, 1 ); }
+			&[data-cs-tag="3"]  { .setTag(  0, 2 ); }
+			&[data-cs-tag="4"]  { .setTag(  0, 3 ); }
+			&[data-cs-tag="5"]  { .setTag(  1, 0 ); }
+			&[data-cs-tag="6"]  { .setTag(  1, 1 ); }
+			&[data-cs-tag="7"]  { .setTag(  1, 2 ); }
+			&[data-cs-tag="8"]  { .setTag(  1, 3 ); }
+			&[data-cs-tag="9"]  { .setTag(  2, 0 ); }
+			&[data-cs-tag="10"] { .setTag(  2, 1 ); }
+			&[data-cs-tag="11"] { .setTag(  2, 2 ); }
+			&[data-cs-tag="12"] { .setTag(  2, 3 ); }
+			&[data-cs-tag="13"] { .setTag(  3, 0 ); }
+			&[data-cs-tag="14"] { .setTag(  3, 1 ); }
+			&[data-cs-tag="15"] { .setTag(  3, 2 ); }
+			&[data-cs-tag="16"] { .setTag(  3, 3 ); }
+			&[data-cs-tag="17"] { .setTag(  4, 0 ); }
+			&[data-cs-tag="18"] { .setTag(  4, 1 ); }
+			&[data-cs-tag="19"] { .setTag(  4, 2 ); }
+			&[data-cs-tag="20"] { .setTag(  4, 3 ); }
+			&[data-cs-tag="21"] { .setTag(  5, 0 ); }
+			&[data-cs-tag="22"] { .setTag(  5, 1 ); }
+			&[data-cs-tag="23"] { .setTag(  5, 2 ); }
+			&[data-cs-tag="24"] { .setTag(  5, 3 ); }
+			&[data-cs-tag="25"] { .setTag(  6, 0 ); }
+			&[data-cs-tag="26"] { .setTag(  6, 1 ); }
+			&[data-cs-tag="27"] { .setTag(  6, 2 ); }
+			&[data-cs-tag="28"] { .setTag(  6, 3 ); }
+			&[data-cs-tag="29"] { .setTag(  7, 0 ); }
+			&[data-cs-tag="30"] { .setTag(  7, 1 ); }
+			&[data-cs-tag="31"] { .setTag(  7, 2 ); }
+			&[data-cs-tag="32"] { .setTag(  7, 3 ); }
+			&[data-cs-tag="33"] { .setTag(  8, 0 ); }
+			&[data-cs-tag="34"] { .setTag(  8, 1 ); }
+			&[data-cs-tag="35"] { .setTag(  8, 2 ); }
+			&[data-cs-tag="36"] { .setTag(  8, 3 ); }
+			&[data-cs-tag="37"] { .setTag(  9, 0 ); }
+			&[data-cs-tag="38"] { .setTag(  9, 1 ); }
+			&[data-cs-tag="39"] { .setTag(  9, 2 ); }
+			&[data-cs-tag="40"] { .setTag(  9, 3 ); }
+			&[data-cs-tag="41"] { .setTag( 10, 0 ); }
+			&[data-cs-tag="42"] { .setTag( 10, 1 ); }
+			&[data-cs-tag="43"] { .setTag( 10, 2 ); }
+			&[data-cs-tag="44"] { .setTag( 10, 3 ); }
+		}
+		.cs-score {
+			font-family: "Maven Pro";
+			font-size:   @tiny-font-size;
+			&::before { content: " ( "; }
+			&::after  { content: " )"; }
+		}

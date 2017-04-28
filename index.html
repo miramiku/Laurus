@@ -47,22 +47,22 @@
 						</span>
 					</li>
 					<li>
-						<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
-							<span class="laurus-icon">&#x2603;</span> cheatsheet
+						<span id="usage-button" class="ghost-button usage" data-mode="usage">
+							<span class="laurus-icon">&#x2603;</span> Usage
 						</span>
 					</li>
-					<!--<li>
-						<span id="purveyor-button" class="ghost-button" data-mode="purveyor">
-							<span class="laurus-icon">&#x2602;</span> Purveyor
-						</span>
-					</li>-->
 					<li id="more-menu"><img src="resources/more.png" alt="more">
 						<ul>
 							<!--<li>
+								<span id="purveyor-button" class="ghost-button" data-mode="purveyor">
+									<span class="laurus-icon">&#x2602;</span> Purveyor
+								</span>
+							</li>-->
+							<li>
 								<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
 									<span class="laurus-icon">&#x2603;</span> cheatsheet
 								</span>
-							</li>-->
+							</li>
 							<li>
 								<span id="credit-button" class="ghost-button" data-mode="credit">
 									<span class="laurus-icon">&#x2604;</span> credit
@@ -128,12 +128,12 @@
 					</table>
 					<div id="criteria-tags">
 						<div id="criteria-tag-box-1" class="tag-box">
-							<span class="tag" class="tag-none"><span id="criteria-tag-1">タグ選択</span></span>
+							<span class="tag tag-none"><span id="criteria-tag-1">タグ選択</span></span>
 							<span class="value s">S</span>
 							<span class="product">1</span>
 						</div>
 						<div id="criteria-tag-box-2" class="tag-box">
-							<span class="tag" class="tag-none"><span id="criteria-tag-2">タグ選択</span></span>
+							<span class="tag tag-none"><span id="criteria-tag-2">タグ選択</span></span>
 							<span class="value s">S</span>
 							<span class="product">1</span>
 						</div>
@@ -183,16 +183,16 @@
 				<h4>禁忌アイテム</h4>
 				<div id="fail-items"></div>
 			</div>
-			<div id="options">
-				option
-			</div>
+			<div id="options"></div>
 		</div>
 
 		<h3>
 			推奨コーディネート
 			<span id="recommends-controle">
-				<span class="button-wrapper"><span id="rcm-reset">リセット</span></span>
-			<span class="button-wrapper"><span id="rcm-edit-lock">編集ロック</span></span>
+				<span class="button-wrapper"><span id="rcm-reset"><span class="laurus-icon">&#x2605;</span> リセット</span>
+			</span>
+			<span class="button-wrapper"><span id="rcm-edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span>
+			</span>
 			</span>
 		</h3>
 		<div id="feasible">
@@ -256,6 +256,8 @@
 					<div class="item-card-area"></div>
 					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
+
+				<h5>アクセサリー</h5>
 				<div id="slot-head-accessory" class="rcm-item" data-rcm-slot="accessory">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ヘッドアクセ</span><span class="rcm-page"></span></div>
 					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
@@ -342,6 +344,8 @@
 					<div class="item-card-area"></div>
 					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
+
+				<h5>特殊アクセサリー</h5>
 				<div id="slot-face" class="rcm-item" data-rcm-slot="face">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">フェイス</span><span class="rcm-page"></span></div>
 					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
@@ -410,7 +414,8 @@
 
 		<h3>フィルタ
 			<span id="filter-controle-buttons" class="filter-controle">
-				<span class="button-wrapper"><span id="filter-reset">フィルタリセット</span></span>
+				<span class="button-wrapper"><span id="filter-reset"><span class="laurus-icon">&#x2605;</span> フィルタリセット</span>
+			</span>
 			</span>
 			<span id="hit-records-box"><span id="hit-records"></span> records</span>
 		</h3>
@@ -443,7 +448,8 @@
 			<span class="button-wrapper"><span id="card-item-style">カード形式</span></span>
 			</span>
 			<span id="edit-lock-controle" class="filter-controle">
-				<span class="button-wrapper"><span id="edit-lock">編集ロック</span></span>
+				<span class="button-wrapper"><span id="edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span>
+			</span>
 			</span>
 			<span id="current-stage"></span>
 		</h3>
@@ -491,18 +497,230 @@
 
 		<h3>アイテム所持状況の入出力</h3>
 		<div id="file-imex">
-			<span class="imex-button-wrapper"><a id="file-import" href="#">アイテム所持状況の読み込み</a></span>
-			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json">アイテム所持状況の書き出し</a></span>
+			<span class="imex-button-wrapper"><a id="file-import" href="#"><span class="laurus-icon">&#x2615;</span> アイテム所持状況の読み込み</a>
+			</span>
+			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json"><span class="laurus-icon">&#x2614;</span> アイテム所持状況の書き出し</a>
+			</span>
 			<span class="imex-button-wrapper"><a id="dialogue-possessions-macro" href="#">アイテム所持状況の一括設定</a></span>
 		</div>
 	</div>
 
+	<!-- 未実装
 	<div id="purveyor" class="tab">
 		Purveyor
 	</div>
+-->
 
 	<div id="cheatsheet" class="tab">
-		Cheatsheet
+		<div id="cs-fundamental">
+			<span id="cs-stage"></span>
+			<span id="cs-chapter"></span>
+			<span id="cs-subject"></span>
+		</div>
+
+		<h4>評価スタイルとウェイト</h4>
+		<div id="cs-style">
+			<table id="cs-criteria-style">
+				<tbody>
+					<tr>
+						<th id="cs-label-gorgeous" class="gorgeous"></th>
+						<td id="cs-gorgeous"></td>
+						<th id="cs-label-elegance" class="elegance"></th>
+						<td id="cs-elegance"></td>
+						<th id="cs-label-mature" class="mature"></th>
+						<td id="cs-mature"></td>
+						<th id="cs-label-sexy" class="sexy"></th>
+						<td id="cs-sexy"></td>
+						<th id="cs-label-warm" class="warm"></th>
+						<td id="cs-warm"></td>
+					</tr>
+					<tr>
+						<th id="cs-label-simple" class="simple"></th>
+						<td id="cs-simple"></td>
+						<th id="cs-label-lively" class="lively"></th>
+						<td id="cs-lively"></td>
+						<th id="cs-label-cute" class="cute"></th>
+						<td id="cs-cute"></td>
+						<th id="cs-label-pure" class="pure"></th>
+						<td id="cs-pure"></td>
+						<th id="cs-label-cool" class="cool"></th>
+						<td id="cs-cool"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<h4>タグボーナス</h4>
+		<div id="cs-tag-bonus">
+			<div id="cs-tag-box-1" class="tag-box">
+				<span class="tag"><span>タグ選択</span></span>
+				<span class="value">S</span>
+				<span class="product">1</span>
+			</div>
+			<div id="cs-tag-box-2" class="tag-box">
+				<span class="tag"><span>タグ選択</span></span>
+				<span class="value">S</span>
+				<span class="product">1</span>
+			</div>
+			<div id="none-tag-bonus">
+				<span class="tag" data-tag="タグなし"><span>なし</span></span>
+			</div>
+		</div>
+
+		<h4>使用スキル</h4>
+		<div id="cs-skills">
+			<div id="cs-girl-class">
+				<span class="label"><span>ガール級</span></span>
+				<div class="cs-skills"></div>
+			</div>
+			<div id="cs-princess-class">
+				<span class="label"><span>プリンセス級</span></span>
+				<div class="cs-skills"></div>
+			</div>
+			<div id="cs-other-class">
+				<div class="cs-skills"></div>
+			</div>
+		</div>
+
+		<h3>推奨コーディネート</h3>
+		<div id="cs-recommends">
+			<div id="cs-hair" class="cs-slot">
+				<span class="label"><span>ヘアスタイル</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-dress" class="cs-slot">
+				<span class="label"><span>ドレス</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-coat" class="cs-slot">
+				<span class="label"><span>コート</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-tops" class="cs-slot">
+				<span class="label"><span>トップス</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-bottoms" class="cs-slot">
+				<span class="label"><span>ボトムス</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-hosiery" class="cs-slot">
+				<span class="label"><span>靴下</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-anklet" class="cs-slot">
+				<span class="label"><span>アンクレット</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-shoes" class="cs-slot">
+				<span class="label"><span>シューズ</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-makeup" class="cs-slot">
+				<span class="label"><span>メイク</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+
+			<h5>アクセサリー</h5>
+			<div id="cs-head-accessory" class="cs-slot">
+				<span class="label"><span>ヘッドアクセ</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-veil" class="cs-slot">
+				<span class="label"><span>ヴェール</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-headband" class="cs-slot">
+				<span class="label"><span>カチューシャ</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-false-ears" class="cs-slot">
+				<span class="label"><span>つけ耳</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-earrings" class="cs-slot">
+				<span class="label"><span>耳飾り</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-scarf" class="cs-slot">
+				<span class="label"><span>マフラー</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-necklace" class="cs-slot">
+				<span class="label"><span>ネックレス</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-right-arm" class="cs-slot">
+				<span class="label"><span>右手飾り</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-left-arm" class="cs-slot">
+				<span class="label"><span>左手飾り</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-glove" class="cs-slot">
+				<span class="label"><span>手袋</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-right-hand" class="cs-slot">
+				<span class="label"><span>右手持ち</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-left-hand" class="cs-slot">
+				<span class="label"><span>左手持ち</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-both-hand" class="cs-slot">
+				<span class="label"><span>両手持ち</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-waist" class="cs-slot">
+				<span class="label"><span>腰飾り</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+
+			<h5>特殊アクセサリー</h5>
+			<div id="cs-face" class="cs-slot">
+				<span class="label"><span>フェイス</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-body" class="cs-slot">
+				<span class="label"><span>ボディ</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-tatoo" class="cs-slot">
+				<span class="label"><span>タトゥー</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-wings" class="cs-slot">
+				<span class="label"><span>羽根</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-tail" class="cs-slot">
+				<span class="label"><span>しっぽ</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-foreground" class="cs-slot">
+				<span class="label"><span>前景</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-background" class="cs-slot">
+				<span class="label"><span>後景</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-hanging" class="cs-slot">
+				<span class="label"><span>吊り</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-ground" class="cs-slot">
+				<span class="label"><span>床</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+			<div id="cs-skin" class="cs-slot">
+				<span class="label"><span>肌</span></span>
+				<div class="cs-recommends-list"></div>
+			</div>
+		</div>
 	</div>
 
 	<div id="credit" class="tab">

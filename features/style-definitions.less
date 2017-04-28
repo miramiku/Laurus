@@ -53,3 +53,17 @@
 	background: -ms-radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
 	background: radial-gradient( bottom right, circle, fade( @color, @fade ), transparent 100% );
 }
+
+.transition( @duration ) {
+	-webkit-transition: @duration linear;
+	-moz-transition:    @duration linear;
+	-o-transition:      @duration linear;
+	transition:         @duration linear;
+}
+
+.icon( @color, @duration ) {
+	.laurus-icon {
+		color:@color;
+		.transition( @duration );
+	}
+}

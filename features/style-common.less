@@ -60,7 +60,32 @@ h4 {
 	#changelog  &::before { color: @changelog-theme;  }
 }
 
-// h5: paragraph subjet
+h5 {
+	clear:      both;
+	font-size:  @subject-font-size;
+	display:    inline-block;
+	padding:    0 300px;
+	position:   relative;
+	width:      100%;
+	text-align: center;
+	&::before, &::after {
+		content:  "";
+		display:  inline-block;
+		height:   2px;
+		position: absolute;
+		top:      50%;
+		width:    280px;
+		#advisor    & { background-color: fade( @advisor-theme,    40% ); }
+		#wardrobe   & { background-color: fade( @wardrobe-theme,   40% ); }
+		#purveyor   & { background-color: fade( @purveyor-theme,   40% ); }
+		#cheatsheet & { background-color: fade( @cheatsheet-theme, 40% ); }
+		#credit     & { background-color: fade( @credit-theme,     40% ); }
+		#changelog  & { background-color: fade( @changelog-theme,  40% ); }
+	}
+	&::before { left:  20px; }
+	&::after  { right: 20px; }
+}
+
 // h6: sentence subject
 h6 {
 	clear:       both;

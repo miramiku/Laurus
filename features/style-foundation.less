@@ -22,6 +22,7 @@ header {
 	.disable-select();
 	&.advisor    { border-color: fade( @advisor-theme,    40%) }
 	&.wardrobe   { border-color: fade( @wardrobe-theme,   40%) }
+	&.usage      { border-color: fade( @credit-theme,     40%) }
 	&.purveyor   { border-color: fade( @purveyor-theme,   40%) }
 	&.cheatsheet { border-color: fade( @cheatsheet-theme, 40%) }
 	&.credit     { border-color: fade( @credit-theme,     40%) }
@@ -101,26 +102,18 @@ header {
 			&:hover { overflow: visible; }
 		}
 		.tab-mode( @theme ) {
-			.icon () {
-				.laurus-icon {
-					color: @theme;
-					-webkit-transition: 0.2s linear;
-					-moz-transition:    0.2s linear;
-					-o-transition:      0.2s linear;
-					transition:         0.2s linear;
-				}
-			}
 			&:hover {
 				border: 1px solid @theme;
-				.icon();
+				.icon( @theme, 0.2s );
 			}
 			&.current-mode {
 				.slant-stripe-background( @theme, 20% );
-				.icon();
+				.icon( @theme, 0.2s );
 			}
 		}
 		#advisor-button    { .tab-mode( @advisor-theme    ); }
 		#wardrobe-button   { .tab-mode( @wardrobe-theme   ); }
+		#usage-button      { .tab-mode( @credit-theme     ); }
 		#purveyor-button   { .tab-mode( @purveyor-theme   ); }
 		#cheatsheet-button { .tab-mode( @cheatsheet-theme ); }
 		#credit-button     { .tab-mode( @credit-theme     ); }

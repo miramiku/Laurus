@@ -165,7 +165,7 @@
 		display:     inline-block;
 		margin-left: 10px;
 		text-align:  center;
-		span {
+		> span {
 			border-radius: 2px;
 			color:         @insparkly-color;
 			cursor:        pointer;
@@ -175,6 +175,7 @@
 			&:hover {
 				border: 1px solid @wardrobe-theme;
 				color:  @key-tone;
+				.icon( @wardrobe-theme, 0.2s );
 			}
 		}
 	}
@@ -231,7 +232,7 @@
 	margin:     20px 0 0 10px;
 	text-align: center;
 	width:      160px;
-	span {
+	> span {
 		border-radius: 3px;
 		cursor:        pointer;
 		display:       inline-block;
@@ -246,37 +247,41 @@
 }
 
 #filter-controle-buttons .button-wrapper {
-	width: 160px;
-	span:active {
+	width: 180px;
+	> span:active {
 		.slant-stripe-background( @wardrobe-theme, 25% );
 		color:  @key-tone;
+		.icon( @wardrobe-theme, 0.2s );
 	}
 }
 
 #display-style-option .button-wrapper {
 	width: 110px;
-	span {
-		&.sparkly {
-			.slant-stripe-background( @wardrobe-theme, 25% );
-			color:  @key-tone;
-		}
+	> span.sparkly {
+		.slant-stripe-background( @wardrobe-theme, 25% );
+		color: @key-tone;
 	}
 }
 
 #edit-lock-controle .button-wrapper {
 	margin-left: 40px;
-	width:       110px;
-	span {
+	width:       130px;
+	> span {
 		&:hover  {
 			color:  @key-tone;
 			border: 1px solid @purveyor-theme;
+			.icon( @purveyor-theme, 0.2s );
 		}
-		&:active { .slant-stripe-background( @purveyor-theme, 25% ); }
+		&:active {
+			.slant-stripe-background( @purveyor-theme, 25% );
+			.icon( @purveyor-theme, 0.2s );
+		}
 	}
 }
 .editable #edit-lock {
 	.slant-stripe-background( @purveyor-theme, 25% );
 	color: @key-tone;
+	.laurus-icon { color: @purveyor-theme; }
 }
 
 #hit-records-box {
@@ -325,10 +330,12 @@
 			&:hover {
 				border: 1px solid @wardrobe-theme;
 				color:  @key-tone;
+				.icon( @wardrobe-theme, 0.2s );
 			}
 			&:active {
 				.slant-stripe-background( @wardrobe-theme, 25% );
 				color: @key-tone;
+				.icon( @wardrobe-theme, 0.2s );
 			}
 		}
 	}
