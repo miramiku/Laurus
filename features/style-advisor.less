@@ -393,7 +393,65 @@
 					&[data-skill="cinderella"]    { .slant-stripe-background( @CINDERELLA, 50% );    }
 				}
 			}
-	// #fail-items {}
+	#blacklist-items, #whitelist-items {
+		overflow: hidden;
+		.bw-item, .bw-category {
+			display: block;
+			float:   left;
+			width:   150px;
+		}
+		.bw-item-category {
+			.slant-stripe-background( @advisor-theme, 25% );
+			display:       block;
+			float:         left;
+			overflow:      hidden;
+			padding:       0 5px;
+			text-overflow: ellipsis;
+			white-space:   nowrap;
+			width:         120px;
+			border-radius: 4px;
+			&::after {
+				content:   "all";
+				font-size: @tiny-font-size;
+			}
+		}
+		.bw-item-name {
+			display:       block;
+			float:         left;
+			overflow:      hidden;
+			padding:       0 5px;
+			text-overflow: ellipsis;
+			white-space:   nowrap;
+			width:         120px;
+		}
+		.category-icon {
+			background:     url( "resources/line-category-icons.png" ) no-repeat top left;
+			display:        block;
+			float:          left;
+			height:         20px;
+			margin:         0 5px;
+			width:          20px;
+
+			.category-icon( @pos ) { background-position: 0 ( @pos * -20px ); }
+			&.hair      { .category-icon(  0 ); }
+			&.dress     { .category-icon(  1 ); }
+			&.coat      { .category-icon(  2 ); }
+			&.tops      { .category-icon(  3 ); }
+			&.bottoms   { .category-icon(  4 ); }
+			&.hosiery   { .category-icon(  5 ); }
+			&.shoes     { .category-icon(  6 ); }
+		//	&.accessory { .category-icon(  7 ); }
+			&.headwear  { .category-icon(  8 ); }
+			&.earrings  { .category-icon(  9 ); }
+			&.necklace  { .category-icon( 10 ); }
+			&.bracelet  { .category-icon( 11 ); }
+			&.handheld  { .category-icon( 12 ); }
+			&.waist     { .category-icon( 13 ); }
+			&.special   { .category-icon( 14 ); }
+			&.makeup    { .category-icon( 15 ); }
+		}
+	}
+
 	#options {
 		float: left;
 		width: 300px;

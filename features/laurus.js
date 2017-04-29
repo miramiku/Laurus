@@ -90,7 +90,9 @@ LAURUS.STATIC_ITEMS = ( function () {
 				CRITERIA_SUBJECT: 4,
 				CRITERIA_STYLE: 5,
 				CRITERIA_TAGS: 6,
-				SKILL: 7
+				SKILL: 7,
+				BLACKLIST: 8,
+				WHITELIST: 9
 			},
 			STYLE: {
 				GORGEOUS: 0,
@@ -702,7 +704,9 @@ LAURUS.scoring = function ( objective ) {
 
 	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		SCALE = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.SCALE,
+
 		restore = LAURUS.STATIC_ITEMS.restore,
 		OBJECTIVE = {
 			FORMER: 0,
@@ -710,30 +714,69 @@ LAURUS.scoring = function ( objective ) {
 			TAG_ID: 0,
 			TAG_VALUE: 1,
 			TAG_PRODUCT: 2
+		},
+		calc = function ( serial, item ) {
+			var attributes = restore.attributes2serial( item[ COLUMN.ATTRIBUTES ] ),
+				score = 0,
+				itemTags = restore.tag( item[ COLUMN.TAGS ] ),
+				bonusTags = objective.tags,
+				addTagBonus = function ( channel ) {
+					return itemTags[ channel ] ?
+						( itemTags[ channel ] === bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_PRODUCT ] :
+							( itemTags[ channel ] === bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_PRODUCT ] : 0 :
+						0;
+				},
+				tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) );
+
+			$.each( item[ COLUMN.SLOTS ], function () {
+				var scale = SCALE[ this ];
+
+				$.each( objective.style, function ( index ) {
+					score += ( VALUES.FACTOR[ attributes[ index ] ] + tagBonus ) * scale * this;
+				} );
+			} );
+
+			LAURUS.SCORE[ serial ] = Math.round( score );
+		},
+		branch = {
+			blacklist: {
+				category: function ( serial ) {
+					LAURUS.SCORE[ serial ] = Math.round( LAURUS.SCORE[ serial ] / 10 );
+				},
+				serial: function ( serial ) {
+					LAURUS.SCORE[ serial ] = Math.round( LAURUS.SCORE[ serial ] / 10 );
+				}
+			},
+			whitelist: {
+				category: function ( serial ) {
+					calc( serial, LAURUS.WARDROBE[ serial ] );
+				},
+				serial: function ( serial ) {
+					calc( serial, LAURUS.WARDROBE[ serial ] );
+				}
+			}
 		};
 
-	$.each( LAURUS.WARDROBE, function ( serial ) {
-		var attributes = restore.attributes2serial( this[ COLUMN.ATTRIBUTES ] ),
-			score = 0,
-			itemTags = restore.tag( this[ COLUMN.TAGS ] ),
-			bonusTags = objective.tags,
-			addTagBonus = function ( channel ) {
-				return itemTags[ channel ] ?
-					( itemTags[ channel ] === bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.FORMER ][ OBJECTIVE.TAG_PRODUCT ] :
-						( itemTags[ channel ] === bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_PRODUCT ] : 0 :
-					0;
-			},
-			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) );
+	$.each( LAURUS.WARDROBE, calc );
 
-		$.each( this[ COLUMN.SLOTS ], function () {
-			var scale = SCALE[ this ];
+	$.each( [ "blacklist", "whitelist" ], function () {
+		var list = this;
 
-			$.each( objective.style, function ( index ) {
-				score += ( VALUES.FACTOR[ attributes[ index ] ] + tagBonus ) * scale * this;
-			} );
+		$.each( objective[ this ], function () {
+			if ( isNaN( this ) ) {
+				$.each( this.type, function () {
+					var code = CATEGORY_DEFS.CODE.CATEGORY[ this ];
+
+					$.each( LAURUS.SCORE, function ( serial ) {
+						if ( Math.round( serial / 10000 ) === code ) {
+							branch[ list ].category( serial );
+						}
+					} );
+				} );
+			} else {
+				branch[ list ].serial( this );
+			}
 		} );
-
-		LAURUS.SCORE[ serial ] = Math.round( score );
 	} );
 };
 
@@ -1076,10 +1119,12 @@ LAURUS.advisor = ( function () {
 		sanitizeHTML = LAURUS.STATIC_ITEMS.utils.sanitizeHTML,
 		unsanitizeHTML = LAURUS.STATIC_ITEMS.utils.unsanitizeHTML,
 		map4IdString = LAURUS.STATIC_ITEMS.utils.map4IdString,
+		restore = LAURUS.STATIC_ITEMS.restore,
 
 		scoring = LAURUS.scoring,
 		dialogue = LAURUS.dialogue,
 
+		/** @type {Array} 現在 UI に表示しているステージ情報 */
 		_stage = [],
 		/** @type {Array} スコアによるソート済みワードロープ */
 		_sortedWardrobe = [],
@@ -1340,6 +1385,11 @@ LAURUS.advisor = ( function () {
 						this.reset();
 					} );
 					_senarioClasses.off();
+
+					$( "#blacklist-heading, #whitelist-heading" )
+						.hide();
+					$( "#blacklist-items, #whitelist-items" )
+						.empty();
 				},
 				/** @type {MethodCollection} 推奨コーディネートに関する操作 */
 				_recommend = ( function () {
@@ -1353,8 +1403,13 @@ LAURUS.advisor = ( function () {
 							var serial = SCORING_BY_SLOT[ slot ][ _pos[ slot ] ];
 							return serial === -1 ? 0 : SCORE[ serial ];
 						},
+						/** @summary 排他的スロットの推奨判断を行う */
 						_isnpection4ExclusiveSlot = function () {
-							var
+							var /** @summary 排他的スロット同士のスコア合計を求め比較する
+								 * @param {Array} a 排他的スロット集合 A
+								 * @param {Array} b 排他的スロット集合 B
+								 * @returns {Array} 比較結果
+								 */
 								compareExclusive = function ( a, b ) {
 									var /** @summary スロットを総合してスコアの合計を求める
 										 * @param {Array} スロット
@@ -1390,6 +1445,9 @@ LAURUS.advisor = ( function () {
 
 									return compareResult;
 								},
+								/** @summary 排他的スロット同士の比較結果からページに情報を書き込む
+								 * @param {Array} 排他的スロット同士の比較結果
+								 */
 								setRecommendSlot = function ( compareResult ) {
 									$.each( compareResult, function () {
 										$( "#slot-" + this.slot )
@@ -1401,10 +1459,12 @@ LAURUS.advisor = ( function () {
 							setRecommendSlot( compareExclusive( [ "dress" ], [ "tops", "bottoms" ] ) );
 							setRecommendSlot( compareExclusive( [ "right-hand", "left-hand" ], [ "both-hand" ] ) );
 						},
+						/** @summary 複合スロットの推奨判断（未実装） */
 						_inspection4ComplexSlot = function () {
 							// みじっそー
 							// 複合スロットの検査
 						},
+						/** @summary アクセサリのスコアランクの計算 */
 						_accessoryRank = function () {
 							var accessories = [],
 								rank = 1;
@@ -1431,11 +1491,15 @@ LAURUS.advisor = ( function () {
 								rank += 1;
 							} );
 						},
+						/** @summary 内容変更時のオブザーバ― */
 						_observe = function () {
 							_isnpection4ExclusiveSlot();
 							_inspection4ComplexSlot();
 							_accessoryRank();
 						},
+						/** @summary 推奨アイテムをを書き込む
+						 * @param {String} slot スロットキー
+						 */
 						_write = function ( slot ) {
 							var pos = _pos[ slot ],
 								orderedItems = SCORING_BY_SLOT[ slot ],
@@ -1466,6 +1530,7 @@ LAURUS.advisor = ( function () {
 								.find( ".sparkline" )
 								.peity( "line", PIETY_LAURUS_OPTIONS.card );
 						},
+						/** @summary 推奨アイテムを移動する */
 						_traversal = function () {
 							var $this = $( this ),
 								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
@@ -1474,6 +1539,7 @@ LAURUS.advisor = ( function () {
 							_write( slot );
 							_observe();
 						},
+						/** @summary 推奨アイテムの UI を初期化する */
 						_init = function () {
 							_sortedWardrobe = [];
 
@@ -1507,6 +1573,7 @@ LAURUS.advisor = ( function () {
 
 							_observe();
 						},
+						/** @summary 推奨アイテムの操作をリセットする */
 						_reset = function () {
 							$.each( SCORING_BY_SLOT, function ( slot ) {
 								_pos[ slot ] = 0;
@@ -1547,12 +1614,13 @@ LAURUS.advisor = ( function () {
 								VALUES.CODE[ $( "#criteria-tag-box-2 .value" ).text() ],
 								parseFloat( $( "#criteria-tag-box-2 .product" ).text() )
 							]
-						]
+						],
+						blacklist: _stage[ STAGE.BLACKLIST ],
+						whitelist: _stage[ STAGE.WHITELIST ]
 					};
 				},
 				/** @summary UIに設定された目的条件からスコアリングして結果を描写する */
 				_execScoring = function () {
-					// scoring
 					scoring( _makeScoringObjective() );
 					_recommend.init();
 				},
@@ -1584,6 +1652,32 @@ LAURUS.advisor = ( function () {
 						_senarioClasses.on();
 					}
 					_skill.set( SKILL_DEFS.SCENARIO_CLASS.GIRL );
+
+					$( "#blacklist-heading, #whitelist-heading" )
+						.show();
+					$.each( [ "blacklist", "whitelist" ], function () {
+						var $list = $( "#" + this + "-items" );
+
+						if ( _stage[ STAGE[ this.toUpperCase() ] ].length === 0 ) {
+							$list
+								.html( "<span class=\"unseen\">未発見</span>" );
+						} else {
+							$.each( _stage[ STAGE[ this.toUpperCase() ] ], function () {
+								var name = "";
+
+								if ( !isNaN( this ) ) {
+									name = WARDROBE[ this ][ COLUMN.NAME ];
+									$list
+										.append( "<span class=\"bw-item\"><span class=\"category-icon " + CATEGORY_DEFS.MAP[ restore.categoryAndId( this ).category ] + "\"></span><span class=\"bw-item-name\" title=\"" + name + "\">" + name + "</span></span>" );
+								} else {
+									$.each( this.type, function () {
+										$list
+											.append( "<span class=\"bw-category\"><span class=\"category-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
+									} );
+								}
+							} );
+						}
+					} );
 				},
 				/** @summary ダイアログから選んだステージをセットする
 				 * @param {String} stage ステージキー
@@ -1663,7 +1757,7 @@ LAURUS.advisor = ( function () {
 				rollbackEdit: _rollbackEdit
 			};
 		}() ),
-		/** @summary Advisor の初期化処理 */
+		/** @summary Wardrobe の初期化処理 */
 		_wakeup = function () {
 			var
 				loadStage = localStorage.getItem( "stage" ),
@@ -1939,7 +2033,7 @@ LAURUS.advisor = ( function () {
 					},
 					/** カスタム入力したステージをセットする */
 					customStageInput: function () {
-						_stage = null;
+						_stage = [ "", "", "", [ 0, 0, 0, 0, 0 ], [], [ 0 ], [], [] ];
 						Medium.resetUI();
 
 						Medium.fundamentals.set(
@@ -3334,7 +3428,6 @@ LAURUS.cheatsheet = ( function () {
 	"use strict";
 
 	var // dependence
-
 		WARDROBE = LAURUS.WARDROBE,
 		SCORE = LAURUS.SCORE,
 
@@ -3348,16 +3441,17 @@ LAURUS.cheatsheet = ( function () {
 		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
 		restore = LAURUS.STATIC_ITEMS.restore,
 
-		_wakeup = function () {
-
-		},
-		_changeMode = function () {
-			var
+		/** @summary チートシートの生成 */
+		_makeCheatSheet = function () {
+			var /** @type {Object} スコアリングにおるソート済みスロット別リスト */
+				SCORING_BY_SLOT = {},
+				/** @summary fundamental data */
 				fundamentalData = function () {
 					$( "#cs-stage" ).text( $( "#request-stage-title" ).text() );
 					$( "#cs-chapter" ).text( $( "#request-chapter" ).text() );
 					$( "#cs-subject" ).html( $( "#criteria-subject" ).html() );
 				},
+				/** @summary criteria style */
 				criteriaStyle = function () {
 					$.each( STYLE_DEFS.LIST, function ( index ) {
 						var weight = $( "#criteria-" + this ).text(),
@@ -3379,6 +3473,7 @@ LAURUS.cheatsheet = ( function () {
 							.addClass( branch[ "class" ] );
 					} );
 				},
+				/** @summary tag bonus */
 				tagBonus = function () {
 					$.each( [ 1, 2 ], function () {
 						var tag = $( "#criteria-tag-" + this ).text(),
@@ -3396,6 +3491,7 @@ LAURUS.cheatsheet = ( function () {
 					} );
 					$( "#none-tag-bonus" )[ $( "#cs-tag-bonus .tag-box .tag:visible" ).length === 0 ? "show" : "hide" ]();
 				},
+				/** @summary skills */
 				skills = function () {
 					var currentStage = LAURUS.advisor.getCurrentStage(),
 						skill = {
@@ -3449,10 +3545,10 @@ LAURUS.cheatsheet = ( function () {
 						$( "#cs-other-class" ).show();
 					}
 				},
+				/** @summary slots */
 				slots = function () {
 					var criteriaTags = [ $( "#criteria-tag-1" ).data( "id" ), $( "#criteria-tag-2" ).data( "id" ) ],
-						sortedWardrobe = LAURUS.advisor.getSortedWardrobe(),
-						SCORING_BY_SLOT = {};
+						sortedWardrobe = LAURUS.advisor.getSortedWardrobe();
 
 					$.each( CATEGORY_DEFS.SLOT_LIST, function () {
 						SCORING_BY_SLOT[ this ] = [];
@@ -3522,6 +3618,53 @@ LAURUS.cheatsheet = ( function () {
 							}
 						}
 					} );
+				},
+				/** @summary recommends */
+				recommends = function () {
+					var /** @summary 排他的スロットのスコア合計 */
+						compareExclusive = function ( a, b ) {
+							var　/** @summary スコア合計の計算 */
+								scoreTotal = function ( slots ) {
+									var total = 0;
+
+									$.each( slots, function () {
+										total += SCORE[ SCORING_BY_SLOT[ this ][ 0 ] ];
+									} );
+
+									return total;
+								},
+								compareResult = [],
+								recommend = scoreTotal( b ) <= scoreTotal( a );
+
+							$.each( a, function () {
+								compareResult.push( {
+									slot: this,
+									recommend: recommend
+								} );
+							} );
+
+							recommend = !recommend;
+
+							$.each( b, function () {
+								compareResult.push( {
+									slot: this,
+									recommend: recommend
+								} );
+							} );
+
+							return compareResult;
+						},
+						/** @summary 排他的スロットの推奨情報を書き込む */
+						setRecommendSlot = function ( compareResult ) {
+							$.each( compareResult, function () {
+								$( "#cs-" + this.slot )
+									.removeClass( "recommend deprecated" )
+									.addClass( this.recommend ? "recommend" : "deprecated" );
+							} );
+						};
+
+					setRecommendSlot( compareExclusive( [ "dress" ], [ "tops", "bottoms" ] ) );
+					setRecommendSlot( compareExclusive( [ "right-hand", "left-hand" ], [ "both-hand" ] ) );
 				};
 
 			fundamentalData();
@@ -3529,6 +3672,46 @@ LAURUS.cheatsheet = ( function () {
 			tagBonus();
 			skills();
 			slots();
+			recommends();
+		},
+		/** @summary CheatSheet の初期化処理 */
+		_wakeup = function () {
+		},
+		/** @summary CheatSheet のモード切替時処理 */
+		_changeMode = _makeCheatSheet;
+
+	return {
+		wakeup: _wakeup,
+		changeMode: _changeMode
+	};
+}() );
+
+/** @type {MethodCollection} Credit 用メソッドコレクション */
+LAURUS.credit = ( function () {
+	"use strict";
+
+	var /** @summary Credit の初期化処理 */
+		_wakeup = function () {
+		},
+		/** @summary Credit のモード切替時処理 */
+		_changeMode = function () {
+		};
+
+	return {
+		wakeup: _wakeup,
+		changeMode: _changeMode
+	};
+}() );
+
+/** @type {MethodCollection} Changelog 用メソッドコレクション */
+LAURUS.changelog = ( function () {
+	"use strict";
+
+	var /** @summary Changelog の初期化処理 */
+		_wakeup = function () {
+		},
+		/** @summary Changelog のモード切替時処理 */
+		_changeMode = function () {
 		};
 
 	return {
@@ -3572,10 +3755,10 @@ LAURUS.wakeup = {
 	},
 	advisor: LAURUS.advisor.wakeup,
 	wardrobe: LAURUS.wardrobe.wakeup,
-	purveyor: function () { },
+	// purveyor: function () { },
 	cheatsheet: LAURUS.cheatsheet.wakeup,
-	credit: function () { },
-	changelog: function () { },
+	credit: LAURUS.credit.wakeup,
+	changelog: LAURUS.changelog.wakeup,
 	dialogue: LAURUS.dialogue.wakeup
 };
 
@@ -3589,7 +3772,7 @@ $( document ).ready( function () {
 	LAURUS.wakeup.laurus();
 	LAURUS.wakeup.advisor();
 	LAURUS.wakeup.wardrobe();
-	LAURUS.wakeup.purveyor();
+	// LAURUS.wakeup.purveyor();
 	LAURUS.wakeup.credit();
 	LAURUS.wakeup.changelog();
 	LAURUS.wakeup.dialogue();
@@ -3597,5 +3780,5 @@ $( document ).ready( function () {
 	$( "#dialogue" ).perfectScrollbar();
 
 	$( "#advisor-button" ).click();
-	// $( "#cheatsheet-button" ).click();
+	$( "#credit-button" ).click();
 } );
