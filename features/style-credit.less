@@ -1,0 +1,113 @@
+#credit {
+	h4, h5 {
+		font-family: "Maven Pro";
+	}
+}
+
+#me {
+	margin:     100px 0;
+	text-align: center;
+}
+	#me-icon {
+		border-radius: 50px;
+	}
+	#me-name {
+		font-size:    @subject-font-size;
+		padding-left: 30px;
+	}
+
+#nikki {
+	margin:   50px 275px;
+	overflow: hidden;
+	.item-group {
+		display: block;
+		width:   350px;
+		span {
+			display: block;
+			float:   left;
+		}
+	}
+	.label {
+		font-weight: bold;
+		width:       100px;
+		&::after {
+			content: "：";
+		}
+	}
+	.nikki-name {
+		width: 150px;
+	}
+	.nikki-id {
+		font-family: "Maven Pro";
+		text-align:  right;
+		width:       100px;
+	}
+}
+
+#sns {
+	font-family: "Maven Pro";
+	margin:      50px 335px;
+	overflow:    hidden;
+	.item-group {
+		display: block;
+		width:   230px;
+		span {
+			display: block;
+			float:   left;
+		}
+		&:nth-child( 1 ) .account .laurus-icon {
+			color: @twitter-color;
+		}
+		&:nth-child( 2 ) .account .laurus-icon {
+			color: @github-color;
+		}
+	}
+	.label {
+		font-weight: bold;
+		width:       80px;
+		&::after {
+			content: "：";
+		}
+	}
+	.account {
+		width: 150px;
+		.laurus-icon { padding-right: 5px; }
+		a:link, a:visited { color: @key-tone; }
+		a:hover { color: @link-color; }
+	}
+}
+
+#discussions {
+	margin: 50px 150px;
+	width:  600px;
+}
+
+.licenses {
+	margin:      0 200px 30px 200px;
+	overflow:    hidden;
+	font-family: "Maven Pro";
+	.item-group {
+		clear:   both;
+		display: block;
+		width:   500px;
+		span {
+			display: block;
+			float:   left;
+		}
+	}
+	.framework {
+		width: 130px;
+		a { color: @key-tone; }
+	}
+	.license {
+		width: 370px;
+	}
+	.skip {
+		background: fade( @credit-theme, 25% );
+		float:      left;
+		display:    block;
+		margin:     10px 100px;
+		height:     2px;
+		width:      300px;
+	}
+}

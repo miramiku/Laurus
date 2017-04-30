@@ -11,15 +11,16 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<!--
 	<script src="laurus.min.js?ver=1.0.0"></script>
-	-->
+
+	<!--
 	<script src="features/jquery.min.js"></script>
 	<script src="features/jquery.peity.js"></script>
 	<script src="features/jquery.perfect-scrollbar.js"></script>
 	<script src="features/toastr.js"></script>
 	<script src="features/extensions.js"></script>
 	<script src="features/laurus.js"></script>
+	-->
 
 	<!-- style / favicon -->
 	<link href="theme.css" rel="stylesheet" type="text/css">
@@ -30,926 +31,603 @@
 	<header id="header">
 		<div id="header-area">
 			<div id="logo-area">
-				<h1>
-					<img src="resources/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor"> Laurus :: <span id="current-mode">Welcome</span>
-				</h1>
+				<h1><img src="resources/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor"> Laurus :: <span id="current-mode">Welcome</span></h1>
 			</div>
 			<nav id="general-navgation">
 				<ul>
-					<li>
-						<span id="advisor-button" class="ghost-button" data-mode="advisor">
-							<span class="laurus-icon">&#x2600;</span> Advisor
-						</span>
-					</li>
-					<li>
-						<span id="wardrobe-button" class="ghost-button" data-mode="wardrobe">
-							<span class="laurus-icon">&#x2601;</span> Wardrobe
-						</span>
-					</li>
-					<li>
-						<span id="usage-button" class="ghost-button usage" data-mode="usage">
-							<span class="laurus-icon">&#x2603;</span> Usage
-						</span>
-					</li>
+					<li><span id="advisor-button" class="ghost-button" data-mode="advisor"><span class="laurus-icon">&#x2600;</span> Advisor</span></li>
+					<li><span id="wardrobe-button" class="ghost-button" data-mode="wardrobe"><span class="laurus-icon">&#x2601;</span> Wardrobe</span></li>
+					<li><span id="usage-button" class="ghost-button usage" data-mode="usage"><span class="laurus-icon">&#x2603;</span> 使い方</span></li>
 					<li id="more-menu"><img src="resources/more.png" alt="more">
 						<ul>
-							<!--<li>
-								<span id="purveyor-button" class="ghost-button" data-mode="purveyor">
-									<span class="laurus-icon">&#x2602;</span> Purveyor
-								</span>
-							</li>-->
-							<li>
-								<span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet">
-									<span class="laurus-icon">&#x2603;</span> cheatsheet
-								</span>
-							</li>
-							<li>
-								<span id="credit-button" class="ghost-button" data-mode="credit">
-									<span class="laurus-icon">&#x2604;</span> credit
-								</span>
-							</li>
-							<li>
-								<span id="changelog-button" class="ghost-button" data-mode="changelog">
-									<span class="laurus-icon">&#x2605;</span> changelog
-								</span>
-							</li>
+							<!--<li><span id="purveyor-button" class="ghost-button" data-mode="purveyor"><span class="laurus-icon">&#x2602;</span> Purveyor</span></li>-->
+							<li><span id="cheatsheet-button" class="ghost-button" data-mode="cheatsheet"><span class="laurus-icon">&#x2603;</span> cheatsheet</span></li>
+							<li><span id="credit-button" class="ghost-button" data-mode="credit"><span class="laurus-icon">&#x2604;</span> credit</span></li>
+							<li><span id="changelog-button" class="ghost-button" data-mode="changelog"><span class="laurus-icon">&#x2605;</span> changelog</span></li>
 						</ul>
-				</li>
+					</li>
 				</ul>
 			</nav>
 		</div>
 	</header>
 
-	<div id="advisor" class="tab">
-
-		<h3>目的条件</h3>
+	<article id="advisor" class="tab">
+		<h3 id="head-objective">目的条件</h3>
 		<div id="objective">
 			<div id="objective-conditions">
 				<div id="request-box">
-					<div id="request-stage">
-						<span id="request-stage-title">[ミッションタイトル]</span>
-						<span id="request-chapter">[キャプター]</span>
-					</div>
-					<div id="optimal-search">
-						<span id="condition-determination">条件確定</span>
-					</div>
+					<div id="request-stage"><span id="request-stage-title">[ミッションタイトル]</span><span id="request-chapter">[キャプター]</span></div>
+					<div id="optimal-search"><span id="condition-determination">条件確定</span></div>
 				</div>
 				<p id="criteria-subject" class="initial">[タスクヒント]</p>
 
-				<h4>評価基準</h4>
+				<h5>評価基準</h5>
 				<div id="criteria">
 					<table id="criteria-style">
 						<tbody>
 							<tr>
-								<th class="gorgeous">華麗</th>
-								<td><span id="criteria-gorgeous" class="editable">-</span></td>
-								<th class="elegance">エレガント</th>
-								<td><span id="criteria-elegance" class="editable">-</span></td>
-								<th class="mature">大人</th>
-								<td><span id="criteria-mature" class="editable">-</span></td>
-								<th class="sexy">セクシー</th>
-								<td><span id="criteria-sexy" class="editable">-</span></td>
-								<th class="warm">ウォーム</th>
-								<td><span id="criteria-warm" class="editable">-</span></td>
+								<th class="gorgeous">華麗</th><td><span id="criteria-gorgeous" class="editable">-</span></td>
+								<th class="elegance">エレガント</th><td><span id="criteria-elegance" class="editable">-</span></td>
+								<th class="mature">大人</th><td><span id="criteria-mature" class="editable">-</span></td>
+								<th class="sexy">セクシー</th><td><span id="criteria-sexy" class="editable">-</span></td>
+								<th class="warm">ウォーム</th><td><span id="criteria-warm" class="editable">-</span></td>
 							</tr>
 							<tr>
-								<th class="simple">シンプル</th>
-								<td><span id="criteria-simple" class="editable">-</span></td>
-								<th class="lively">アクティブ</th>
-								<td><span id="criteria-lively" class="editable">-</span></td>
-								<th class="cute">キュート</th>
-								<td><span id="criteria-cute" class="editable">-</span></td>
-								<th class="pure">ピュア</th>
-								<td><span id="criteria-pure" class="editable">-</span></td>
-								<th class="cool">クール</th>
-								<td><span id="criteria-cool" class="editable">-</span></td>
+								<th class="simple">シンプル</th><td><span id="criteria-simple" class="editable">-</span></td>
+								<th class="lively">アクティブ</th><td><span id="criteria-lively" class="editable">-</span></td>
+								<th class="cute">キュート</th><td><span id="criteria-cute" class="editable">-</span></td>
+								<th class="pure">ピュア</th><td><span id="criteria-pure" class="editable">-</span></td>
+								<th class="cool">クール</th><td><span id="criteria-cool" class="editable">-</span></td>
 							</tr>
 						</tbody>
 					</table>
 					<div id="criteria-tags">
-						<div id="criteria-tag-box-1" class="tag-box">
-							<span class="tag tag-none"><span id="criteria-tag-1">タグ選択</span></span>
-							<span class="value s">S</span>
-							<span class="product">1</span>
-						</div>
-						<div id="criteria-tag-box-2" class="tag-box">
-							<span class="tag tag-none"><span id="criteria-tag-2">タグ選択</span></span>
-							<span class="value s">S</span>
-							<span class="product">1</span>
-						</div>
+						<div id="criteria-tag-box-1" class="tag-box"><span class="tag tag-none"><span id="criteria-tag-1">タグ選択</span></span><span class="value s">S</span><span class="product">1</span></div>
+						<div id="criteria-tag-box-2" class="tag-box"><span class="tag tag-none"><span id="criteria-tag-2">タグ選択</span></span><span class="value s">S</span><span class="product">1</span></div>
 					</div>
 				</div>
 
-				<h4>
-					NPC 使用スキル
-					<span id="scenario-classes">
-					<span id="girl-class">ガール級</span>
-					<span id="princess-class">プリンセス級</span>
-					</span>
-				</h4>
+				<h5>NPC 使用スキル<span id="scenario-classes"><span id="girl-class">ガール級</span><span id="princess-class">プリンセス級</span></span></h5>
 				<div id="skill">
 					<div id="receive-skill-icons">
-						<span data-skill="smile"></span>
-						<span data-skill="critical-eye"></span>
-						<span data-skill="pickly-immune"></span>
-						<span data-skill="charming"></span>
-						<span data-skill="gift"></span>
-						<span data-skill="gift-immune"></span>
-						<span data-skill="clock"></span>
-						<span data-skill="clock-immune"></span>
-						<span data-skill="sleeping"></span>
-						<span data-skill="true-love"></span>
-						<span data-skill="pickly-bounce"></span>
-						<span data-skill="gift-bounce"></span>
-						<span data-skill="cinderella"></span>
+						<span data-skill="smile"></span><span data-skill="critical-eye"></span><span data-skill="pickly-immune"></span><span data-skill="charming"></span><span data-skill="gift"></span>
+						<span data-skill="gift-immune"></span><span data-skill="clock"></span><span data-skill="clock-immune"></span><span data-skill="sleeping"></span><span data-skill="true-love"></span>
+						<span data-skill="pickly-bounce"></span><span data-skill="gift-bounce"></span><span data-skill="cinderella"></span>
 					</div>
 					<div id="receive-skill-names">
-						<span data-skill="smile">ニキ・スマイル</span>
-						<span data-skill="critical-eye">厳しい視線</span>
-						<span data-skill="pickly-immune">視線無効</span>
-						<span data-skill="charming">投げキッス</span>
-						<span data-skill="gift">Xmasプレゼント</span>
-						<span data-skill="gift-immune">プレゼント無効</span>
-						<span data-skill="clock">シンデレラ</span>
-						<span data-skill="clock-immune">シンデレラ無効</span>
-						<span data-skill="sleeping">眠りの呪い</span>
-						<span data-skill="true-love">愛の口づけ</span>
-						<span data-skill="pickly-bounce">視線反射</span>
-						<span data-skill="gift-bounce">プレゼントはじき</span>
+						<span data-skill="smile">ニキ・スマイル</span><span data-skill="critical-eye">厳しい視線</span><span data-skill="pickly-immune">視線無効</span>
+						<span data-skill="charming">投げキッス</span><span data-skill="gift">Xmasプレゼント</span><span data-skill="gift-immune">プレゼント無効</span>
+						<span data-skill="clock">シンデレラ</span><span data-skill="clock-immune">シンデレラ無効</span><span data-skill="sleeping">眠りの呪い</span>
+						<span data-skill="true-love">愛の口づけ</span><span data-skill="pickly-bounce">視線反射</span><span data-skill="gift-bounce">プレゼントはじき</span>
 						<span data-skill="cinderella">シンデレラ反射</span>
 					</div>
 				</div>
 
-				<h4 id="blacklist-heading">ブラックリスト</h4>
+				<h5 id="blacklist-heading">ブラックリスト</h5>
 				<div id="blacklist-items"></div>
 
-				<h4 id="whitelist-heading">ホワイトリスト</h4>
+				<h5 id="whitelist-heading">ホワイトリスト</h5>
 				<div id="whitelist-items"></div>
 			</div>
 			<div id="options"></div>
 		</div>
 
-		<h3>
+		<h3 id="head-recommends">
 			推奨コーディネート
 			<span id="recommends-controle">
-				<span class="button-wrapper"><span id="rcm-reset"><span class="laurus-icon">&#x2605;</span> リセット</span>
-			</span>
-			<span class="button-wrapper"><span id="rcm-edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span>
-			</span>
+				<span class="button-wrapper"><span id="rcm-reset"><span class="laurus-icon">&#x2605;</span> リセット</span></span>
+				<span class="button-wrapper"><span id="rcm-edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span></span>
 			</span>
 		</h3>
 		<div id="feasible">
-			<!--<div id="standby">
-				<span class="face">(,,•﹏•,,)</span>
-				<span class="text">ここに候補が表示されます</span>
-			</div>-->
 			<div id="recommends">
 				<div id="slot-hair" class="rcm-item" data-rcm-slot="hair">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">ヘアスタイル</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div class="rcm-item dummy"></div>
 				<div id="slot-dress" class="rcm-item" data-rcm-slot="dress">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">ドレス</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-coat" class="rcm-item" data-rcm-slot="coat">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">コート</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-tops" class="rcm-item" data-rcm-slot="tops">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">トップス</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-bottoms" class="rcm-item" data-rcm-slot="bottoms">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">ボトムス</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-hosiery" class="rcm-item" data-rcm-slot="hosiery">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">靴下</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-anklet" class="rcm-item" data-rcm-slot="anklet">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">アンクレット</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-shoes" class="rcm-item" data-rcm-slot="shoes">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">シューズ</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-makeup" class="rcm-item" data-rcm-slot="makeup">
 					<div class="slot-name"><span class="rcm-note"></span><span class="label">メイク</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 
-				<h5>アクセサリー</h5>
-				<div id="slot-head-accessory" class="rcm-item" data-rcm-slot="accessory">
+				<h4 id="head-accessory">アクセサリー</h4>
+				<div id="slot-head-accessory" class="rcm-item" data-rcm-slot="head-accessory">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ヘッドアクセ</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-veil" class="rcm-item" data-rcm-slot="veil">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ヴェール</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-headband" class="rcm-item" data-rcm-slot="headband">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">カチューシャ</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-false-ears" class="rcm-item" data-rcm-slot="false-ears">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">つけ耳</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-earrings" class="rcm-item" data-rcm-slot="earrings">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">耳飾り</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div class="rcm-item dummy"></div>
 				<div id="slot-scarf" class="rcm-item" data-rcm-slot="scarf">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">マフラー</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-necklace" class="rcm-item" data-rcm-slot="necklace">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ネックレス</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-right-arm" class="rcm-item" data-rcm-slot="right-arm">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">右手飾り</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-left-arm" class="rcm-item" data-rcm-slot="left-arm">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">左手飾り</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-glove" class="rcm-item" data-rcm-slot="glove">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">手袋</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div class="rcm-item dummy"></div>
 				<div id="slot-right-hand" class="rcm-item" data-rcm-slot="right-hand">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">右手持ち</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-left-hand" class="rcm-item" data-rcm-slot="left-hand">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">左手持ち</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-both-hand" class="rcm-item" data-rcm-slot="both-hand">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">両手持ち</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-waist" class="rcm-item" data-rcm-slot="waist">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">腰飾り</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 
-				<h5>特殊アクセサリー</h5>
+				<h4 id="head-special">特殊アクセサリー</h4>
 				<div id="slot-face" class="rcm-item" data-rcm-slot="face">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">フェイス</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-body" class="rcm-item" data-rcm-slot="body">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">ボディ</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-tatoo" class="rcm-item" data-rcm-slot="tatoo">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">タトゥー</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-wings" class="rcm-item" data-rcm-slot="wings">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">羽根</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-tail" class="rcm-item" data-rcm-slot="tail">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">しっぽ</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-foreground" class="rcm-item" data-rcm-slot="foreground">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">前景</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-background" class="rcm-item" data-rcm-slot="background">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">後景</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-hanging" class="rcm-item" data-rcm-slot="hanging">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">吊り</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-ground" class="rcm-item" data-rcm-slot="ground">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">床</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-skin" class="rcm-item" data-rcm-slot="skin">
 					<div class="slot-name"><span class="rcm-acs-rank"></span><span class="rcm-note"></span><span class="label">肌</span><span class="rcm-page"></span></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span>
-					<div class="item-card-area"></div>
-					<span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
+					<span class="rcm-controle-wrapper"><span class="rcm-prev laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper"><span class="rcm-next laurus-icon">&#x2611;</span></span>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div id="wardrobe" class="tab">
+		<p class="attention">
+			推奨コーディネートはパラメータに基づいて機械的に算出したものです。必ずしも高スコアがはじき出せることを保証したものではありません。<br>
+			スコアの算定方法は不確定要素が多く実際の評価と大きく異なる可能性があります。それらの点を踏まえ、参考程度にご利用とご了承をお願いします。
+		</p>
+	</article>
 
-		<h3>フィルタ
-			<span id="filter-controle-buttons" class="filter-controle">
-				<span class="button-wrapper"><span id="filter-reset"><span class="laurus-icon">&#x2605;</span> フィルタリセット</span>
-			</span>
-			</span>
+	<article id="wardrobe" class="tab">
+		<h3 id="head-filter">フィルタ
+			<span id="filter-controle-buttons" class="filter-controle"><span class="button-wrapper"><span id="filter-reset"><span class="laurus-icon">&#x2605;</span> フィルタリセット</span></span></span>
 			<span id="hit-records-box"><span id="hit-records"></span> records</span>
 		</h3>
 		<div id="wardrobe-filter">
-			<div id="filter-category">
-				<span class="label">カテゴリ</span>
-				<span class="filter-key"></span>
-			</div>
-			<div id="filter-tag">
-				<span class="label">タグ</span>
-				<span class="filter-key"></span>
-			</div>
-			<div id="filter-name">
-				<span class="label">アイテム名</span>
-				<input id="filter-word" type="text">
-			</div>
-			<div id="filter-rarity">
-				<span class="label">レアリティ</span>
-				<span class="filter-key"></span>
-			</div>
-			<div id="sort-key">
-				<span class="label">並べ替え</span>
-				<span class="filter-key"></span>
-			</div>
+			<div id="filter-category"><span class="label">カテゴリ</span><span class="filter-key"></span></div>
+			<div id="filter-tag"><span class="label">タグ</span><span class="filter-key"></span></div>
+			<div id="filter-name"><span class="label">アイテム名</span><input id="filter-word" type="text"></div>
+			<div id="filter-rarity"><span class="label">レアリティ</span><span class="filter-key"></span></div>
+			<div id="sort-key"><span class="label">並べ替え</span><span class="filter-key"></span></div>
 		</div>
 
-		<h3>クローゼット
+		<h3 id="head-wardrobe">クローゼット
 			<span id="display-style-option" class="filter-controle">
 				<span class="button-wrapper"><span id="list-item-style" class="sparkly">リスト形式</span></span>
-			<span class="button-wrapper"><span id="card-item-style">カード形式</span></span>
+				<span class="button-wrapper"><span id="card-item-style">カード形式</span></span>
 			</span>
 			<span id="edit-lock-controle" class="filter-controle">
-				<span class="button-wrapper"><span id="edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span>
-			</span>
+				<span class="button-wrapper"><span id="edit-lock"><span class="laurus-icon">&#x2613;</span> 編集ロック</span></span>
 			</span>
 			<span id="current-stage"></span>
 		</h3>
-		<div id="zero-records">
-			<span class="face">( &gt;﹏&lt;。)</span>
-			<span class="text">アイテムが見つかりませんでした！</span>
-		</div>
+		<div id="zero-records"><span class="face">( &gt;﹏&lt;。)</span><span class="text">アイテムが見つかりませんでした！</span></div>
 		<div id="wardrobe-list-area-box">
 			<table>
-				<thead>
-					<tr>
-						<th></th>
-						<th>ID</th>
-						<th>アイテム名</th>
-						<th>スロット</th>
-						<th><span class="laurus-icon">&#x2606;</span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th><span></span></th>
-						<th></th>
-						<th>タグF</th>
-						<th>タグL</th>
-						<th>スコア</th>
-					</tr>
-				</thead>
+				<thead><tr><th></th><th>ID</th><th>アイテム名</th><th>スロット</th><th><span class="laurus-icon">&#x2606;</span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th><span></span></th><th></th><th>タグF</th><th>タグL</th><th>スコア</th></tr></thead>
 				<tbody id="wardrobe-list-area"></tbody>
-				<tfoot id="list-more-box">
-					<tr>
-						<td colspan="19"><span id="list-more"></span></td>
-					</tr>
-				</tfoot>
+				<tfoot id="list-more-box"><tr><td colspan="19"><span id="list-more"></span></td></tr></tfoot>
 			</table>
 		</div>
-		<div id="wardrobe-card-area-box">
-			<div id="wardrobe-card-area"></div>
-			<div id="card-more"></div>
-		</div>
+		<div id="wardrobe-card-area-box"><div id="wardrobe-card-area"></div><div id="card-more"></div></div>
 
-		<h3>アイテム所持状況の入出力</h3>
+		<h3 id="head-imex">アイテム所持状況の入出力</h3>
 		<div id="file-imex">
-			<span class="imex-button-wrapper"><a id="file-import" href="#"><span class="laurus-icon">&#x2615;</span> アイテム所持状況の読み込み</a>
-			</span>
-			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json"><span class="laurus-icon">&#x2614;</span> アイテム所持状況の書き出し</a>
-			</span>
+			<span class="imex-button-wrapper"><a id="file-import" href="#"><span class="laurus-icon">&#x2615;</span> アイテム所持状況の読み込み</a></span>
+			<span class="imex-button-wrapper"><a id="file-export" href="#" download="myLaurus.json"><span class="laurus-icon">&#x2614;</span> アイテム所持状況の書き出し</a></span>
 			<span class="imex-button-wrapper"><a id="dialogue-possessions-macro" href="#">アイテム所持状況の一括設定</a></span>
 		</div>
-	</div>
+	</article>
 
 	<!-- 未実装
-	<div id="purveyor" class="tab">
-		Purveyor
-	</div>
--->
+		<article id="purveyor" class="tab">
+			Purveyor
+		</article>
+	-->
 
-	<div id="cheatsheet" class="tab">
-		<div id="cs-fundamental">
-			<span id="cs-stage"></span>
-			<span id="cs-chapter"></span>
-			<span id="cs-subject"></span>
-		</div>
+	<article id="cheatsheet" class="tab">
+		<div id="cs-fundamental"><span id="cs-stage"></span><span id="cs-chapter"></span><span id="cs-subject"></span></div>
 
-		<h4>評価スタイルとウェイト</h4>
+		<h5>評価スタイルとウェイト</h5>
 		<div id="cs-style">
 			<table id="cs-criteria-style">
 				<tbody>
 					<tr>
-						<th id="cs-label-gorgeous" class="gorgeous"></th>
-						<td id="cs-gorgeous"></td>
-						<th id="cs-label-elegance" class="elegance"></th>
-						<td id="cs-elegance"></td>
-						<th id="cs-label-mature" class="mature"></th>
-						<td id="cs-mature"></td>
-						<th id="cs-label-sexy" class="sexy"></th>
-						<td id="cs-sexy"></td>
-						<th id="cs-label-warm" class="warm"></th>
-						<td id="cs-warm"></td>
+						<th id="cs-label-gorgeous" class="gorgeous"></th><td id="cs-gorgeous"></td>
+						<th id="cs-label-elegance" class="elegance"></th><td id="cs-elegance"></td>
+						<th id="cs-label-mature" class="mature"></th><td id="cs-mature"></td>
+						<th id="cs-label-sexy" class="sexy"></th><td id="cs-sexy"></td>
+						<th id="cs-label-warm" class="warm"></th><td id="cs-warm"></td>
 					</tr>
 					<tr>
-						<th id="cs-label-simple" class="simple"></th>
-						<td id="cs-simple"></td>
-						<th id="cs-label-lively" class="lively"></th>
-						<td id="cs-lively"></td>
-						<th id="cs-label-cute" class="cute"></th>
-						<td id="cs-cute"></td>
-						<th id="cs-label-pure" class="pure"></th>
-						<td id="cs-pure"></td>
-						<th id="cs-label-cool" class="cool"></th>
-						<td id="cs-cool"></td>
+						<th id="cs-label-simple" class="simple"></th><td id="cs-simple"></td>
+						<th id="cs-label-lively" class="lively"></th><td id="cs-lively"></td>
+						<th id="cs-label-cute" class="cute"></th><td id="cs-cute"></td>
+						<th id="cs-label-pure" class="pure"></th><td id="cs-pure"></td>
+						<th id="cs-label-cool" class="cool"></th><td id="cs-cool"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<h4>タグボーナス</h4>
+		<h5>タグボーナス</h5>
 		<div id="cs-tag-bonus">
-			<div id="cs-tag-box-1" class="tag-box">
-				<span class="tag"><span>タグ選択</span></span>
-				<span class="value">S</span>
-				<span class="product">1</span>
-			</div>
-			<div id="cs-tag-box-2" class="tag-box">
-				<span class="tag"><span>タグ選択</span></span>
-				<span class="value">S</span>
-				<span class="product">1</span>
-			</div>
-			<div id="none-tag-bonus">
-				<span class="tag" data-tag="タグなし"><span>なし</span></span>
-			</div>
+			<div id="cs-tag-box-1" class="tag-box"><span class="tag"><span>タグ選択</span></span><span class="value">S</span><span class="product">1</span></div>
+			<div id="cs-tag-box-2" class="tag-box"><span class="tag"><span>タグ選択</span></span><span class="value">S</span><span class="product">1</span></div>
+			<div id="none-tag-bonus"><span class="tag" data-tag="タグなし"><span>なし</span></span></div>
 		</div>
 
-		<h4>使用スキル</h4>
+		<h5>使用スキル</h5>
 		<div id="cs-skills">
-			<div id="cs-girl-class">
-				<span class="label"><span>ガール級</span></span>
-				<div class="cs-skills"></div>
-			</div>
-			<div id="cs-princess-class">
-				<span class="label"><span>プリンセス級</span></span>
-				<div class="cs-skills"></div>
-			</div>
-			<div id="cs-other-class">
-				<div class="cs-skills"></div>
-			</div>
+			<div id="cs-girl-class"><span class="label"><span>ガール級</span></span><div class="cs-skills"></div></div>
+			<div id="cs-princess-class"><span class="label"><span>プリンセス級</span></span><div class="cs-skills"></div></div>
+			<div id="cs-other-class"><div class="cs-skills"></div></div>
 		</div>
 
-		<h3>推奨コーディネート</h3>
+		<h3 id="head-cs-recommends">推奨コーディネート</h3>
+		<p class="attention">
+			推奨コーディネートはパラメータに基づいて機械的に算出したものです。必ずしも高スコアがはじき出せることを保証したものではありません。<br>
+			スコアの算定方法は不確定要素が多く実際の評価と大きく異なる可能性があります。それらの点を踏まえ、参考程度にご利用とご了承をお願いします。
+		</p>
+
 		<div id="cs-recommends">
-			<div id="cs-hair" class="cs-slot">
-				<span class="label"><span>ヘアスタイル</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-dress" class="cs-slot">
-				<span class="label"><span>ドレス</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-coat" class="cs-slot">
-				<span class="label"><span>コート</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-tops" class="cs-slot">
-				<span class="label"><span>トップス</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-bottoms" class="cs-slot">
-				<span class="label"><span>ボトムス</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-hosiery" class="cs-slot">
-				<span class="label"><span>靴下</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-anklet" class="cs-slot">
-				<span class="label"><span>アンクレット</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-shoes" class="cs-slot">
-				<span class="label"><span>シューズ</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-makeup" class="cs-slot">
-				<span class="label"><span>メイク</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
+			<div id="cs-hair" class="cs-slot"><span class="label"><span>ヘアスタイル</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-dress" class="cs-slot"><span class="label"><span>ドレス</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-coat" class="cs-slot"><span class="label"><span>コート</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-tops" class="cs-slot"><span class="label"><span>トップス</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-bottoms" class="cs-slot"><span class="label"><span>ボトムス</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-hosiery" class="cs-slot"><span class="label"><span>靴下</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-anklet" class="cs-slot"><span class="label"><span>アンクレット</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-shoes" class="cs-slot"><span class="label"><span>シューズ</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-makeup" class="cs-slot"><span class="label"><span>メイク</span></span><div class="cs-recommends-list"></div></div>
 
-			<h5>アクセサリー</h5>
-			<div id="cs-head-accessory" class="cs-slot">
-				<span class="label"><span>ヘッドアクセ</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-veil" class="cs-slot">
-				<span class="label"><span>ヴェール</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-headband" class="cs-slot">
-				<span class="label"><span>カチューシャ</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-false-ears" class="cs-slot">
-				<span class="label"><span>つけ耳</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-earrings" class="cs-slot">
-				<span class="label"><span>耳飾り</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-scarf" class="cs-slot">
-				<span class="label"><span>マフラー</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-necklace" class="cs-slot">
-				<span class="label"><span>ネックレス</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-right-arm" class="cs-slot">
-				<span class="label"><span>右手飾り</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-left-arm" class="cs-slot">
-				<span class="label"><span>左手飾り</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-glove" class="cs-slot">
-				<span class="label"><span>手袋</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-right-hand" class="cs-slot">
-				<span class="label"><span>右手持ち</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-left-hand" class="cs-slot">
-				<span class="label"><span>左手持ち</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-both-hand" class="cs-slot">
-				<span class="label"><span>両手持ち</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-waist" class="cs-slot">
-				<span class="label"><span>腰飾り</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
+			<h4 id="head-cs-accessory">アクセサリー</h4>
+			<div id="cs-head-accessory" class="cs-slot"><span class="label"><span>ヘッドアクセ</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-veil" class="cs-slot"><span class="label"><span>ヴェール</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-headband" class="cs-slot"><span class="label"><span>カチューシャ</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-false-ears" class="cs-slot"><span class="label"><span>つけ耳</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-earrings" class="cs-slot"><span class="label"><span>耳飾り</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-scarf" class="cs-slot"><span class="label"><span>マフラー</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-necklace" class="cs-slot"><span class="label"><span>ネックレス</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-right-arm" class="cs-slot"><span class="label"><span>右手飾り</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-left-arm" class="cs-slot"><span class="label"><span>左手飾り</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-glove" class="cs-slot"><span class="label"><span>手袋</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-right-hand" class="cs-slot"><span class="label"><span>右手持ち</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-left-hand" class="cs-slot"><span class="label"><span>左手持ち</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-both-hand" class="cs-slot"><span class="label"><span>両手持ち</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-waist" class="cs-slot"><span class="label"><span>腰飾り</span></span><div class="cs-recommends-list"></div></div>
 
-			<h5>特殊アクセサリー</h5>
-			<div id="cs-face" class="cs-slot">
-				<span class="label"><span>フェイス</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-body" class="cs-slot">
-				<span class="label"><span>ボディ</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-tatoo" class="cs-slot">
-				<span class="label"><span>タトゥー</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-wings" class="cs-slot">
-				<span class="label"><span>羽根</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-tail" class="cs-slot">
-				<span class="label"><span>しっぽ</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-foreground" class="cs-slot">
-				<span class="label"><span>前景</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-background" class="cs-slot">
-				<span class="label"><span>後景</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-hanging" class="cs-slot">
-				<span class="label"><span>吊り</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-ground" class="cs-slot">
-				<span class="label"><span>床</span></span>
-				<div class="cs-recommends-list"></div>
-			</div>
-			<div id="cs-skin" class="cs-slot">
-				<span class="label"><span>肌</span></span>
-				<div class="cs-recommends-list"></div>
+			<h4 id="head-cs-special">特殊アクセサリー</h4>
+			<div id="cs-face" class="cs-slot"><span class="label"><span>フェイス</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-body" class="cs-slot"><span class="label"><span>ボディ</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-tatoo" class="cs-slot"><span class="label"><span>タトゥー</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-wings" class="cs-slot"><span class="label"><span>羽根</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-tail" class="cs-slot"><span class="label"><span>しっぽ</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-foreground" class="cs-slot"><span class="label"><span>前景</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-background" class="cs-slot"><span class="label"><span>後景</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-hanging" class="cs-slot"><span class="label"><span>吊り</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-ground" class="cs-slot"><span class="label"><span>床</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-skin" class="cs-slot"><span class="label"><span>肌</span></span><div class="cs-recommends-list"></div></div>
+		</div>
+	</article>
+
+	<article id="credit" class="tab">
+		<div id="me"><img id="me-icon" src="resources/miku-icon.jpg"><span id="me-name">みく(๑・ω・๑)</span></div>
+
+		<h4 id="head-nikki">Miracle Nikki</h4>
+		<div id="nikki">
+			<span class="item-group"><span class="label">ユーザー</span><span class="nikki-name">みく</span><span class="nikki-id">1 0000 0969</span></span>
+			<span class="item-group"><span class="label">ギルド</span><span class="nikki-name">くるくるほっぺ</span><span class="nikki-id">245</span></span>
+		</div>
+
+		<h4 id="head-sns">Contact and SNS</h4>
+		<div id="sns">
+			<span class="item-group"><span class="label">Twitter</span><span class="account"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></span></span>
+			<span class="item-group"><span class="label">Github</span><span class="account"><a href="https://github.com/miramiku"><span class="laurus-icon">&#x2631;</span> miramiku</a></span></span>
+			<span class="item-group"><span class="label">E-mail</span><span class="account"><img src="resources/me-mail.png" alt="me-mail"></span></span>
+		</div>
+
+		<h4 id="head-discussions">Discussions</h4>
+		<div id="discussions"><p>使用方法でわからない事や見つけた不具合、機能の提案、その他お気づきの点などありましたら上記のコンタクトまたは下にあるコメント欄や <a href="https://github.com/miramiku/Laurus/issues">Laurus の Issues</a> にお願いします。</p></div>
+
+		<h4 id="head-licenses">Licenses</h4>
+		<h5>JavaScript Framework</h5>
+		<div class="licenses">
+			<span class="item-group"><span class="framework"><a href="https://jquery.com/">jQuery</a></span><span class="license">MIT License</span></span>
+			<span class="item-group"><span class="framework"><a href="http://benpickles.github.io/peity/">peity</a></span><span class="license">MIT License</span></span>
+			<span class="item-group"><span class="framework"><a href="https://noraesae.github.io/perfect-scrollbar/">perfect-scrollbar</a></span><span class="license">MIT License</span></span>
+			<span class="item-group"><span class="framework"><a href="https://github.com/CodeSeven/toastr">toastr</a></span><span class="license">MIT License</span></span>
+		</div>
+
+		<h5>Cascading Stylesheet</h5>
+		<div class="licenses">
+			<span class="item-group"><span class="framework"><a href="https://necolas.github.io/normalize.css/">normalize.css</a></span><span class="license">MIT License</span></span>
+		</div>
+
+		<h5>Fonts, Icons and Images</h5>
+		<div class="licenses">
+			<span class="item-group"><span class="framework"><a href="https://fonts.google.com/specimen/Maven+Pro">Maven Pro</a></span><span class="license">Open Font License</span></span>
+			<span class="skip"></span>
+
+			<span class="item-group"><span class="framework"><a href="https://www.swifticons.com/">Laurus Icon</a></span><span class="license">Creative Commons (Attribution 3.0 Unported)</span></span>
+			<span class="skip"></span>
+
+			<span class="item-group"><span class="framework"><a href="https://material.io/icons/">Material Icons</a></span><span class="license">Apache License Version 2.0</span></span>
+			<span class="item-group"><span class="framework"><a href="http://fontawesome.io/">Font Awesome</a></span><span class="license">SIL Open Font License 1.1</span></span>
+			<span class="item-group"><span class="framework"><a href="https://octicons.github.com/">Octicons</a></span><span class="license">SIL Open Font License 1.1</span></span>
+			<span class="item-group"><span class="framework"><a href="https://icomoon.io/">Ico Moon</a></span><span class="license">GNU GENERAL PUBLIC LICENSE /<br>Creative Commons (Attribution 4.0)</span></span>
+			<span class="skip"></span>
+
+			<span class="item-group"><span class="framework">Category Icons</span><span class="license">Copyright</span></span>
+			<span class="item-group"><span class="framework">Skill Icons</span><span class="license">Copyright</span></span>
+		</div>
+	</article>
+
+	<article id="changelog" class="tab">
+		<h3 id="head-changelog">変更履歴</h3>
+		<div class="timeline">
+			<div class="content">
+				<span class="version">v1.0.0</span><span class="release">2017.05.01</span><span class="wardrobe">2,881 （ミラクルニキ v1.8.0(1) 2017.04.21 対応）</span>
+				<p class="description">公開</p>
 			</div>
 		</div>
-	</div>
 
-	<div id="credit" class="tab">
-		Credit
-	</div>
+		<h3 id="head-register">アイテムの登録について</h3>
+		<p class="my-text">
+			ミラクルニキがアップデートなどによりアイテムが追加された場合は適時登録していきますが、容易に入手できないものも多数あるのである程度の日数を要します。
+			ショップ売りなど容易に入手できるものはできるだけ早く、イベントアイテムについてはイベント終了の翌日ぐらい、入手困難な希少アイテムは情報が入り次第データベースに反映されることをアイテム追加の目安とします。
+			お待たせして申し訳ございませんが、ご了承いただけたら幸いです。
+		</p>
 
-	<div id="changelog" class="tab">
-		Changelog
-	</div>
+		<h3 id="head-update">追加予定機能</h3>
+		<ul>
+			<li>アイテムデータベースに以下の項目を追加中です（入力作業がおわりません）
+				<ul>
+					<li>入手方法</li>
+					<li>フレーバーテキスト</li>
+				</ul>
+			</li>
+		<li>入手方法の逆引き、衣装制作などで最終的に必要数の計算する機能</li>
+		<li>ブラックリストに登録されているアイテムを推奨アイテムリストから取り除きたい</li>
+		<li>帽子マニアやビサンティウムの歌といった複数スロットのアイテムは現在推奨対象外（スコアは計算されています）</li>
+		</ul>
 
-	<!--
-	<script>
-		@todo: Disqus
-	</script>
-	-->
+		<h3 id="head-concern">機能懸念事項</h3>
+		<ul>
+			<li>ブラックリストにカテゴリーがあるステージのスコア算定が不安</li>
+		</ul>
+	</article>
+
+	<div id="disqus-space">
+		<p id="comment-attention">
+			名前を入力しようとすると表示される「ゲストとして投稿する」にチェックを入れるとDISQUSに登録しなくてもコメントすることができます。<br>
+			メールアドレスは入力必要ですが DISQUS で管理され、投稿したコメントに表示されることも私にも通知されることもありません。<br>
+			架空のメールアドレスでも可能ですのでお気軽にどうぞ！
+		</p>
+		<div id="disqus_thread"></div>
+		<script>
+			var disqus_config = function () {
+				this.page.url = "https://miramiku.github.io/Laurus/";
+				this.page.identifier = "Laurus";
+			};
+			( function () {
+				var d = document, s = d.createElement( 'script' );
+				s.src = 'https://laurus.disqus.com/embed.js';
+				s.setAttribute( 'data-timestamp', +new Date() );
+				( d.head || d.body ).appendChild( s );
+			} )();
+		</script>
+	</div>
 
 	<div id="dialogue-pane"></div>
 	<div id="dialogue"></div>
 
 	<!-- dialogue contents -->
 	<div id="stage-select" class="dialogue-content advisor">
-		<div class="dialogue-header">
-			<span class="dialogue-title">ステージ選択</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">ステージ選択</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
-			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>シナリオ</span>
-			<div id="stage-scenario"></div>
-			<span class="dialogue-expand-label more"><span class="laurus-icon">&#x2626;</span>コロッセオ</span>
-			<div id="stage-colosseum"></div>
-			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>ギルド</span>
-			<div id="stage-guild"></div>
-			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>イベント専用マップ</span>
-			<div id="stage-event"></div>
+			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>シナリオ</span><div id="stage-scenario"></div>
+			<span class="dialogue-expand-label more"><span class="laurus-icon">&#x2626;</span>コロッセオ</span><div id="stage-colosseum"></div>
+			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>ギルド</span><div id="stage-guild"></div>
+			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>イベント専用マップ</span><div id="stage-event"></div>
 			<span class="dialogue-expand-label less"><span class="laurus-icon">&#x2626;</span>カスタム入力</span>
 			<div id="stage-custom">
 				<div id="custom-input-area">
-					<span class="label">ミッションタイトル　例：1-1 スポーツ少女アウラ（１）</span>
-					<input id="custom-stage-title" type="text">
-					<span class="label">キャプチャ―　例：第１章 初めてのリヴィエール</span>
-					<input id="custom-request-chapter" type="text">
+					<span class="label">ミッションタイトル　例：1-1 スポーツ少女アウラ（１）</span><input id="custom-stage-title" type="text">
+					<span class="label">キャプチャ―　例：第１章 初めてのリヴィエール</span><input id="custom-request-chapter" type="text">
 				</div>
-				<div id="custom-input-determination-area">
-					<span id="custom-input-determination">入力確定</span>
-				</div>
+				<div id="custom-input-determination-area"><span id="custom-input-determination">入力確定</span></div>
 			</div>
 		</div>
 		<div class="dialogue-bottom-padding"></div>
 	</div>
 
 	<div id="tag-select" class="dialogue-content advisor">
-		<div class="dialogue-header">
-			<span class="dialogue-title">タグ選択</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
-		<div id="dialogue-null-tag-line">
-			<span class="tag"><span data-tag-id="0" class="tag-none">タグなし</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">タグ選択</span><span class="dialogue-close"><span>close</span></span></div>
+		<div id="dialogue-null-tag-line"><span class="tag"><span data-criteria-tag="0" class="tag-none">タグなし</span></span></div>
 		<div id="dialogue-tag-collection">
-			<span class="tag"><span data-tag-id="1" class="sun-care">UV対策</span></span>
-			<span class="tag"><span data-tag-id="2" class="dance">ダンサー</span></span>
-			<span class="tag"><span data-tag-id="3" class="floral">小花柄</span></span>
-			<span class="tag"><span data-tag-id="4" class="winter">冬服</span></span>
-			<span class="tag"><span data-tag-id="5" class="britain">英国風</span></span>
-			<span class="tag"><span data-tag-id="6" class="swimsuit">水着</span></span>
-			<span class="tag"><span data-tag-id="7" class="shower">バスタイム</span></span>
-			<span class="tag"><span data-tag-id="8" class="kimono">和風</span></span>
-			<span class="tag"><span data-tag-id="9" class="pajamas">ナイトウェア</span></span>
-			<span class="tag"><span data-tag-id="10" class="wedding">ウェディング</span></span>
-			<span class="tag"><span data-tag-id="11" class="army">ミリタリー</span></span>
-			<span class="tag"><span data-tag-id="12" class="office">OL</span></span>
-			<span class="tag"><span data-tag-id="13" class="apron">エプロン</span></span>
-			<span class="tag"><span data-tag-id="14" class="cheogsam">チャイナドレス</span></span>
-			<span class="tag"><span data-tag-id="15" class="maiden">メイド</span></span>
-			<span class="tag"><span data-tag-id="16" class="evening-gown">フォーマル</span></span>
-			<span class="tag"><span data-tag-id="17" class="navy">ネイビー</span></span>
-			<span class="tag"><span data-tag-id="18" class="traditional">エスニック</span></span>
-			<span class="tag"><span data-tag-id="19" class="bunny">バニー</span></span>
-			<span class="tag"><span data-tag-id="20" class="lady">お嬢様</span></span>
-			<span class="tag"><span data-tag-id="21" class="lolita">ロリータ</span></span>
-			<span class="tag"><span data-tag-id="22" class="gothic">ゴシック</span></span>
-			<span class="tag"><span data-tag-id="23" class="sports">スポーティ</span></span>
-			<span class="tag"><span data-tag-id="24" class="harajuku">原宿系</span></span>
-			<span class="tag"><span data-tag-id="25" class="preppy">学生風</span></span>
-			<span class="tag"><span data-tag-id="26" class="unisex">中性風</span></span>
-			<span class="tag"><span data-tag-id="27" class="future">近未来</span></span>
-			<span class="tag"><span data-tag-id="28" class="fairy">メルヘン</span></span>
-			<span class="tag"><span data-tag-id="29" class="rock">ロック</span></span>
-			<span class="tag"><span data-tag-id="30" class="denim">デニム</span></span>
-			<span class="tag"><span data-tag-id="31" class="pet">小動物</span></span>
-			<span class="tag"><span data-tag-id="32" class="goddess">女神</span></span>
-			<span class="tag"><span data-tag-id="33" class="pop">POP</span></span>
-			<span class="tag"><span data-tag-id="34" class="homewear">部屋着</span></span>
-			<span class="tag"><span data-tag-id="35" class="chinese-classical">クラシックチャイナ</span></span>
-			<span class="tag"><span data-tag-id="36" class="hindu">インド風</span></span>
-			<span class="tag"><span data-tag-id="37" class="republic-of-china">レトロチャイナ</span></span>
-			<span class="tag"><span data-tag-id="38" class="european">中世ヨーロッパ風</span></span>
-			<span class="tag"><span data-tag-id="39" class="swordman">ワル</span></span>
-			<span class="tag"><span data-tag-id="40" class="rain">雨の日</span></span>
-			<span class="tag"><span data-tag-id="41" class="modern-china">モダンチャイナ</span></span>
-			<span class="tag"><span data-tag-id="42" class="dryad">森ガール</span></span>
-			<span class="tag"><span data-tag-id="43" class="bohemia">ボヘミアン</span></span>
-			<span class="tag"><span data-tag-id="44" class="paramedics">メディカル</span></span>
+			<span class="tag"><span data-criteria-tag="1" class="sun-care">UV対策</span></span><span class="tag"><span data-criteria-tag="2" class="dance">ダンサー</span></span><span class="tag"><span data-criteria-tag="3" class="floral">小花柄</span></span><span class="tag"><span data-criteria-tag="4" class="winter">冬服</span></span>
+			<span class="tag"><span data-criteria-tag="5" class="britain">英国風</span></span><span class="tag"><span data-criteria-tag="6" class="swimsuit">水着</span></span><span class="tag"><span data-criteria-tag="7" class="shower">バスタイム</span></span><span class="tag"><span data-criteria-tag="8" class="kimono">和風</span></span>
+			<span class="tag"><span data-criteria-tag="9" class="pajamas">ナイトウェア</span></span><span class="tag"><span data-criteria-tag="10" class="wedding">ウェディング</span></span><span class="tag"><span data-criteria-tag="11" class="army">ミリタリー</span></span><span class="tag"><span data-criteria-tag="12" class="office">OL</span></span>
+			<span class="tag"><span data-criteria-tag="13" class="apron">エプロン</span></span><span class="tag"><span data-criteria-tag="14" class="cheogsam">チャイナドレス</span></span><span class="tag"><span data-criteria-tag="15" class="maiden">メイド</span></span><span class="tag"><span data-criteria-tag="16" class="evening-gown">フォーマル</span></span>
+			<span class="tag"><span data-criteria-tag="17" class="navy">ネイビー</span></span><span class="tag"><span data-criteria-tag="18" class="traditional">エスニック</span></span><span class="tag"><span data-criteria-tag="19" class="bunny">バニー</span></span><span class="tag"><span data-criteria-tag="20" class="lady">お嬢様</span></span>
+			<span class="tag"><span data-criteria-tag="21" class="lolita">ロリータ</span></span><span class="tag"><span data-criteria-tag="22" class="gothic">ゴシック</span></span><span class="tag"><span data-criteria-tag="23" class="sports">スポーティ</span></span><span class="tag"><span data-criteria-tag="24" class="harajuku">原宿系</span></span>
+			<span class="tag"><span data-criteria-tag="25" class="preppy">学生風</span></span><span class="tag"><span data-criteria-tag="26" class="unisex">中性風</span></span><span class="tag"><span data-criteria-tag="27" class="future">近未来</span></span><span class="tag"><span data-criteria-tag="28" class="fairy">メルヘン</span></span>
+			<span class="tag"><span data-criteria-tag="29" class="rock">ロック</span></span><span class="tag"><span data-criteria-tag="30" class="denim">デニム</span></span><span class="tag"><span data-criteria-tag="31" class="pet">小動物</span></span><span class="tag"><span data-criteria-tag="32" class="goddess">女神</span></span>
+			<span class="tag"><span data-criteria-tag="33" class="pop">POP</span></span><span class="tag"><span data-criteria-tag="34" class="homewear">部屋着</span></span><span class="tag"><span data-criteria-tag="35" class="chinese-classical">クラシックチャイナ</span></span><span class="tag"><span data-criteria-tag="36" class="hindu">インド風</span></span>
+			<span class="tag"><span data-criteria-tag="37" class="republic-of-china">レトロチャイナ</span></span><span class="tag"><span data-criteria-tag="38" class="european">中世ヨーロッパ風</span></span><span class="tag"><span data-criteria-tag="39" class="swordman">ワル</span></span><span class="tag"><span data-criteria-tag="40" class="rain">雨の日</span></span>
+			<span class="tag"><span data-criteria-tag="41" class="modern-china">モダンチャイナ</span></span><span class="tag"><span data-criteria-tag="42" class="dryad">森ガール</span></span><span class="tag"><span data-criteria-tag="43" class="bohemia">ボヘミアン</span></span><span class="tag"><span data-criteria-tag="44" class="paramedics">メディカル</span></span>
 		</div>
 	</div>
 
 	<div id="category-filter" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">カテゴリフィルタ</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">カテゴリフィルタ</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
 			<div class="filter-aggregate-slots">
 				<div class="filter-all-slots">
 					<div class="category-line">
-						<span class="slot"><span data-slot="1">ヘアスタイル<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="2">ドレス<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="3">コート<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="4">トップス<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="5">ボトムス<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="1">ヘアスタイル<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="2">ドレス<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="3">コート<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="4">トップス<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="5">ボトムス<span class="has"></span></span></span>
 					</div>
 					<div class="category-line">
-						<span class="slot"><span data-slot="6">靴下<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="6">靴下<span class="has"></span></span></span>
 						<div class="sub-category" data-hosiery data-parent="6">
-							<span class="slot"><span data-slot="7">靴下<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="8">アンクレット<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="7">靴下<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="8">アンクレット<span class="has"></span></span></span>
 						</div>
-						<span class="slot"><span data-slot="9">シューズ<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="10">メイク<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="9">シューズ<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="10">メイク<span class="has"></span></span></span>
 					</div>
 					<div class="category-line">
-						<span class="slot"><span data-slot="11">アクセサリー<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="11">アクセサリー<span class="has"></span></span></span>
 					</div>
 					<div class="category-line" data-accessory="1">
-						<span class="slot"><span data-slot="12">ヘアアクセ<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="12">ヘアアクセ<span class="has"></span></span></span>
 						<div class="sub-category" data-headwear data-parent="12">
-							<span class="slot"><span data-slot="13">ヘッドアクセ<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="14">ヴェール<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="15">カチューシャ<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="16">つけ耳<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="13">ヘッドアクセ<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="14">ヴェール<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="15">カチューシャ<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="16">つけ耳<span class="has"></span></span></span>
 						</div>
 					</div>
 					<div class="category-line" data-accessory="1">
-						<span class="slot"><span data-slot="17">耳飾り<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="18">首飾り<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="17">耳飾り<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="18">首飾り<span class="has"></span></span></span>
 						<div class="sub-category" data-necklace data-parent="18">
-							<span class="slot"><span data-slot="19">マフラー<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="20">ネックレス<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="19">マフラー<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="20">ネックレス<span class="has"></span></span></span>
 						</div>
 					</div>
 					<div class="category-line" data-accessory="1">
-						<span class="slot"><span data-slot="21">腕飾り<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="21">腕飾り<span class="has"></span></span></span>
 						<div class="sub-category" data-bracelet data-parent="21">
-							<span class="slot"><span data-slot="22">右手飾り<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="23">左手飾り<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="24">手袋<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="22">右手飾り<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="23">左手飾り<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="24">手袋<span class="has"></span></span></span>
 						</div>
 					</div>
 					<div class="category-line" data-accessory="1">
-						<span class="slot"><span data-slot="25">手持品<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="25">手持品<span class="has"></span></span></span>
 						<div class="sub-category" data-handheld data-parent="25">
-							<span class="slot"><span data-slot="26">右手持ち<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="27">左手持ち<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="28">両手持ち<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="26">右手持ち<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="27">左手持ち<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="28">両手持ち<span class="has"></span></span></span>
 						</div>
 					</div>
 					<div class="category-line" data-accessory="1">
-						<span class="slot"><span data-slot="29">腰飾り<span class="has"></span></span>
-						</span>
-						<span class="slot"><span data-slot="30">特殊<span class="has"></span></span>
-						</span>
+						<span class="slot"><span data-slot="29">腰飾り<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="30">特殊<span class="has"></span></span></span>
 					</div>
 					<div class="category-line" data-accessory="1">
 						<div class="sub-category" data-special data-parent="30">
-							<span class="slot"><span data-slot="31" data-special>フェイス<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="32" data-special>ボディ<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="33" data-special>タトゥー<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="34" data-special>羽根<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="35" data-special>しっぽ<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="31" data-special>フェイス<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="32" data-special>ボディ<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="33" data-special>タトゥー<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="34" data-special>羽根<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="35" data-special>しっぽ<span class="has"></span></span></span>
 						</div>
 					</div>
 					<div class="category-line" data-accessory="1">
 						<div class="sub-category" data-special data-parent="30">
-							<span class="slot"><span data-slot="36" data-special>前景<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="37" data-special>後景<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="38" data-special>吊り<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="39" data-special>床<span class="has"></span></span>
-							</span>
-							<span class="slot"><span data-slot="40" data-special>肌<span class="has"></span></span>
-							</span>
+							<span class="slot"><span data-slot="36" data-special>前景<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="37" data-special>後景<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="38" data-special>吊り<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="39" data-special>床<span class="has"></span></span></span>
+							<span class="slot"><span data-slot="40" data-special>肌<span class="has"></span></span></span>
 						</div>
 					</div>
 				</div>
@@ -957,126 +635,33 @@
 		</div>
 		<div class="filter-dialogue-footer">
 			<span id="category-filter-all" class="macro-button"><span>すべて選択 / 解除</span></span>
-			<div class="footer-text">
-				<span class="dialogue-close"><span>close</span></span>
-				<span class="filter-dialogue-footer-text">
-					ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。
-				</span>
-			</div>
+			<div class="footer-text"><span class="dialogue-close"><span>close</span></span><span class="filter-dialogue-footer-text">ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。</span></div>
 		</div>
 	</div>
 
 	<div id="tag-filter" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">タグフィルタ</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">タグフィルタ</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
-			<span class="tag"><span data-tag-id="1" class="sun-care">UV対策<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="2" class="dance">ダンサー<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="3" class="floral">小花柄<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="4" class="winter">冬服<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="5" class="britain">英国風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="6" class="swimsuit">水着<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="7" class="shower">バスタイム<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="8" class="kimono">和風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="9" class="pajamas">ナイトウェア<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="10" class="wedding">ウェディング<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="11" class="army">ミリタリー<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="12" class="office">OL<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="13" class="apron">エプロン<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="14" class="cheogsam">チャイナドレス<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="15" class="maiden">メイド<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="16" class="evening-gown">フォーマル<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="17" class="navy">ネイビー<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="18" class="traditional">エスニック<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="19" class="bunny">バニー<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="20" class="lady">お嬢様<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="21" class="lolita">ロリータ<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="22" class="gothic">ゴシック<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="23" class="sports">スポーティ<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="24" class="harajuku">原宿系<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="25" class="preppy">学生風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="26" class="unisex">中性風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="27" class="future">近未来<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="28" class="fairy">メルヘン<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="29" class="rock">ロック<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="30" class="denim">デニム<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="31" class="pet">小動物<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="32" class="goddess">女神<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="33" class="pop">POP<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="34" class="homewear">部屋着<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="35" class="chinese-classical">クラシックチャイナ<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="36" class="hindu">インド風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="37" class="republic-of-china">レトロチャイナ<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="38" class="european">中世ヨーロッパ風<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="39" class="swordman">ワル<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="40" class="rain">雨の日<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="41" class="modern-china">モダンチャイナ<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="42" class="dryad">森ガール<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="43" class="bohemia">ボヘミアン<span class="has"></span></span>
-			</span>
-			<span class="tag"><span data-tag-id="44" class="paramedics">メディカル<span class="has"></span></span>
-			</span>
+			<span class="tag"><span data-tag-id="1" class="sun-care">UV対策<span class="has"></span></span></span><span class="tag"><span data-tag-id="2" class="dance">ダンサー<span class="has"></span></span></span><span class="tag"><span data-tag-id="3" class="floral">小花柄<span class="has"></span></span></span><span class="tag"><span data-tag-id="4" class="winter">冬服<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="5" class="britain">英国風<span class="has"></span></span></span><span class="tag"><span data-tag-id="6" class="swimsuit">水着<span class="has"></span></span></span><span class="tag"><span data-tag-id="7" class="shower">バスタイム<span class="has"></span></span></span><span class="tag"><span data-tag-id="8" class="kimono">和風<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="9" class="pajamas">ナイトウェア<span class="has"></span></span></span><span class="tag"><span data-tag-id="10" class="wedding">ウェディング<span class="has"></span></span></span><span class="tag"><span data-tag-id="11" class="army">ミリタリー<span class="has"></span></span></span><span class="tag"><span data-tag-id="12" class="office">OL<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="13" class="apron">エプロン<span class="has"></span></span></span><span class="tag"><span data-tag-id="14" class="cheogsam">チャイナドレス<span class="has"></span></span></span><span class="tag"><span data-tag-id="15" class="maiden">メイド<span class="has"></span></span></span><span class="tag"><span data-tag-id="16" class="evening-gown">フォーマル<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="17" class="navy">ネイビー<span class="has"></span></span></span><span class="tag"><span data-tag-id="18" class="traditional">エスニック<span class="has"></span></span></span><span class="tag"><span data-tag-id="19" class="bunny">バニー<span class="has"></span></span></span><span class="tag"><span data-tag-id="20" class="lady">お嬢様<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="21" class="lolita">ロリータ<span class="has"></span></span></span><span class="tag"><span data-tag-id="22" class="gothic">ゴシック<span class="has"></span></span></span><span class="tag"><span data-tag-id="23" class="sports">スポーティ<span class="has"></span></span></span><span class="tag"><span data-tag-id="24" class="harajuku">原宿系<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="25" class="preppy">学生風<span class="has"></span></span></span><span class="tag"><span data-tag-id="26" class="unisex">中性風<span class="has"></span></span></span><span class="tag"><span data-tag-id="27" class="future">近未来<span class="has"></span></span></span><span class="tag"><span data-tag-id="28" class="fairy">メルヘン<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="29" class="rock">ロック<span class="has"></span></span></span><span class="tag"><span data-tag-id="30" class="denim">デニム<span class="has"></span></span></span><span class="tag"><span data-tag-id="31" class="pet">小動物<span class="has"></span></span></span><span class="tag"><span data-tag-id="32" class="goddess">女神<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="33" class="pop">POP<span class="has"></span></span></span><span class="tag"><span data-tag-id="34" class="homewear">部屋着<span class="has"></span></span></span><span class="tag"><span data-tag-id="35" class="chinese-classical">クラシックチャイナ<span class="has"></span></span></span><span class="tag"><span data-tag-id="36" class="hindu">インド風<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="37" class="republic-of-china">レトロチャイナ<span class="has"></span></span></span><span class="tag"><span data-tag-id="38" class="european">中世ヨーロッパ風<span class="has"></span></span></span><span class="tag"><span data-tag-id="39" class="swordman">ワル<span class="has"></span></span></span><span class="tag"><span data-tag-id="40" class="rain">雨の日<span class="has"></span></span></span>
+			<span class="tag"><span data-tag-id="41" class="modern-china">モダンチャイナ<span class="has"></span></span></span><span class="tag"><span data-tag-id="42" class="dryad">森ガール<span class="has"></span></span></span><span class="tag"><span data-tag-id="43" class="bohemia">ボヘミアン<span class="has"></span></span></span><span class="tag"><span data-tag-id="44" class="paramedics">メディカル<span class="has"></span></span></span>
 		</div>
 		<div class="filter-dialogue-footer">
 			<span id="tag-filter-all" class="macro-button"><span>すべて選択 / 解除</span></span>
-			<div class="footer-text">
-				<span class="dialogue-close"><span>close</span></span>
-				<span class="filter-dialogue-footer-text">
-					ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。
-				</span>
-			</div>
+			<div class="footer-text"><span class="dialogue-close"><span>close</span></span><span class="filter-dialogue-footer-text">ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。</span></div>
 		</div>
 	</div>
 
 	<div id="rarity-filter" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">レアリティフィルタ</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">レアリティフィルタ</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
 			<span data-rarity="1" class="rarity"><span class="laurus-icon">&#x2606;</span>1<span class="has"></span></span>
 			<span data-rarity="2" class="rarity"><span class="laurus-icon">&#x2606;</span>2<span class="has"></span></span>
@@ -1087,75 +672,42 @@
 		</div>
 		<div class="filter-dialogue-footer">
 			<span id="rarity-filter-reset" class="macro-button"><span>リセット</span></span>
-			<div class="footer-text">
-				<span class="dialogue-close"><span>close</span></span>
-				<span class="filter-dialogue-footer-text">
-					ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。
-				</span>
-			</div>
+			<div class="footer-text"><span class="dialogue-close"><span>close</span></span><span class="filter-dialogue-footer-text">ボタンを押すか、ウィンドウの外（暗い部分）を押すと確定します。</span></div>
 		</div>
 	</div>
 
 	<div id="sort-filter" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">並べ替え設定</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">並べ替え設定</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
 			<div id="sort-config-order">
 				<h6>並べ替え順序</h6>
-				<span class="sort-item"><span data-key="asc"><span class="laurus-icon">&#x2624;</span> 正順</span>
-				</span>
-				<span class="sort-item"><span data-key="desc"><span class="laurus-icon">&#x2625;</span> 逆順</span>
-				</span>
+				<span class="sort-item"><span data-key="asc"><span class="laurus-icon">&#x2624;</span> 正順</span></span><span class="sort-item"><span data-key="desc"><span class="laurus-icon">&#x2625;</span> 逆順</span></span>
 			</div>
 			<div id="sort-config-key">
 				<h6>並べ替え基準</h6>
 				<div class="item-group">
-					<span class="sort-item"><span data-key="serial">シリアル</span></span>
-					<span class="sort-item"><span data-key="name">名前</span></span>
-					<span class="sort-item"><span data-key="rarity">レアリティ</span></span>
-					<span class="sort-item"><span data-key="tag-f">タグF</span></span>
-					<span class="sort-item"><span data-key="tag-l">タグL</span></span>
-					<span class="sort-item"><span data-key="tags">タグ総合</span></span>
-					<span class="sort-item"><span data-key="score">スコア</span></span>
+					<span class="sort-item"><span data-key="serial">シリアル</span></span><span class="sort-item"><span data-key="name">名前</span></span><span class="sort-item"><span data-key="rarity">レアリティ</span></span><span class="sort-item"><span data-key="tag-f">タグF</span></span><span class="sort-item"><span data-key="tag-l">タグL</span></span>
+					<span class="sort-item"><span data-key="tags">タグ総合</span></span><span class="sort-item"><span data-key="score">スコア</span></span>
 				</div>
 				<div class="item-group">
-					<span class="sort-item"><span data-key="gorgeous">華麗</span></span>
-					<span class="sort-item"><span data-key="elegance">エレガント</span></span>
-					<span class="sort-item"><span data-key="mature">大人</span></span>
-					<span class="sort-item"><span data-key="sexy">セクシー</span></span>
-					<span class="sort-item"><span data-key="warm">ウォーム</span></span>
-					<span class="sort-item"><span data-key="simple">シンプル</span></span>
-					<span class="sort-item"><span data-key="lively">アクティブ</span></span>
-					<span class="sort-item"><span data-key="cute">キュート</span></span>
-					<span class="sort-item"><span data-key="pure">ピュア</span></span>
-					<span class="sort-item"><span data-key="cool">クール</span></span>
+					<span class="sort-item"><span data-key="gorgeous">華麗</span></span><span class="sort-item"><span data-key="elegance">エレガント</span></span><span class="sort-item"><span data-key="mature">大人</span></span><span class="sort-item"><span data-key="sexy">セクシー</span></span><span class="sort-item"><span data-key="warm">ウォーム</span></span>
+					<span class="sort-item"><span data-key="simple">シンプル</span></span><span class="sort-item"><span data-key="lively">アクティブ</span></span><span class="sort-item"><span data-key="cute">キュート</span></span><span class="sort-item"><span data-key="pure">ピュア</span></span><span class="sort-item"><span data-key="cool">クール</span></span>
 				</div>
 			</div>
 			<div id="possession-options">
 				<h6>未所持アイテムに関する設定</h6>
-				<span class="possession-option"><span id="display-impossession">未所持アイテムを表示する</span></span>
-				<span class="possession-option"><span id="display-impossession-only">未所持アイテムのみ表示</span></span>
+				<span class="possession-option"><span id="display-impossession">未所持アイテムを表示する</span></span><span class="possession-option"><span id="display-impossession-only">未所持アイテムのみ表示</span></span>
 			</div>
 		</div>
 	</div>
 
 	<div id="file-import" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">アイテム所持状況の読み込み</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
-		<div class="content">
-			<div id="file-droppable"></div>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">アイテム所持状況の読み込み</span><span class="dialogue-close"><span>close</span></span></div>
+		<div class="content"><div id="file-droppable"></div></div>
 	</div>
 
 	<div id="possessions-macro" class="dialogue-content wardrobe">
-		<div class="dialogue-header">
-			<span class="dialogue-title">アイテム所持状況の一括設定</span>
-			<span class="dialogue-close"><span>close</span></span>
-		</div>
+		<div class="dialogue-header"><span class="dialogue-title">アイテム所持状況の一括設定</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
 			<span class="macro-command"><span id="all-poses" class="poses-option">すべて所持</span></span>
 			<span class="macro-command"><span id="all-imposes" class="poses-option">すべて不所持</span></span>
@@ -1166,27 +718,67 @@
 	</div>
 
 	<!-- popup contents -->
-	<ul id="value-list">
-	<li id="value-ss" class="value ss">SS</li>
-		<li id="value-s" class="value s">S</li>
-		<li id="value-a" class="value a">A</li>
-		<li id="value-b" class="value b">B</li>
-		<li id="value-c" class="value c">C</li>
-	</ul>
+	<ul id="value-list"><li id="value-ss" class="value ss">SS</li><li id="value-s" class="value s">S</li><li id="value-a" class="value a">A</li><li id="value-b" class="value b">B</li><li id="value-c" class="value c">C</li></ul>
 
-	<footer>
-		<ul class="enumeration">
-			<li><a href="http://miramiku.github.io/"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a></li>
-			<li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li>
-			<li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li>
+	<footer><ul class="enumeration"><li id="credit-me"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</li><li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li><li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li></ul></footer>
+
+	<div id="toc">
+		<ul id="back2top"><li><a href="#header">トップページ</a></li></ul>
+		<ul id="toc-advisor" class="tab-toc">
+			<li><a href="#head-objective">目的条件</a></li>
+			<li>
+				<a href="#head-recommends">推奨コーディネート</a>
+				<ul>
+					<li><a href="#head-accessory">アクセサリー</a></li>
+					<li><a href="#head-special">特殊アクセサリー</a></li>
+				</ul>
+			</li>
 		</ul>
-	</footer>
+		<ul id="toc-wardrobe" class="tab-toc">
+			<li><a href="#head-filter">フィルタ</a></li>
+			<li><a href="#head-wardrobe">クローゼット</a></li>
+			<li><a href="#head-imex">アイテム所持状況の入出力</a></li>
+		</ul>
+		<ul id="toc-purveyor" class="tab-toc"></ul>
+		<ul id="toc-cheatsheet" class="tab-toc">
+			<li>
+				<a href="#head-cs-recommends">推奨コーディネート</a>
+				<ul>
+					<li><a href="#head-cs-accessory">アクセサリー</a></li>
+					<li><a href="#head-cs-special">特殊アクセサリー</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul id="toc-credit" class="tab-toc">
+			<li>
+				<ul>
+					<li><a href="#head-nikki">Miracle Nikki</a></li>
+					<li><a href="#head-sns">Contact and SNS</a></li>
+					<li><a href="#head-discussions">Discussions</a></li>
+					<li><a href="#head-licenses">Licenses</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul id="toc-changelog" class="tab-toc">
+			<li><a href="#head-changelog">変更履歴</a></li>
+			<li><a href="#head-register">アイテムの登録について</a></li>
+			<li><a href="#head-update">追加予定機能</a></li>
+			<li><a href="#head-concern">機能懸念事項</a></li>
+		</ul>
+		<ul id="jump2disqus"><li><a href="#disqus_thread">コメント</a></li></ul>
+	</div>
 
-	<!--
 	<script>
-		@todo: Google Analytics
+		( function ( i, s, o, g, r, a, m ) {
+			i[ 'GoogleAnalyticsObject' ] = r; i[ r ] = i[ r ] || function () {
+				( i[ r ].q = i[ r ].q || [] ).push( arguments )
+			}, i[ r ].l = 1 * new Date(); a = s.createElement( o ),
+				m = s.getElementsByTagName( o )[ 0 ]; a.async = 1; a.src = g; m.parentNode.insertBefore( a, m )
+		} )( window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga' );
+		ga( 'create', 'UA-98310829-1', 'auto' );
+		ga( 'send', 'pageview' );
 	</script>
-	-->
+	<script id="dsq-count-scr" src="//laurus.disqus.com/count.js" async></script>
 </body>
 
 </html>

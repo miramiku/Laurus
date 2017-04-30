@@ -404,6 +404,7 @@
 			.slant-stripe-background( @advisor-theme, 25% );
 			display:       block;
 			float:         left;
+			font-size:     @sub-font-size;
 			overflow:      hidden;
 			padding:       0 5px;
 			text-overflow: ellipsis;
@@ -418,6 +419,7 @@
 		.bw-item-name {
 			display:       block;
 			float:         left;
+			font-size:     @sub-font-size;
 			overflow:      hidden;
 			padding:       0 5px;
 			text-overflow: ellipsis;
@@ -450,6 +452,17 @@
 			&.special   { .category-icon( 14 ); }
 			&.makeup    { .category-icon( 15 ); }
 		}
+		.unseen {
+			display:    block;
+			text-align: center;
+			width:      150px;
+			span {
+				.slant-stripe-background( @inaccent-color, 25% );
+				border-radius: 4px;
+				font-size:     @sub-font-size;
+				padding:       0 15px;
+			}
+		}
 	}
 
 	#options {
@@ -458,8 +471,9 @@
 	}
 
 // #feasible {}
-// #recommends {
-// }
+#recommends {
+	overflow: hidden;
+}
 #recommends-controle {
 	.disable-select();
 	color:       @insparkly-color;
@@ -599,8 +613,8 @@
 
 // dialogue
 #stage-select {
-	max-height: 500px;
-	width:      840px;
+	height: 500px;
+	width:  840px;
 	.content div {
 		overflow: hidden;
 	}

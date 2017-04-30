@@ -1,22 +1,28 @@
 ## license
-### image
-* github.png
-* twtiter.png
-* laurus.png
-* more.png
-* favicon.ico
-	* Brands Flat: License: Creative Commons (Attribution 3.0 Unported)
-	* https://www.swifticons.com/
-	* https://creativecommons.org/licenses/by/3.0/deed.ja
-Envato logo?
-
-
-### framework
+### JavaScript
 * jQuery
-	* MIT License
-* jquery.piety
-	* MIT License
-* jquery.perfect-scrollbar
-	* MIT License
+* peity
+* perfect-scrollbar
 * toastr
+	* MIT License
+
+### Cascading Stylesheet
+* normalize.css
+	* MIT License
+
+### Fonts, Icons and Images
+* Maven Pro
+	* Open Font License
+* Laurus Icon (Envato logo?)
+	* Creative Commons (Attribution 3.0 Unported)
+* Material Icons
+	* Apache License Version 2.0
+* Font Awesome
+* Octicons
+	* SIL Open Font License 1.1
+* Ico Moon
+	* GNU GENERAL PUBLIC LICENSE / Creative Commons (Attribution 4.0)
+* Category Icons
+* Skill Icons
+	* Copyright
 	* MIT License

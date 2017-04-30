@@ -1,4 +1,3 @@
-/*jshint devel: true */
 /*global toastr, JSON */
 
 /** @type {Class} Laurus Package */
@@ -1007,14 +1006,6 @@ LAURUS.dialogue = ( function () {
 				_disposeEvent();
 			}
 		},
-		/** @summary ダイアログの再描画 */
-		_reposition = function () {
-			_$dialogue
-				.animate( {
-					marginTop: ( _$dialogue.outerHeight() / 2 ) * -1,
-					marginLeft: ( _$dialogue.outerWidth() / 2 ) * -1
-				}, 500 );
-		},
 		/** @summary ダイアログを表示する
 		 * @param {String} id ダイアログコンテンツの ID
 		 */
@@ -1063,7 +1054,6 @@ LAURUS.dialogue = ( function () {
 									$this
 										.removeClass( pre )
 										.addClass( current );
-									_reposition();
 								} );
 						};
 
@@ -1083,7 +1073,6 @@ LAURUS.dialogue = ( function () {
 		wakeup: _wakeup,
 		setContents: _setContents,
 		getInvoker: _getInvoker,
-		reposition: _reposition,
 		dispose: _dispose,
 		invoke: _invoke
 	};
@@ -1660,7 +1649,7 @@ LAURUS.advisor = ( function () {
 
 						if ( _stage[ STAGE[ this.toUpperCase() ] ].length === 0 ) {
 							$list
-								.html( "<span class=\"unseen\">未発見</span>" );
+								.html( "<span class=\"unseen\"><span>未発見</span></span>" );
 						} else {
 							$.each( _stage[ STAGE[ this.toUpperCase() ] ], function () {
 								var name = "";
@@ -2045,7 +2034,7 @@ LAURUS.advisor = ( function () {
 					},
 					/** 選択したタグをセットする */
 					tagSelect: function () {
-						Medium.tag.set(( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "tag-id" ) );
+						Medium.tag.set(( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "criteria-tag" ) );
 						dialogue.dispose();
 					},
 					/** @summary スキルの活性 / 不活性化状態を入れ替える */
@@ -2115,7 +2104,7 @@ LAURUS.advisor = ( function () {
 			if ( loadStage ) {
 				Medium.writeStage( loadStage );
 			} else {
-				Medium.resetUI();
+				Medium.writeStage( "1-1" );
 			}
 		},
 		/** @summary 現在のステージ情報を返す
@@ -3726,17 +3715,24 @@ LAURUS.changeMode = function () {
 
 	var mode = $( this ).data( "mode" );
 
-	toastr.remove();
+	toastr
+		.remove();
 
-	$( "#general-navgation .ghost-button" ).removeClass( "current-mode" );
+	$( "#general-navgation .ghost-button" )
+		.removeClass( "current-mode" );
 
-	$( this ).addClass( "current-mode" );
-	$( "#header" ).attr( "class", mode );
+	$( this )
+		.addClass( "current-mode" );
+	$( "#header" )
+		.attr( "class", mode );
 
-	$( "#current-mode" ).text( mode.charAt( 0 ).toUpperCase() + mode.substring( 1 ) );
+	$( "#current-mode" )
+		.text( mode.charAt( 0 ).toUpperCase() + mode.substring( 1 ) );
 
-	$( ".tab" ).hide();
-	$( "#" + mode ).show();
+	$( ".tab, .tab-toc" )
+		.hide();
+	$( "#" + mode + ", #toc-" + mode )
+		.show();
 
 	if ( LAURUS[ mode ].changeMode ) {
 		LAURUS[ mode ].changeMode();
@@ -3748,10 +3744,25 @@ LAURUS.wakeup = {
 	laurus: function () {
 		"use strict";
 
-		// グローバルナビ
 		$( "#general-navgation" )
 			.on( "click", ".ghost-button:not( .usage )", LAURUS.changeMode )
-			.on( "click", ".usage", function () { console.log( "usage" ); } );
+			.on( "click", ".usage", function () {
+				window.open( "https://miramiku.github.io/Laurus/usage/" );
+			} );
+
+		$( "#laurus" )
+			.on( "click", "a[href^=\"#\"]", function ( evt ) {
+				var speed = 500,
+					href = $( this ).attr( "href" ),
+					target = $( href === "#" || href === "" ? "html" : href.replace( ":", "\\:" ) ),
+					position = target.offset().top;
+
+				$( "body, html" ).animate( {
+					scrollTop: position
+				}, speed, "swing" );
+
+				evt.preventDefault();
+			} );
 	},
 	advisor: LAURUS.advisor.wakeup,
 	wardrobe: LAURUS.wardrobe.wakeup,
@@ -3780,5 +3791,4 @@ $( document ).ready( function () {
 	$( "#dialogue" ).perfectScrollbar();
 
 	$( "#advisor-button" ).click();
-	$( "#credit-button" ).click();
 } );
