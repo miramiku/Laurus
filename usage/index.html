@@ -25,7 +25,7 @@
 		<div id="header-area">
 			<div id="logo-area">
 				<h1>
-					<img src="../resources/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor"> Laurus :: Usage
+					<a href="https://miramiku.github.io/Laurus/"><img src="../resources/laurus.png" alt="Laurus | Miracle Nikki Optimal Coordinating Advisor"> Laurus :: Usage</a>
 				</h1>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 			ステージ名の部分（右の画像では<span class="strong-sub">1-1 スポーツ少女アウラ（１） 第１章 初めてのリヴィエール</span>）にマウスカーソルを合わせると赤い枠線が表示されます。
 			枠線が表示された状態で<span class="strong">クリック</span>すると<span class="strong">ステージ選択ダイアログ</span>が表示されます。
 		</p>
-		<img alt="目的ステージの変更" class="lazyload figure" src="placeholder.png" data-src="stage-change.png">
+		<img alt="目的ステージの変更" class="lazyload figure" src="placeholder.png" data-src="stage-change.gif">
 
 		<hr class="offset-killer">
 		<h5>ステージ選択ダイアログ</h5>
@@ -48,7 +48,7 @@
 			ステージ名にマウスカーソルを合わせると赤い枠線が表示され、さらに<span class="strong">クリック</span>するとステージを選択することができます。
 			ステージ選択ダイアログが閉じるとスコアの計算が終わっています。
 		</p>
-		<img alt="ステージ選択ダイアログ" class="lazyload figure" src="placeholder.png" data-src="stage-select.png">
+		<img alt="ステージ選択ダイアログ" class="lazyload figure" src="placeholder.png" data-src="stage-select.gif">
 
 		<hr class="offset-killer">
 		<h5>コーディネート</h5>
@@ -57,7 +57,69 @@
 			表示されているアイテムを所持していない場合は、アイテムのすぐわきに表示されている<span class="strong-sub">&gt;</span>にマウスカーソルを合わせると赤くなり<span class="strong">クリック</span>すると次にスコアの高いアイテムが表示されます。
 			また、行きすぎて戻る時は反対側に表示されている<span class="strong-sub">&lt;</span>にて行います。
 		</p>
-		<img alt="コーディネート" class="lazyload figure" src="placeholder.png" data-src="coordinate.png">
+		<img alt="コーディネート" class="lazyload figure" src="placeholder.png" data-src="coordinate.gif">
+
+		<hr class="offset-killer">
+		<h3 id="advisor">Laurus :: Advisor</h3>
+		<p>
+			最適コーディネートを探し出す Laurus のメイン機能です。
+		</p>
+
+		<h5>目的条件</h5>
+		<p class="text">
+			ブラックリスト・ホワイトリストを除いて編集することが可能です。<br>
+			評価基準を編集した状態で<span class="strong">条件確定</span>をクリックすると編集した内容で最適コーディネートを探し出します。<br>
+			シナリオのステージに関してはシナリオクラスが表示され、それぞれの文字を<span class="strong-sub">クリック</span>することで表示を切り替える事ができます。
+		</p>
+		<img alt="コーディネート" class="lazyload figure" src="placeholder.png" data-src="select-class.gif">
+
+		<hr class="offset-killer">
+		<h5>評価基準の編集</h5>
+		<p class="text">
+			該当するスタイルの<span class="strong">-</span>または<span class="strong">数値</span>にマウスカーソルを合わせると枠線が表示され、<span class="strong-sub">クリック</span>することで編集することができます。<br>
+			タグの部分にマウスカーソルを合わせ背景に色がついている時に<span class="strong-sub">クリック</span>すると<span class="strong">タグ選択ダイアログ</span>が表示されタグを選ぶことができます。
+		</p>
+		<img alt="評価基準の編集" class="lazyload figure" src="placeholder.png" data-src="edit-criteria.gif">
+
+		<hr class="offset-killer">
+		<h5>推奨コーディネート</h5>
+		<p class="text">
+			<span class="strong">リセット</span>ボタンを<span class="strong-sub">クリック</span>するとすべてのスロットにある推奨アイテムをすべて先頭に戻します。<br>
+			例えば、右の動画内に表示されている<span class="strong-sub">R-ヒツジ娘</span>は所持しておらず入手困難なアイテムなどの場合は次回から表示しないようにできます。
+			所持情況を変更するにはまず<span class="strong">編集ロック</span>を<span class="strong-sub">クリック</span>して<span class="strong">編集可能</span>という表示にします。
+			<span class="strong">編集可能</span>の状態でアイテム（ここでは<span class="strong-sub">R-ヒツジ娘</span>）を<span class="strong-sub">クリック</span>することで所持情況を変更できます。
+			ふたたび<span class="strong">編集可能</span>を<span class="strong-sub">クリック</span>することで<span class="strong">編集ロック</span>に戻り、編集できなくなります。<br>
+			ここで編集された所持情況は <a href="#wardrobe">Laurus :: Wardrobe</a> において不所持状態を解除することができます。
+		</p>
+		<img alt="推奨コーディネート" class="lazyload figure" src="placeholder.png" data-src="edit-poses.gif">
+
+		<hr class="offset-killer">
+		<h5>その他の機能</h5>
+		<p class="text">
+			ワンピース対トップスとボトムスなど、択一のスロットに関しては合計スコアの高いほうに<span class="strong">[推奨]</span>、低い方に<span class="strong-sub">[非推奨]</span>がつけられています。
+			また、これらは今表示中のアイテムから計算されています。
+			そのため、現在表示中のアイテムを変更するたびに再評価されて推奨スロットが変わることがあります。<br>
+			アクセサリに関して、アクセサリの中でスコア順位が表示されています。
+			この順位も現在表示中のアイテムから計算されているので表示しているアイテムを変更するたびに表示が変わる可能性があります。
+		</p>
+		<img alt="その他の機能" class="lazyload figure" src="placeholder.png" data-src="recommends.gif">
+
+		<hr class="offset-killer">
+		<h3 id="wardrobe">Laurus :: Wardrobe</h3>
+		<p>
+			アイテムの検索や抽出を行う機能です。<br>
+			現在は所持情況の編集のみ雑に記載しています。
+			のちにきちんと記述したものに差し替えます。
+		</p>
+
+		<h5>所持情況の編集</h5>
+		<p class="text">
+			<span class="strong">並べ替え</span>の右付近にマウスカーソルを合わせると緑色の枠線が表示されるので<span class="strong-sub">クリック</span>すると<span class="strong">並べ替え設定ダイアログ</span>が表示されます。
+			<span class="strong">並べ替え設定ダイアログ</span>の下にある<span class="strong">未所持アイテムを表示する</span>を<span class="strong-sub">クリック</span>して色をつけると未所持のアイテムが表示されます。
+			また、さらに表示された<span class="strong">未所持アイテムのみ表示</span>を<span class="strong-sub">クリック</span>することで未所持に設定されているアイテムのみが表示されるようになります。
+			あとは Advisor の時と同様に編集ロックを解除して所持設定の変更が行えます。
+		</p>
+		<img alt="その他の機能" class="lazyload figure" src="placeholder.png" data-src="edit-poses-wardrobe.gif">
 
 		<hr class="offset-killer">
 		<h3 id="others">その他の機能に関して</h3>
@@ -66,7 +128,6 @@
 			もうしばらくお待ちください。<br>
 			疑問に思った事やお困りのことがあればお気軽にコメント欄や <a href="https://twitter.com/miramiku">Twitter</a> のほうへどうぞ。
 		</p>
-
 	</article>
 
 	<div id="disqus-space">
@@ -96,6 +157,8 @@
 		<ul id="back2top"><li><a href="#header">トップページ</a></li></ul>
 		<ul class="tab-toc">
 			<li><a href="#basis">基本的な使い方</a></li>
+			<li><a href="#advisor">Laurus :: Advisor</a></li>
+			<li><a href="#wardrobe">Laurus :: Wardrobe</a></li>
 			<li><a href="#others">その他の機能に関して</a></li>
 		</ul>
 		<ul id="jump2disqus"><li><a href="#disqus_thread">コメント</a></li></ul>
