@@ -4,7 +4,7 @@ gulpfile.js
 throwaway.json
 
 # folder
-resources/raw-image/
+# resources/raw-image/
 resources/private/
 node_modules/
 .vscode/
