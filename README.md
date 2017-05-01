@@ -1,3 +1,12 @@
+## folders
+### features
+style (less), javascripts and frameworks.
+
+### resources
+images, icon fonts and databases.
+
+### usage
+
 ## license
 ### JavaScript
 * jQuery
