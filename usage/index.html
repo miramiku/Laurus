@@ -7,11 +7,12 @@
 
 	<!-- meta data -->
 	<meta name="author" content="Miku">
-	<meta name="keyword" content="ミラクルニキ,Miracle Nikki,ラウルス,Laurus,コーディネート">
+	<meta name="keyword" content="ミラクルニキ,Miracle Nikki,ローラス,Laurus,コーディネート">
 	<meta name="description" content="">
 
 	<!-- scripts -->
 	<script src="../features/jquery.min.js" defer></script>
+	<script src="scroll.js" defer></script>
 	<script src="lazysizes.js" defer></script>
 
 	<!-- style / favicon -->
@@ -31,8 +32,40 @@
 	</header>
 
 	<article id="uage" class="tab">
-		<h3>Laurus の使い方</h3>
-		<p>これから書く</p>
+		<h3 id="basis">基本的な使い方</h3>
+		<h5>目的ステージの変更</h5>
+		<p class="text">
+			ステージ名の部分（右の画像では<span class="strong-sub">1-1 スポーツ少女アウラ（１） 第１章 初めてのリヴィエール</span>）にマウスカーソルを合わせると赤い枠線が表示されます。
+			枠線が表示された状態で<span class="strong">クリック</span>すると<span class="strong">ステージ選択ダイアログ</span>が表示されます。
+		</p>
+		<img alt="目的ステージの変更" class="lazyload figure" src="placeholder.png" data-src="stage-change.png">
+
+		<hr class="offset-killer">
+		<h5>ステージ選択ダイアログ</h5>
+		<p class="text">
+			ステージのカテゴリは、緑が<span class="strong">閉鎖状態</span>で赤が<span class="strong">開放状態</span>を表します。
+			それぞれ、色の部分を<span class="strong">クリック</span>すると状態が反転します。<br>
+			ステージ名にマウスカーソルを合わせると赤い枠線が表示され、さらに<span class="strong">クリック</span>するとステージを選択することができます。
+			ステージ選択ダイアログが閉じるとスコアの計算が終わっています。
+		</p>
+		<img alt="ステージ選択ダイアログ" class="lazyload figure" src="placeholder.png" data-src="stage-select.png">
+
+		<hr class="offset-killer">
+		<h5>コーディネート</h5>
+		<p class="text">
+			それぞれの部位（<span class="strong-sub">スロット</span>）に対してスコアの高いものが１つ表示されています。<br>
+			表示されているアイテムを所持していない場合は、アイテムのすぐわきに表示されている<span class="strong-sub">&gt;</span>にマウスカーソルを合わせると赤くなり<span class="strong">クリック</span>すると次にスコアの高いアイテムが表示されます。
+			また、行きすぎて戻る時は反対側に表示されている<span class="strong-sub">&lt;</span>にて行います。
+		</p>
+		<img alt="コーディネート" class="lazyload figure" src="placeholder.png" data-src="coordinate.png">
+
+		<hr class="offset-killer">
+		<h3 id="others">その他の機能に関して</h3>
+		<p>
+			のちのち記載していきます。
+			もうしばらくお待ちください。
+		</p>
+
 	</article>
 
 	<div id="disqus-space">
@@ -61,14 +94,8 @@
 	<div id="toc">
 		<ul id="back2top"><li><a href="#header">トップページ</a></li></ul>
 		<ul class="tab-toc">
-			<li><a href="#head-objective">目的条件</a></li>
-			<li>
-				<a href="#head-recommends">推奨コーディネート</a>
-				<ul>
-					<li><a href="#head-accessory">アクセサリー</a></li>
-					<li><a href="#head-special">特殊アクセサリー</a></li>
-				</ul>
-			</li>
+			<li><a href="#basis">基本的な使い方</a></li>
+			<li><a href="#others">その他の機能に関して</a></li>
 		</ul>
 		<ul id="jump2disqus"><li><a href="#disqus_thread">コメント</a></li></ul>
 	</div>

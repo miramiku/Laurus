@@ -90,6 +90,7 @@ footer {
 /* disqus
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 #disqus-space {
+	clear:  both;
 	margin: 150px auto 100px;
 	width:  800px;
 }
@@ -215,4 +216,40 @@ h5 {
 		content: "■ ";
 		opacity: 0.4;
 	}
+}
+
+/* class
+ * ----- ----- ----- ----- ----- ----- ----- ----- */
+.text {
+	float: left;
+	width: 340px;
+}
+
+.figure {
+	float:        right;
+	margin-right: 20px;
+	width:        500px;
+	box-shadow: 1px 1px 2px fade( @BlackInk, 50% );
+}
+
+.strong {
+	.slant-stripe-background( @accent-color, 20% );
+	border-radius: 3px;
+	padding:       0 5px;
+}
+
+.strong-sub {
+	.slant-stripe-background( @inaccent-color, 20% );
+	border-radius: 3px;
+	padding:       0 5px;
+}
+
+.offset-killer {
+	background: transparent;
+	border:     none;
+	clear:      both;
+	height:     0;
+	margin:     0;
+	padding:    0;
+	width:      100%;
 }
