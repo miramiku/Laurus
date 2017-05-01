@@ -6,6 +6,7 @@ style (less), javascripts and frameworks.
 images, icon fonts and databases.
 
 ### usage
+usage page.
 
 ## license
 ### JavaScript
