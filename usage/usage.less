@@ -223,13 +223,13 @@ h5 {
  * ----- ----- ----- ----- ----- ----- ----- ----- */
 .text {
 	float: left;
-	width: 340px;
+	width: 440px;
 }
 
 .figure {
 	float:        right;
 	margin-right: 20px;
-	width:        500px;
+	max-width:    400px;
 	box-shadow: 1px 1px 2px fade( @BlackInk, 50% );
 }
 
@@ -245,7 +245,7 @@ h5 {
 	padding:       0 5px;
 }
 
-.offset-killer {
+hr.offset-killer {
 	background: transparent;
 	border:     none;
 	clear:      both;
@@ -253,4 +253,37 @@ h5 {
 	margin:     0;
 	padding:    0;
 	width:      100%;
+}
+
+span.offset-killer {
+	background: transparent;
+	border:     none;
+	clear:      both;
+	height:     0;
+	margin:     0;
+	padding:    0;
+	width:      100%;
+}
+
+.with-image {
+	clear:    both;
+	float:    left;
+	overflow: hidden;
+	padding:  0 0 10px 0;
+	width:    100%;
+	&.skip { margin-top: 30px; }
+}
+
+article li {
+	list-style: none;
+	&::before {
+		background:    fade( @credit-theme, 60% );
+		border-radius: 3px;
+		content:       " ";
+		display:       inline-block;
+		height:        6px;
+		margin-bottom: 2px;
+		margin-right:  8px;
+		width:         6px;
+	}
 }

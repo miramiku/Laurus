@@ -60,7 +60,47 @@
 		<img alt="コーディネート" class="lazyload figure" src="placeholder.png" data-src="coordinate.gif">
 
 		<hr class="offset-killer">
-		<h3 id="advisor">Laurus :: Advisor</h3>
+		<h3 id="detail">詳しい使い方</h3>
+
+		<h5>はじめに</h5>
+		<p>
+			Laurus（ローラス）はニキ株式会社が配信しているスマホゲーム <a href="http://www.nikkigames.co.jp/">ミラクルニキ</a> 内のステージにおいて、高いスコアをはじきだすのに適切だと思われるアイテムのコーディネートを補助することを目的としています。
+			高いスコアを出す方法の詳細は秘匿されており外部から観察できる状況からスコアの算出を試みています。
+			そのため実際と異なる事も多いと思いますがあらかじめご了承ください。
+		</p>
+
+		<h5>機能概要</h5>
+		<p>
+			Laurus は大きく分けて３つの機能を現在実装しています。
+		</p>
+
+		<ul>
+			<li>Advisor : 最適コーディネートを求める機能</li>
+			<li>Wardrobe : アイテムの抽出、所持状況管理を行う機能</li>
+			<li>Cheatsheet : 最適コーディネート早見表の出力</li>
+		</ul>
+
+		<h5>全般的な使い方</h5>
+		<p class="text">
+			それぞのれページの移動は、ページ右上にあるメニューにて移動できます。
+			(1) 文字の後ろに色がついているものが現在位置となります。
+			(2) もっとも右にある「<img alt="more" class="lazyload" src="placeholder.png" data-src="../resources/more.png">」にマウスカーソルを合わせると、メニューが拡張されます。
+			(3) そして、マウスカーソルを文字の上に合わせると枠線が付きますので<span class="strong">クリック</span>するとページを移動することができます。
+		</p>
+		<img alt="グローバルメニュー" class="lazyload figure" src="placeholder.png" data-src="global-menu.png">
+
+		<div class="with-image skip">
+			<p class="text">
+				ページ右側には目次が表示されています。
+				通常時は薄いですが、マウスカーソルを合わせると濃くなります。
+				また、文字にマウスカーソルを合わせると<span class="strong-sub">少し伸び</span>ます。
+				少し伸びている状態で<span class="strong">クリック</span>するとその内容の場所まで移動します。
+			</p>
+			<img alt="ページ目次" class="lazyload figure" src="placeholder.png" data-src="toc.png">
+		</div>
+
+		<hr class="offset-killer">
+		<h4 id="advisor">Laurus :: Advisor</h4>
 		<p>
 			最適コーディネートを探し出す Laurus のメイン機能です。
 		</p>
@@ -105,7 +145,7 @@
 		<img alt="その他の機能" class="lazyload figure" src="placeholder.png" data-src="recommends.gif">
 
 		<hr class="offset-killer">
-		<h3 id="wardrobe">Laurus :: Wardrobe</h3>
+		<h4 id="wardrobe">Laurus :: Wardrobe</h4>
 		<p>
 			アイテムの検索や抽出を行う機能です。<br>
 			現在は所持情況の編集のみ雑に記載しています。
@@ -122,7 +162,7 @@
 		<img alt="その他の機能" class="lazyload figure" src="placeholder.png" data-src="edit-poses-wardrobe.gif">
 
 		<hr class="offset-killer">
-		<h3 id="others">その他の機能に関して</h3>
+		<h4 id="others">その他の機能に関して</h4>
 		<p>
 			のちのち記載していきます。
 			もうしばらくお待ちください。<br>
@@ -151,15 +191,20 @@
 		</script>
 	</div>
 
-	<footer><ul class="enumeration"><li id="credit-me"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</li><li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li><li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li></ul></footer>
+	<footer><ul class="enumeration"><li id="credit-me"><img src="../resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</li><li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li><li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Source Code</a></li></ul></footer>
 
 	<div id="toc">
 		<ul id="back2top"><li><a href="#header">トップページ</a></li></ul>
 		<ul class="tab-toc">
 			<li><a href="#basis">基本的な使い方</a></li>
-			<li><a href="#advisor">Laurus :: Advisor</a></li>
-			<li><a href="#wardrobe">Laurus :: Wardrobe</a></li>
-			<li><a href="#others">その他の機能に関して</a></li>
+			<li>
+				<a href="#detail">詳しい使い方</a>
+				<ul>
+					<li><a href="#advisor">Laurus :: Advisor</a></li>
+					<li><a href="#wardrobe">Laurus :: Wardrobe</a></li>
+					<li><a href="#others">その他の機能に関して</a></li>
+				</ul>
+			</li>
 		</ul>
 		<ul id="jump2disqus"><li><a href="#disqus_thread">コメント</a></li></ul>
 	</div>

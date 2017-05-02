@@ -119,12 +119,16 @@ input {
 .tab li {
 	list-style: none;
 	&::before {
-		content: "● ";
-		font-size: @sub-font-size;
-		opacity: 0.5;
+		border-radius: 3px;
+		content:       " ";
+		display:       inline-block;
+		height:        6px;
+		margin-bottom: 2px;
+		margin-right:  8px;
+		width:         6px;
 	}
 }
-#changelog li::before { color: @changelog-theme; }
+#changelog li::before { background: fade( @changelog-theme, 60% ); }
 
 .attention {
 	border:        2px solid fade( @StrawberryPink, 50% );

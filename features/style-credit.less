@@ -83,24 +83,28 @@
 }
 
 .licenses {
-	margin:      0 200px 30px 200px;
+	margin:      0 125px 30px 125px;
 	overflow:    hidden;
 	font-family: "Maven Pro";
+	a       { color: @key-tone;  }
+	a:hover { color: @link-color; }
 	.item-group {
 		clear:   both;
 		display: block;
-		width:   500px;
+		width:   650px;
 		span {
 			display: block;
 			float:   left;
 		}
 	}
 	.framework {
-		width: 130px;
-		a { color: @key-tone; }
+		width: 150px;
+	}
+	.author {
+		width: 300px;
 	}
 	.license {
-		width: 370px;
+		width: 200px;
 	}
 	.skip {
 		background: fade( @credit-theme, 25% );

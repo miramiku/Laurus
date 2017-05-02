@@ -3427,8 +3427,12 @@ LAURUS.cheatsheet = ( function () {
 		SKILL_DEFS = LAURUS.STATIC_ITEMS.SKILL_DEFS,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 
+		REGISTERD_ITEMS = LAURUS.STATIC_ITEMS.ALL_RECORDS,
+
 		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
 		restore = LAURUS.STATIC_ITEMS.restore,
+
+		_nikki = "",
 
 		/** @summary チートシートの生成 */
 		_makeCheatSheet = function () {
@@ -3436,6 +3440,12 @@ LAURUS.cheatsheet = ( function () {
 				SCORING_BY_SLOT = {},
 				/** @summary fundamental data */
 				fundamentalData = function () {
+					var now = new Date(),
+						year = now.getFullYear(),
+						month = now.getMonth() + 1,
+						date = now.getDate();
+
+					$( "#cs-version" ).text( "ミラクルニキ " + _nikki + " 対応 / " + "アイテム登録数：" + digitGrouping( REGISTERD_ITEMS ) + " / " + year + "." + ( month < 10 ? "0" + month : month ) + "." + ( date < 10 ? "0" + date : date ) + " 作成" );
 					$( "#cs-stage" ).text( $( "#request-stage-title" ).text() );
 					$( "#cs-chapter" ).text( $( "#request-chapter" ).text() );
 					$( "#cs-subject" ).html( $( "#criteria-subject" ).html() );
@@ -3665,6 +3675,7 @@ LAURUS.cheatsheet = ( function () {
 		},
 		/** @summary CheatSheet の初期化処理 */
 		_wakeup = function () {
+			_nikki = $( "#timeline .content:first" ).data( "nikki" );
 		},
 		/** @summary CheatSheet のモード切替時処理 */
 		_changeMode = _makeCheatSheet;
@@ -3762,6 +3773,12 @@ LAURUS.wakeup = {
 				}, speed, "swing" );
 
 				evt.preventDefault();
+			} )
+			.on( "click", "#credit-me", function ( evt ) {
+				evt.preventDefault();
+
+				$( "#credit-button" ).click();
+				$( "#back2top a" ).click();
 			} );
 	},
 	advisor: LAURUS.advisor.wakeup,
@@ -3784,6 +3801,7 @@ $( document ).ready( function () {
 	LAURUS.wakeup.advisor();
 	LAURUS.wakeup.wardrobe();
 	// LAURUS.wakeup.purveyor();
+	LAURUS.wakeup.cheatsheet();
 	LAURUS.wakeup.credit();
 	LAURUS.wakeup.changelog();
 	LAURUS.wakeup.dialogue();

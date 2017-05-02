@@ -11,15 +11,15 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<script src="laurus.min.js?ver=1.0.0"></script>
+	<script src="laurus.min.js?ver=1.0.1" defer></script>
 
 	<!--
-	<script src="features/jquery.min.js"></script>
-	<script src="features/jquery.peity.js"></script>
-	<script src="features/jquery.perfect-scrollbar.js"></script>
-	<script src="features/toastr.js"></script>
-	<script src="features/extensions.js"></script>
-	<script src="features/laurus.js"></script>
+	<script src="features/jquery.min.js" defer></script>
+	<script src="features/jquery.peity.js" defer></script>
+	<script src="features/jquery.perfect-scrollbar.js" defer></script>
+	<script src="features/toastr.js" defer></script>
+	<script src="features/extensions.js" defer></script>
+	<script src="features/laurus.js" defer></script>
 	-->
 
 	<!-- style / favicon -->
@@ -317,7 +317,7 @@
 	-->
 
 	<article id="cheatsheet" class="tab">
-		<div id="cs-fundamental"><span id="cs-stage"></span><span id="cs-chapter"></span><span id="cs-subject"></span></div>
+		<div id="cs-fundamental"><span id="cs-version"></span><span id="cs-stage"></span><span id="cs-chapter"></span><span id="cs-subject"></span></div>
 
 		<h5>評価スタイルとウェイト</h5>
 		<div id="cs-style">
@@ -419,46 +419,61 @@
 		</div>
 
 		<h4 id="head-discussions">Discussions</h4>
-		<div id="discussions"><p>使用方法でわからない事や見つけた不具合、機能の提案、その他お気づきの点などありましたら上記のコンタクトまたは下にあるコメント欄や <a href="https://github.com/miramiku/Laurus/issues">Laurus の Issues</a> にお願いします。</p></div>
+		<div id="discussions"><p>使用方法でわからない事や見つけた不具合、機能の提案、その他お気づきの点などありましたら上記のコンタクトまたは下にある <a href="#disqus_thread">コメント欄</a> や <a href="https://github.com/miramiku/Laurus/issues">Laurus の Issues</a> にお願いします。</p></div>
 
 		<h4 id="head-licenses">Licenses</h4>
 		<h5>JavaScript Framework</h5>
 		<div class="licenses">
-			<span class="item-group"><span class="framework"><a href="https://jquery.com/">jQuery</a></span><span class="license">MIT License</span></span>
-			<span class="item-group"><span class="framework"><a href="http://benpickles.github.io/peity/">peity</a></span><span class="license">MIT License</span></span>
-			<span class="item-group"><span class="framework"><a href="https://noraesae.github.io/perfect-scrollbar/">perfect-scrollbar</a></span><span class="license">MIT License</span></span>
-			<span class="item-group"><span class="framework"><a href="https://github.com/CodeSeven/toastr">toastr</a></span><span class="license">MIT License</span></span>
+			<span class="item-group"><span class="framework"><a href="https://jquery.com/">jQuery</a></span><span class="author">jQuery Team</span><span class="license"><a href="https://opensource.org/licenses/mit-license.php">MIT License</a></span></span>
+			<span class="item-group"><span class="framework"><a href="http://benpickles.github.io/peity/">peity</a></span><span class="author"><a href="http://www.benpickles.com/">Ben Pickles</a></span><span class="license"><a href="https://opensource.org/licenses/mit-license.php">MIT License</a></span></span>
+			<span class="item-group"><span class="framework"><a href="https://noraesae.github.io/perfect-scrollbar/">perfect-scrollbar</a></span><span class="author"><a href="https://github.com/noraesae">Hyunje Jun</a></span><span class="license"><a href="https://opensource.org/licenses/mit-license.php">MIT License</a></span></span>
+			<span class="item-group"><span class="framework"><a href="http://codeseven.github.io/toastr/">toastr</a></span><span class="author"><a href="http://twitter.com/hfjallemark">Hans Fjällemark</a>, <a href="http://twitter.com/John_Papa">John Papa</a>, <a href="http://twitter.com/ferrell_tim">Tim Ferrell</a></span><span class="license"><a href="https://opensource.org/licenses/mit-license.php">MIT License</a></span></span>
 		</div>
 
 		<h5>Cascading Stylesheet</h5>
 		<div class="licenses">
-			<span class="item-group"><span class="framework"><a href="https://necolas.github.io/normalize.css/">normalize.css</a></span><span class="license">MIT License</span></span>
+			<span class="item-group"><span class="framework"><a href="https://necolas.github.io/normalize.css/">normalize.css</a></span><span class="author"><a href="http://nicolasgallagher.com/">Nicolas Gallagher</a> and <a href="http://music.thewikies.com/jonneal">Jonathan Neal</a></span><span class="license"><a href="https://opensource.org/licenses/mit-license.php">MIT License</a></span></span>
 		</div>
 
 		<h5>Fonts, Icons and Images</h5>
 		<div class="licenses">
-			<span class="item-group"><span class="framework"><a href="https://fonts.google.com/specimen/Maven+Pro">Maven Pro</a></span><span class="license">Open Font License</span></span>
+			<span class="item-group"><span class="framework"><a href="https://fonts.google.com/specimen/Maven+Pro">Maven Pro</a></span><span class="author">Joe Prince</span><span class="license"><a href="https://www.linux.com/news/sil-open-font-license-revised">SIL Open Font License 1.1</a></span></span>
 			<span class="skip"></span>
 
-			<span class="item-group"><span class="framework"><a href="https://www.swifticons.com/">Laurus Icon</a></span><span class="license">Creative Commons (Attribution 3.0 Unported)</span></span>
+			<span class="item-group"><span class="framework"><a href="https://www.swifticons.com/">Swifticons</a></span><span class="author"><a href="http://uisurf.com/">uiSurf</a></span><span class="license"><a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons 3.0 BY</a></span></span>
 			<span class="skip"></span>
 
-			<span class="item-group"><span class="framework"><a href="https://material.io/icons/">Material Icons</a></span><span class="license">Apache License Version 2.0</span></span>
-			<span class="item-group"><span class="framework"><a href="http://fontawesome.io/">Font Awesome</a></span><span class="license">SIL Open Font License 1.1</span></span>
-			<span class="item-group"><span class="framework"><a href="https://octicons.github.com/">Octicons</a></span><span class="license">SIL Open Font License 1.1</span></span>
-			<span class="item-group"><span class="framework"><a href="https://icomoon.io/">Ico Moon</a></span><span class="license">GNU GENERAL PUBLIC LICENSE /<br>Creative Commons (Attribution 4.0)</span></span>
+			<span class="item-group"><span class="framework"><a href="http://fontawesome.io/">Font Awesome</a></span><span class="author"><a href="https://twitter.com/davegandy">Dave Gandy</a></span><span class="license"><a href="https://www.linux.com/news/sil-open-font-license-revised">SIL Open Font License 1.1</a></span></span>
+			<span class="item-group"><span class="framework"><a href="https://icomoon.io/">Ico Moon</a></span><span class="author"><a href="http://roonas.com/">Roonas</a></span><span class="license"><a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons 4.0 BY</a></span></span>
+			<span class="item-group"><span class="framework"><a href="https://material.io/icons/">Material Icons</a></span><span class="author"><a href="https://www.google.com">Google</a></span><span class="license"><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License Version 2.0</a></span></span>
+			<span class="item-group"><span class="framework"><a href="https://octicons.github.com/">Octicons</a></span><span class="author"><a href="https://github.com/">GitHub</a></span><span class="license"><a href="https://www.linux.com/news/sil-open-font-license-revised">SIL Open Font License 1.1</a></span></span>
 			<span class="skip"></span>
 
-			<span class="item-group"><span class="framework">Category Icons</span><span class="license">Copyright</span></span>
-			<span class="item-group"><span class="framework">Skill Icons</span><span class="license">Copyright</span></span>
+			<span class="item-group"><span class="framework">Category Icons</span><span class="author">　</span><span class="license">Copyright</span></span>
+			<span class="item-group"><span class="framework">Skill Icons</span><span class="author">　</span><span class="license">Copyright</span></span>
 		</div>
 	</article>
 
 	<article id="changelog" class="tab">
 		<h3 id="head-changelog">変更履歴</h3>
-		<div class="timeline">
-			<div class="content">
-				<span class="version">v1.0.0</span><span class="release">2017.05.01</span><span class="wardrobe">2,881 （ミラクルニキ v1.8.0(1) 2017.04.21 対応）</span>
+		<div id="timeline">
+			<div class="content" data-nikki="v1.8.0 (1)">
+				<span class="version">v1.0.1</span><span class="release">2017.05.02</span>
+				<ul class="change-list">
+					<li class="cheatsheet"><span class="changelog-tab">Laurus :: Cheatsheet</span>
+						<ul>
+							<li>ミラクルニキへの対応バージョン、Laurus アイテム登録数、出力日を記載</li>
+						</ul>
+					</li>
+					<li class="foundation"><span class="changelog-tab">Laurus :: foundation</span>
+						<ul>
+							<li>ページフッター部分に挙動を追加</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="content" data-nikki="v1.8.0 (1)">
+				<span class="version">v1.0.0</span><span class="release">2017.05.01</span><span class="wardrobe">2,881 （ミラクルニキ v1.8.0 (1) 2017.04.21 対応）</span>
 				<p class="description">公開</p>
 			</div>
 		</div>
@@ -466,9 +481,13 @@
 		<h3 id="head-register">アイテムの登録について</h3>
 		<p class="my-text">
 			ミラクルニキがアップデートなどによりアイテムが追加された場合は適時登録していきますが、容易に入手できないものも多数あるのである程度の日数を要します。
-			ショップ売りなど容易に入手できるものはできるだけ早く、イベントアイテムについてはイベント終了の翌日ぐらい、入手困難な希少アイテムは情報が入り次第データベースに反映されることをアイテム追加の目安とします。
-			お待たせして申し訳ございませんが、ご了承いただけたら幸いです。
+			以下の期日を目安にデータベースに反映します。お待たせして申し訳ございませんが、ご了承いただけたら幸いです。
 		</p>
+		<ul>
+			<li><span class="item-proc-type">ショップ売りなど容易に入手できるもの</span><span class="item-register">できるだけ早く</span></li>
+			<li><span class="item-proc-type">イベントアイテム</span><span class="item-register">イベント終了の翌日</span></li>
+			<li><span class="item-proc-type">入手困難な希少アイテム</span><span class="item-register">情報が入り次第</span></li>
+		</ul>
 
 		<h3 id="head-update">追加予定機能</h3>
 		<ul>
@@ -478,9 +497,9 @@
 					<li>フレーバーテキスト</li>
 				</ul>
 			</li>
-		<li>入手方法の逆引き、衣装制作などで最終的に必要数の計算する機能</li>
-		<li>ブラックリストに登録されているアイテムを推奨アイテムリストから取り除きたい</li>
-		<li>帽子マニアやビサンティウムの歌といった複数スロットのアイテムは現在推奨対象外（スコアは計算されています）</li>
+			<li>入手方法の逆引き、衣装制作などで最終的に必要数の計算する機能</li>
+			<li>ブラックリストに登録されているアイテムを推奨アイテムリストから取り除きたい</li>
+			<li>帽子マニアやビサンティウムの歌といった複数スロットのアイテムは現在推奨対象外（スコアは計算されています）</li>
 		</ul>
 
 		<h3 id="head-concern">機能懸念事項</h3>
@@ -506,7 +525,7 @@
 				s.src = 'https://laurus.disqus.com/embed.js';
 				s.setAttribute( 'data-timestamp', +new Date() );
 				( d.head || d.body ).appendChild( s );
-			} )();
+			}() );
 		</script>
 	</div>
 
@@ -720,7 +739,7 @@
 	<!-- popup contents -->
 	<ul id="value-list"><li id="value-ss" class="value ss">SS</li><li id="value-s" class="value s">S</li><li id="value-a" class="value a">A</li><li id="value-b" class="value b">B</li><li id="value-c" class="value c">C</li></ul>
 
-	<footer><ul class="enumeration"><li id="credit-me"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</li><li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li><li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Repository</a></li></ul></footer>
+	<footer><ul class="enumeration"><li><a href="#" id="credit-me"><img src="resources/miku-icon.jpg" class="profile-icon" alt="miku"> みく(๑・ω・๑)</a></li><li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li><li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> Source Code</a></li></ul></footer>
 
 	<div id="toc">
 		<ul id="back2top"><li><a href="#header">トップページ</a></li></ul>
@@ -778,7 +797,6 @@
 		ga( 'create', 'UA-98310829-1', 'auto' );
 		ga( 'send', 'pageview' );
 	</script>
-	<!--<script id="dsq-count-scr" src="//laurus.disqus.com/count.js" async></script>-->
 </body>
 
 </html>

@@ -6,5 +6,6 @@ throwaway.json
 # folder
 resources/raw-image/
 resources/private/
+usage/raw-images/
 node_modules/
 .vscode/

@@ -2,7 +2,7 @@
 	margin-top: 50px;
 }
 
-.timeline {
+#timeline {
 	margin:   30px 20px;
 	padding:  20px 0;
 	position: relative;
@@ -65,4 +65,33 @@
 		padding: 0 0 0 120px;
 		width:   800px;
 	}
+	.change-list {
+		float:   left;
+		margin:  10px 0 30px 0;
+		padding: 0 0 0 120px;
+		width:   800px;
+		li::before {
+			border-radius: 0;
+			margin-bottom: 2px;
+		}
+		.changelog-tab {
+			font-family: "Maven Pro";
+		}
+		ul {
+			margin-bottom: 10px;
+			padding-left:  20px;
+			li::before { border-radius: 4px; }
+		}
+		.advisor    { &::before, ::before { background: fade( @advisor-theme,    60% ); } }
+		.wardrobe   { &::before, ::before { background: fade( @wardrobe-theme,   60% ); } }
+		.purveyor   { &::before, ::before { background: fade( @purveyor-theme,   60% ); } }
+		.cheatsheet { &::before, ::before { background: fade( @cheatsheet-theme, 60% ); } }
+		.credit     { &::before, ::before { background: fade( @credit-theme,     60% ); } }
+	}
+}
+
+.item-proc-type {
+	display: inline-block;
+	width:   290px;
+	&::after { content: "："; }
 }
