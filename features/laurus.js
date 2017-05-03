@@ -3445,7 +3445,7 @@ LAURUS.cheatsheet = ( function () {
 						month = now.getMonth() + 1,
 						date = now.getDate();
 
-					$( "#cs-version" ).text( "ミラクルニキ " + _nikki + " 対応 / " + "アイテム登録数：" + digitGrouping( REGISTERD_ITEMS ) + " / " + year + "." + ( month < 10 ? "0" + month : month ) + "." + ( date < 10 ? "0" + date : date ) + " 作成" );
+					$( "#cs-version" ).html( "ミラクルニキ " + _nikki + " 対応 / アイテム登録数：" + digitGrouping( REGISTERD_ITEMS ) + " / " + year + "." + ( month < 10 ? "0" + month : month ) + "." + ( date < 10 ? "0" + date : date ) + " 作成" );
 					$( "#cs-stage" ).text( $( "#request-stage-title" ).text() );
 					$( "#cs-chapter" ).text( $( "#request-chapter" ).text() );
 					$( "#cs-subject" ).html( $( "#criteria-subject" ).html() );
