@@ -1384,6 +1384,8 @@ LAURUS.advisor = ( function () {
 				_recommend = ( function () {
 					var /** @summary {Object} 現在表示中のアイテム */
 						_pos = {},
+						/** @summary {Array} タグボーナスを保持 */
+						_criteriaTags = [],
 						/** @summary スロットから現在表示中候補のスコアを得る
 						 * @param {String} スロット
 						 * @returns {Number} 現在表示中候補のスコア
@@ -1503,7 +1505,25 @@ LAURUS.advisor = ( function () {
 										card: LAURUS.itemCard( serial ),
 										next: "removeClass",
 										page: ( pos + 1 ) + " of " + ( orderedItems.length - 1 )
-									};
+									},
+								isTagsMatch = ( function () {
+									var tags = [],
+										matcher = function ( tag ) {
+											if ( tag ) {
+												return ( tag === _criteriaTags[ 0 ] || tag === _criteriaTags[ 1 ] );
+											} else {
+												return false;
+											}
+										};
+
+									if ( serial === -1 ) {
+										return false;
+									}
+
+									tags = restore.tag( WARDROBE[ serial ][ COLUMN.TAGS ] );
+
+									return matcher( tags[ 0 ] ) || matcher( tags[ 1 ] );
+								}() );
 
 							$slot
 								.find( ".item-card-area" )
@@ -1518,6 +1538,8 @@ LAURUS.advisor = ( function () {
 							$slot
 								.find( ".sparkline" )
 								.peity( "line", PIETY_LAURUS_OPTIONS.card );
+
+							$slot[ isTagsMatch ? "addClass" : "removeClass" ]( "tags-match" );
 						},
 						/** @summary 推奨アイテムを移動する */
 						_traversal = function () {
@@ -1550,10 +1572,15 @@ LAURUS.advisor = ( function () {
 								var slots = WARDROBE[ this ][ COLUMN.SLOTS ],
 									slot = slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex";
 
-								if ( POSSESSIONS[ this ] ) {
+								if ( POSSESSIONS[ this ] && SCORE[ this ] ) {
 									SCORING_BY_SLOT[ slot ].push( this );
 								}
 							} );
+
+							_criteriaTags = [
+								$( "#criteria-tag-1" ).data( "id" ),
+								$( "#criteria-tag-2" ).data( "id" )
+							];
 
 							$.each( SCORING_BY_SLOT, function ( slot ) {
 								this.push( -1 );

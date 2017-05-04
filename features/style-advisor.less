@@ -525,6 +525,14 @@
 				opacity: 0.4;
 			}
 		}
+		&.tags-match {
+			.rcm-tags {
+				display: inline-block;
+			}
+			.item-card {
+				background-color: fade( @cheatsheet-theme, 10% );
+			}
+		}
 		&.recommend {
 			.rcm-note::before {
 				color:       @accent-color;
@@ -549,17 +557,21 @@
 				background-color: fade( @inaccent-color, 10% );
 			}
 		}
-	}
+		.editable & {
+			.item-card:hover {
+				background-color: @edit-hover;
+			}
+		}
 		.rcm-acs-rank {
-			display: inline-block;
-			width: 25px;
-			color: @insparkly-color;
-			font-weight: bold;
-			text-align: center;
-			font-family: "Maven Pro";
-			line-height: 1.5;
 			border-radius: 4px;
-			margin-right: 5px;
+			color:         @insparkly-color;
+			display:       inline-block;
+			font-family:   "Maven Pro";
+			font-weight:   bold;
+			line-height:    1.5;
+			margin-right:   5px;
+			text-align:     center;
+			width:          25px;
 
 			&[data-rcm-rank="1"], &[data-rcm-rank="2"], &[data-rcm-rank="3"],
 			&[data-rcm-rank="4"], &[data-rcm-rank="5"], &[data-rcm-rank="6"],
@@ -571,6 +583,14 @@
 			&::after {
 				content: ". ";
 			}
+		}
+		.rcm-tags {
+			background:     url( "resources/tag.png" ) no-repeat;
+			display:        none;
+			height:         15px;
+			margin-right:   5px;
+			vertical-align: bottom;
+			width:          21px;
 		}
 		.rcm-page {
 			font-family: "Maven Pro";
@@ -598,6 +618,7 @@
 				opacity: 0;
 			}
 		}
+	}
 	.terminus-item {
 		.disable-select();
 		background:    fade( @purveyor-theme, 10% );
