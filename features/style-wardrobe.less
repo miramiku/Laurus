@@ -415,6 +415,7 @@
 		}
 	}
 	.has {
+		display:     none; // わかりにくいいので一時的に廃止
 		font-family: "Maven Pro";
 		font-size:   @tiny-font-size;
 		&::before { content: " ( "; }
@@ -497,6 +498,7 @@
 		&.paramedics        { .tag-color( @PARAMEDICS        ); }
 	}
 	.has {
+		display:     none; // わかりにくいいので一時的に廃止
 		font-family: "Maven Pro";
 		font-size:   @tiny-font-size;
 		&::before { content: " ( "; }
@@ -534,7 +536,8 @@
 		&:hover      { border-color: fade( @rarity-color, 25% ); }
 	}
 	.has {
-		display:     block;
+		display:     none; // わかりにくいいので一時的に廃止
+		// display:     block;
 		font-size:   @sub-font-size;
 		&::before { content: "( "; }
 		&::after  { content: " )"; }

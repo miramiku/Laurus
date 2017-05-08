@@ -132,34 +132,34 @@ LAURUS.STATIC_ITEMS = ( function () {
 			/** @type {Array} スロットリスト */
 			SLOT_LIST: [
 				"hair", "dress", "coat", "tops", "bottoms",
-				"hosiery", "anklet", "shoes", "makeup", "head-accessory",
-				"veil", "headband", "false-ears", "earrings", "scarf",
-				"necklace", "right-arm", "left-arm", "glove", "right-hand",
-				"left-hand", "both-hand", "waist", "face", "body",
-				"tatoo", "wings", "tail", "foreground", "background",
-				"hanging", "ground", "skin", "complex"
+				"hosiery", "anklet", "shoes", "makeup", "hair-ornaments",
+				"veil", "hairpin", "ear", "earrings", "scarf",
+				"necklace", "right-hand-ornaments", "left-hand-ornaments", "glove", "right-hand-holding",
+				"left-hand-holding", "both-hand-holding", "waist", "face", "brooch",
+				"tatoo", "wing", "tail", "foreground", "background",
+				"head-ornaments", "ground", "skin", "complex"
 			],
 			/** @type {Array} スロットコード対応表 */
 			SLOT: [
 				"all", "hair", "dress", "coat", "tops",
 				"bottoms", "hosiery", "hosiery", "anklet", "shoes",
-				"makeup", "accessory", "headwear", "head-accessory", "veil",
-				"headband", "false-ears", "earrings", "necklace", "scarf",
-				"necklace", "bracelet", "right-arm", "left-arm", "glove",
-				"handheld", "right-hand", "left-hand", "both-hand", "waist",
-				"special", "face", "body", "tatoo", "wings",
-				"tail", "foreground", "background", "hanging", "ground",
+				"makeup", "accessory", "headwear", "hair-ornaments", "veil",
+				"hairpin", "ear", "earrings", "necklace", "scarf",
+				"necklace", "bracelet", "right-hand-ornaments", "left-hand-ornaments", "glove",
+				"handheld", "right-hand-holding", "left-hand-holding", "both-hand-holding", "waist",
+				"special", "face", "brooch", "tatoo", "wing",
+				"tail", "foreground", "background", "head-ornaments", "ground",
 				"skin", "complex"
 			],
 			/** @type {Array} アクセサリリスト */
 			ACCESSORY_LIST_WITHOUT_BOTH_HAND: [
-				/* headwear */ "head-accessory", "veil", "headband", "false-ears",
+				/* headwear */ "hair-ornaments", "veil", "hairpin", "ear",
 				/* earrings */ "earrings",
 				/* necklace */ "scarf", "necklace",
-				/* bracelet */ "right-arm", "left-arm", "glove",
-				/* handheld */ "right-hand", "left-hand", // "both-hand",
+				/* bracelet */ "right-hand-ornaments", "left-hand-ornaments", "glove",
+				/* handheld */ "right-hand-holding", "left-hand-holding", // "both-hand-holding",
 				/* waist    */ "waist",
-				/* special  */ "face", "body", "tatoo", "wings", "tail", "foreground", "background", "hanging", "ground", "skin"
+				/* special  */ "face", "brooch", "tatoo", "wing", "tail", "foreground", "background", "head-ornaments", "ground", "skin"
 			],
 			/** @type {Dictionary} アイテム分類の対応値 */
 			MAP: {
@@ -200,13 +200,13 @@ LAURUS.STATIC_ITEMS = ( function () {
 			/** @type {Object} サブカテゴリを所持するカテゴリ */
 			HAS_SUB: {
 				hosiery: [ "hosiery", "anklet" ],
-				headwear: [ "head-accessory", "veil", "headband", "false-ears" ],
+				headwear: [ "hair-ornaments", "veil", "hairpin", "ear" ],
 				necklace: [ "scarf", "necklace" ],
-				bracelet: [ "right-arm", "left-arm", "glove" ],
-				handheld: [ "right-hand", "left-hand", "both-hand" ],
+				bracelet: [ "right-hand-ornaments", "left-hand-ornaments", "glove" ],
+				handheld: [ "right-hand-holding", "left-hand-holding", "both-hand-holding" ],
 				special: [
-					"face", "body", "tatoo", "wings", "tail",
-					"foreground", "background", "hanging", "ground", "skin"
+					"face", "brooch", "tatoo", "wing", "tail",
+					"foreground", "background", "head-ornaments", "ground", "skin"
 				]
 			},
 			/** @type {Object} コード正引き */
@@ -240,28 +240,28 @@ LAURUS.STATIC_ITEMS = ( function () {
 					"hosiery": 7,
 					"anklet": 8,
 					"shoes": 9,
-					"head-accessory": 13,
+					"hair-ornaments": 13,
 					"veil": 14,
-					"headband": 15,
-					"false-ears": 16,
+					"hairpin": 15,
+					"ear": 16,
 					"earrings": 17,
 					"scarf": 19,
 					"necklace": 20,
-					"right-arm": 22,
-					"left-arm": 23,
+					"right-hand-ornaments": 22,
+					"left-hand-ornaments": 23,
 					"glove": 24,
-					"right-hand": 26,
-					"left-hand": 27,
-					"both-hand": 28,
+					"right-hand-holding": 26,
+					"left-hand-holding": 27,
+					"both-hand-holding": 28,
 					"waist": 29,
 					"face": 31,
-					"body": 32,
+					"brooch": 32,
 					"tatoo": 33,
-					"wings": 34,
+					"wing": 34,
 					"tail": 35,
 					"foreground": 36,
 					"background": 37,
-					"hanging": 38,
+					"head-ornaments": 38,
 					"ground": 39,
 					"skin": 40,
 					"makeup": 10
@@ -823,7 +823,7 @@ LAURUS.itemLine = function ( serial ) {
 		tag = restore.tag( item[ COLUMN.TAGS ] ),
 
 		// concrete HTML
-		category = "<td><span class=\"" + CATEGORY_DEFS.MAP[ keys.category ] + "\"></span></td>",
+		category = "<td><span class=\"" + CATEGORY_DEFS.SLOT[ item[ COLUMN.SLOTS ][ 0 ] ] + "\"></span></td>",
 		id = "<td>" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</td>",
 		name = "<td title=\"" + item[ COLUMN.NAME ] + "\">" + item[ COLUMN.NAME ] + "</span>",
 		slot = ( function () {
@@ -882,7 +882,7 @@ LAURUS.itemCard = function ( serial ) {
 
 	var // dependence
 		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
-		CATEGORY_MAP = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.MAP,
+		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
 		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
@@ -914,7 +914,7 @@ LAURUS.itemCard = function ( serial ) {
 			// 	colPos = -1 * Math.floor( ( keys.id % ROW ) / ROW ) * SIDE;
 
 			// return "<span class=\"item-icon " + iconFile + "\" style=\"background-position: " + rowPos + "px " + colPos + "px;\"></span>";
-			return "<span class=\"item-icon " + CATEGORY_MAP[ keys.category ] + "\"></span>";
+			return "<span class=\"item-icon " + CATEGORY_DEFS.SLOT[ item[ COLUMN.SLOTS ][ 0 ] ] + "\"></span>";
 		}() ),
 		tags = "<span class=\"item-tags-box\"><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 0 ] ] + "\"></span><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 1 ] ] + "\"></span></span>",
 		name = "<span class=\"item-name\" title=\"" + item[ COLUMN.NAME ] + "\"><span class=\"item-id\">" + ( keys.id < 100 ? ( "000" + keys.id ).slice( -3 ) : keys.id ) + "</span>" + item[ COLUMN.NAME ] + "</span>",
@@ -1448,7 +1448,7 @@ LAURUS.advisor = ( function () {
 								};
 
 							setRecommendSlot( compareExclusive( [ "dress" ], [ "tops", "bottoms" ] ) );
-							setRecommendSlot( compareExclusive( [ "right-hand", "left-hand" ], [ "both-hand" ] ) );
+							setRecommendSlot( compareExclusive( [ "right-hand-holding", "left-hand-holding" ], [ "both-hand-holding" ] ) );
 						},
 						/** @summary 複合スロットの推奨判断（未実装） */
 						_inspection4ComplexSlot = function () {
@@ -1467,8 +1467,8 @@ LAURUS.advisor = ( function () {
 								} );
 							} );
 							accessories.push( {
-								slot: "both-hand",
-								score: getScoreBySlot( "both-hand" ) / 2
+								slot: "both-hand-holding",
+								score: getScoreBySlot( "both-hand-holding" ) / 2
 							} );
 
 							accessories.sort( function ( a, b ) {
@@ -1679,16 +1679,18 @@ LAURUS.advisor = ( function () {
 								.html( "<span class=\"unseen\"><span>未発見</span></span>" );
 						} else {
 							$.each( _stage[ STAGE[ this.toUpperCase() ] ], function () {
-								var name = "";
+								var name = "",
+									slot = 0;
 
 								if ( !isNaN( this ) ) {
 									name = WARDROBE[ this ][ COLUMN.NAME ];
+									slot = WARDROBE[ this ][ COLUMN.SLOTS ][ 0 ];
 									$list
-										.append( "<span class=\"bw-item\"><span class=\"category-icon " + CATEGORY_DEFS.MAP[ restore.categoryAndId( this ).category ] + "\"></span><span class=\"bw-item-name\" title=\"" + name + "\">" + name + "</span></span>" );
+										.append( "<span class=\"bw-item\"><span class=\"slot-icon " + CATEGORY_DEFS.SLOT[ slot ] + "\"></span><span class=\"bw-item-name\" title=\"" + name + "\">" + name + "</span></span>" );
 								} else {
 									$.each( this.type, function () {
 										$list
-											.append( "<span class=\"bw-category\"><span class=\"category-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
+											.append( "<span class=\"bw-category\"><span class=\"slot-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
 									} );
 								}
 							} );
@@ -2396,8 +2398,8 @@ LAURUS.wardrobe = ( function () {
 							$( "#hit-records" )
 								.text( {
 									no: "no",
-									all: ALL_RECORDS + " (all)",
-									ord: records
+									all: digitGrouping( ALL_RECORDS ) + " (all)",
+									ord: digitGrouping( records )
 								}[ mode ] );
 						},
 						/** @summary アイテム表示が終端判定
@@ -3690,7 +3692,7 @@ LAURUS.cheatsheet = ( function () {
 						};
 
 					setRecommendSlot( compareExclusive( [ "dress" ], [ "tops", "bottoms" ] ) );
-					setRecommendSlot( compareExclusive( [ "right-hand", "left-hand" ], [ "both-hand" ] ) );
+					setRecommendSlot( compareExclusive( [ "right-hand-holding", "left-hand-holding" ], [ "both-hand-holding" ] ) );
 				};
 
 			fundamentalData();
@@ -3719,6 +3721,10 @@ LAURUS.credit = ( function () {
 
 	var /** @summary Credit の初期化処理 */
 		_wakeup = function () {
+			var version = $( "#changelog .content:first .version" ).text(),
+				release = $( "#changelog .content:first .release" ).text();
+
+			$( "#last-update" ).text( version + " / " + release );
 		},
 		/** @summary Credit のモード切替時処理 */
 		_changeMode = function () {

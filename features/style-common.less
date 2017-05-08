@@ -258,30 +258,53 @@ input {
 		}
 		td:nth-child(  1 ) {
 			span {
-				background:     url( "resources/line-category-icons.png" ) no-repeat top left;
+				background:     url( "resources/line-slot-icons.png" ) no-repeat top left;
 				display:        block;
 				height:         20px;
 				margin:         0 5px;
 				vertical-align: middle;
 				width:          20px;
 
-				.category-icon( @pos ) { background-position: 0 ( @pos * -20px ); }
-				&.hair      { .category-icon(  0 ); }
-				&.dress     { .category-icon(  1 ); }
-				&.coat      { .category-icon(  2 ); }
-				&.tops      { .category-icon(  3 ); }
-				&.bottoms   { .category-icon(  4 ); }
-				&.hosiery   { .category-icon(  5 ); }
-				&.shoes     { .category-icon(  6 ); }
-			//	&.accessory { .category-icon(  7 ); }
-				&.headwear  { .category-icon(  8 ); }
-				&.earrings  { .category-icon(  9 ); }
-				&.necklace  { .category-icon( 10 ); }
-				&.bracelet  { .category-icon( 11 ); }
-				&.handheld  { .category-icon( 12 ); }
-				&.waist     { .category-icon( 13 ); }
-				&.special   { .category-icon( 14 ); }
-				&.makeup    { .category-icon( 15 ); }
+				.slot-icon( @pos ) { background-position: 0 ( @pos * -20px ); }
+				&.hair                 { .slot-icon(  0 ); }
+				&.dress                { .slot-icon(  1 ); }
+				&.coat                 { .slot-icon(  2 ); }
+				&.tops                 { .slot-icon(  3 ); }
+				&.bottoms              { .slot-icon(  4 ); }
+				&.hosiery              { .slot-icon(  5 ); }
+				&.anklet               { .slot-icon(  5 ); }
+				&.shoes                { .slot-icon(  6 ); }
+			//	&.accessory            { .slot-icon(  7 ); }
+			//	&.headwear             { .slot-icon(  8 ); }
+				&.makeup               { .slot-icon( 15 ); }
+				&.hair-ornaments       { .slot-icon( 16 ); }
+				&.veil                 { .slot-icon( 17 ); }
+				&.hairpin              { .slot-icon( 18 ); }
+				&.ear                  { .slot-icon( 19 ); }
+				&.earrings             { .slot-icon(  9 ); }
+			//	&.necklace             { .slot-icon( 10 ); }
+				&.scarf                { .slot-icon( 20 ); }
+				&.necklace             { .slot-icon( 21 ); }
+			//	&.bracelet             { .slot-icon( 11 ); }
+				&.right-hand-ornaments { .slot-icon( 22 ); }
+				&.left-hand-ornaments  { .slot-icon( 23 ); }
+				&.glove                { .slot-icon( 24 ); }
+			//	&.handheld             { .slot-icon( 12 ); }
+				&.right-hand-holding   { .slot-icon( 25 ); }
+				&.left-hand-holding    { .slot-icon( 26 ); }
+				&.both-hand-holding    { .slot-icon( 27 ); }
+				&.waist                { .slot-icon( 13 ); }
+			//	&.special              { .slot-icon( 14 ); }
+				&.face                 { .slot-icon( 28 ); }
+				&.brooch               { .slot-icon( 29 ); }
+				&.tatoo                { .slot-icon( 30 ); }
+				&.wing                 { .slot-icon( 31 ); }
+				&.tail                 { .slot-icon( 32 ); }
+				&.foreground           { .slot-icon( 33 ); }
+				&.background           { .slot-icon( 34 ); }
+				&.head-ornaments       { .slot-icon( 35 ); }
+				&.ground               { .slot-icon( 36 ); }
+				&.skin                 { .slot-icon( 37 ); }
 			}
 		}
 		td:nth-child(  2 ) { .num( ); }
@@ -463,26 +486,49 @@ input {
 			width:             @card-icon-side;
 
 			// カテゴリーアイコンでの実装
-			background-image: url( "resources/category-icons.png" );
-			.category-icon( @pos ) {
+			background-image: url( "resources/slot-icons.png" );
+			.slot-icon( @pos ) {
 				background-position: 0 ( @pos * -40px );
 			}
-			&.hair      { .category-icon(  0 ); }
-			&.dress     { .category-icon(  1 ); }
-			&.coat      { .category-icon(  2 ); }
-			&.tops      { .category-icon(  3 ); }
-			&.bottoms   { .category-icon(  4 ); }
-			&.hosiery   { .category-icon(  5 ); }
-			&.shoes     { .category-icon(  6 ); }
-		//	&.accessory { .category-icon(  7 ); }
-			&.headwear  { .category-icon(  8 ); }
-			&.earrings  { .category-icon(  9 ); }
-			&.necklace  { .category-icon( 10 ); }
-			&.bracelet  { .category-icon( 11 ); }
-			&.handheld  { .category-icon( 12 ); }
-			&.waist     { .category-icon( 13 ); }
-			&.special   { .category-icon( 14 ); }
-			&.makeup    { .category-icon( 15 ); }
+			&.hair                 { .slot-icon(  0 ); }
+			&.dress                { .slot-icon(  1 ); }
+			&.coat                 { .slot-icon(  2 ); }
+			&.tops                 { .slot-icon(  3 ); }
+			&.bottoms              { .slot-icon(  4 ); }
+			&.hosiery              { .slot-icon(  5 ); }
+			&.anklet               { .slot-icon(  5 ); }
+			&.shoes                { .slot-icon(  6 ); }
+		//	&.accessory            { .slot-icon(  7 ); }
+		//	&.headwear             { .slot-icon(  8 ); }
+			&.makeup               { .slot-icon( 15 ); }
+			&.hair-ornaments       { .slot-icon( 16 ); }
+			&.veil                 { .slot-icon( 17 ); }
+			&.hairpin              { .slot-icon( 18 ); }
+			&.ear                  { .slot-icon( 19 ); }
+			&.earrings             { .slot-icon(  9 ); }
+		//	&.necklace             { .slot-icon( 10 ); }
+			&.scarf                { .slot-icon( 20 ); }
+			&.necklace             { .slot-icon( 21 ); }
+		//	&.bracelet             { .slot-icon( 11 ); }
+			&.right-hand-ornaments { .slot-icon( 22 ); }
+			&.left-hand-ornaments  { .slot-icon( 23 ); }
+			&.glove                { .slot-icon( 24 ); }
+		//	&.handheld             { .slot-icon( 12 ); }
+			&.right-hand-holding   { .slot-icon( 25 ); }
+			&.left-hand-holding    { .slot-icon( 26 ); }
+			&.both-hand-holding    { .slot-icon( 27 ); }
+			&.waist                { .slot-icon( 13 ); }
+		//	&.special              { .slot-icon( 14 ); }
+			&.face                 { .slot-icon( 28 ); }
+			&.brooch               { .slot-icon( 29 ); }
+			&.tatoo                { .slot-icon( 30 ); }
+			&.wing                 { .slot-icon( 31 ); }
+			&.tail                 { .slot-icon( 32 ); }
+			&.foreground           { .slot-icon( 33 ); }
+			&.background           { .slot-icon( 34 ); }
+			&.head-ornaments       { .slot-icon( 35 ); }
+			&.ground               { .slot-icon( 36 ); }
+			&.skin                 { .slot-icon( 37 ); }
 
 			// &.hair-0       { background-image: url( "resources/item-icons/hair-0.png"       ); }
 			// &.hair-1       { background-image: url( "resources/item-icons/hair-1.png"       ); }
