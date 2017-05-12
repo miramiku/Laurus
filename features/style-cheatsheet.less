@@ -263,6 +263,11 @@
 	.cs-item {
 		display: block;
 		float:   left;
+		&.none span {
+			.slant-stripe-background( @insparkly-color, 15% );
+			border-radius: 4px;
+			padding:       0 10px;
+		}
 	}
 		.cs-has-tags .cs-item-name {
 			.slant-stripe-background( @accent-color, 10% );

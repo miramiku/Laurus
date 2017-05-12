@@ -3494,7 +3494,8 @@ LAURUS.cheatsheet = ( function () {
 									"class": ""
 								} );
 
-						$( "#cs-label-" + this ).text( branch.label );
+						$( "#cs-label-" + this )
+							.text( branch.label );
 						$( "#cs-" + this )
 							.text( branch.weight )
 							.removeClass()
@@ -3585,7 +3586,9 @@ LAURUS.cheatsheet = ( function () {
 					$.each( sortedWardrobe, function () {
 						var slots = WARDROBE[ this ][ COLUMN.SLOTS ];
 
-						SCORING_BY_SLOT[ slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex" ].push( this );
+						if ( SCORE[ this ] ) {
+							SCORING_BY_SLOT[ slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex" ].push( this );
+						}
 					} );
 
 					$( "#cs-recommends .cs-recommends-list" )
@@ -3615,8 +3618,7 @@ LAURUS.cheatsheet = ( function () {
 
 						if ( terminus === 0 ) {
 							$slot
-								.parent()
-								.hide();
+								.append( "<span class=\"cs-item none\"><span>推奨アイテムなし...( &gt;﹏&lt;。)</span></span>" );
 						} else {
 							for ( var i = 0; i < terminus; i += 1 ) {
 								serial = list[ i ];
