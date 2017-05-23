@@ -330,7 +330,55 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"pop", "homewear", "chinese-classical", "hindu",
 				"republic-of-china", "european", "swordman", "rain",
 				"modern-china", "dryad", "bohemia", "paramedics"
-			]
+			],
+			/** @type {Object} タグ名→コードの逆引き */
+			REVERSE: {
+				"tag-none": 0,
+				"sun-care": 1,
+				"dance": 2,
+				"floral": 3,
+				"winter": 4,
+				"britain": 5,
+				"swimsuit": 6,
+				"shower": 7,
+				"kimono": 8,
+				"pajamas": 9,
+				"wedding": 10,
+				"army": 11,
+				"office": 12,
+				"apron": 13,
+				"cheogsam": 14,
+				"maiden": 15,
+				"evening-gown": 16,
+				"navy": 17,
+				"traditional": 18,
+				"bunny": 19,
+				"lady": 20,
+				"lolita": 21,
+				"gothic": 22,
+				"sports": 23,
+				"harajuku": 24,
+				"preppy": 25,
+				"unisex": 26,
+				"future": 27,
+				"fairy": 28,
+				"rock": 29,
+				"denim": 30,
+				"pet": 31,
+				"goddess": 32,
+				"pop": 33,
+				"homewear": 34,
+				"chinese-classical": 35,
+				"hindu": 36,
+				"republic-of-china": 37,
+				"european": 38,
+				"swordman": 39,
+				"rain": 40,
+				"modern-china": 41,
+				"dryad": 42,
+				"bohemia": 43,
+				"paramedics": 44
+			}
 		},
 		/** @type {Object} スキルの定義 */
 		_skillDefs = {
@@ -704,6 +752,7 @@ LAURUS.scoring = function ( objective ) {
 	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
+		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		SCALE = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.SCALE,
 
 		restore = LAURUS.STATIC_ITEMS.restore,
@@ -739,16 +788,34 @@ LAURUS.scoring = function ( objective ) {
 		},
 		branch = {
 			blacklist: {
-				category: function ( serial ) {
-					LAURUS.SCORE[ serial ] = Math.round( LAURUS.SCORE[ serial ] / 10 );
+				nan: function ( bundle ) {
+					$.each( bundle.type, function () {
+						var code = CATEGORY_DEFS.CODE.CATEGORY[ this ];
+
+						$.each( LAURUS.SCORE, function ( serial ) {
+							if ( Math.round( serial / 10000 ) === code ) {
+								LAURUS.SCORE[ serial ] = Math.round( LAURUS.SCORE[ serial ] / 10 );
+							}
+						} );
+					} );
 				},
 				serial: function ( serial ) {
 					LAURUS.SCORE[ serial ] = Math.round( LAURUS.SCORE[ serial ] / 10 );
 				}
 			},
 			whitelist: {
-				category: function ( serial ) {
-					calc( serial, LAURUS.WARDROBE[ serial ] );
+				nan: function ( bundle ) {
+					$.each( bundle.tag, function () {
+						var tag = TAG_DEFS.REVERSE[ this ];
+
+						$.each( LAURUS.SCORE, function ( serial ) {
+							var item = LAURUS.WARDROBE[ serial ];
+
+							if ( 0 <= $.inArray( tag, restore.tag( item[ COLUMN.TAGS ] ) ) ) {
+								calc( serial, item );
+							}
+						} );
+					} );
 				},
 				serial: function ( serial ) {
 					calc( serial, LAURUS.WARDROBE[ serial ] );
@@ -762,19 +829,7 @@ LAURUS.scoring = function ( objective ) {
 		var list = this;
 
 		$.each( objective[ this ], function () {
-			if ( isNaN( this ) ) {
-				$.each( this.type, function () {
-					var code = CATEGORY_DEFS.CODE.CATEGORY[ this ];
-
-					$.each( LAURUS.SCORE, function ( serial ) {
-						if ( Math.round( serial / 10000 ) === code ) {
-							branch[ list ].category( serial );
-						}
-					} );
-				} );
-			} else {
-				branch[ list ].serial( this );
-			}
+			branch[ list ][ isNaN( this ) ? "nan" : "serial" ]( this );
 		} );
 	} );
 };
@@ -1692,6 +1747,10 @@ LAURUS.advisor = ( function () {
 										$list
 											.append( "<span class=\"bw-category\"><span class=\"slot-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
 									} );
+									$.each( this.tag, function () {
+										$list
+											.append( "<span class=\"bw-tag " + this + "\"><span>" + TAG_DEFS.MAP[ TAG_DEFS.REVERSE[ this ] ] + "</span></span>" );
+									} );
 								}
 							} );
 						}
@@ -2259,15 +2318,7 @@ LAURUS.wardrobe = ( function () {
 								} else {
 									return function ( record ) {
 										var hasTag = restore.tag( record[ COLUMN.TAGS ] );
-
-										switch ( hasTag ) {
-											case 0:
-												return false;
-											case 1:
-												return 0 <= $.inArray( hasTag[ 0 ], tags );
-											default:
-												return ( 0 <= $.inArray( hasTag[ 0 ], tags ) ) || ( 0 <= $.inArray( hasTag[ 1 ], tags ) );
-										}
+										return ( 0 <= $.inArray( hasTag[ 0 ], tags ) ) || ( 0 <= $.inArray( hasTag[ 1 ], tags ) );
 									};
 								}
 							}() ),
