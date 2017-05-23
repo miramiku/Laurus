@@ -1551,6 +1551,11 @@ LAURUS.advisor = ( function () {
 								orderedItems = SCORING_BY_SLOT[ slot ],
 								serial = orderedItems[ pos ],
 								$slot = $( "#slot-" + slot ),
+								score = {
+									current: LAURUS.SCORE[ serial ],
+									prev: LAURUS.SCORE[ orderedItems[ pos - 1 ] ],
+									next: LAURUS.SCORE[ orderedItems[ pos + 1 ] ]
+								},
 								terminusBranch = ( serial === -1 ) ?
 									{
 										card: "<div class=\"terminus-item\"><span>推奨アイテムなし...</span> <span>( &gt;﹏&lt;。)</span></div>",
@@ -1586,6 +1591,12 @@ LAURUS.advisor = ( function () {
 							$slot
 								.find( ".rcm-page" )
 								.text( terminusBranch.page );
+							$slot
+								.find( ".rcm-prev-score-dif" )
+								.text( score.prev );
+							$slot
+								.find( ".rcm-next-score-dif" )
+								.text( score.next );
 							$slot
 								.find( ".rcm-next" )[ terminusBranch.next ]( "disabled" );
 							$slot
