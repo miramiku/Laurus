@@ -555,7 +555,9 @@
 		width: 300px;
 	}
 
-// #feasible {}
+#feasible {
+	position: relative;
+}
 #recommends {
 	overflow: hidden;
 }
@@ -685,22 +687,39 @@
 			&::after  { content: " )"; }
 		}
 		.rcm-controle-wrapper {
+			cursor:      pointer;
 			display:     block;
 			float:       left;
-			line-height: @card-height;
 			overflow:    hidden;
 			text-align:  center;
 			width:       44px;
-		}
-		.rcm-prev, .rcm-next {
-			font-size: 24px;
-			&:hover {
-				color:              @advisor-theme;
-				cursor:             pointer;
+			span {
+				line-height: 1;
+			}
+			.controle {
+				display:   block;
+				font-size: 24px;
+			}
+			&:hover .controle {
+				color:  @advisor-theme;
 				.transition( 0.1s );
 			}
 			&.disabled {
 				opacity: 0;
+			}
+			.dif {
+				display:     block;
+				font-family: "Maven Pro";
+				font-size:   @tiny-font-size;
+				line-height: 1;
+				margin-top:  25px;
+				text-align:  center;
+				&.minus { color: @dif-minus; }
+				&.plus  { color: @dif-plus;  }
+				&.same  {
+					color:       @dif-same;
+					font-weight: bold;
+				}
 			}
 		}
 	}
@@ -714,6 +733,21 @@
 		width:         @card-width;
 		span:first-child {
 			font-weight: bold;
+		}
+	}
+	#rcm-preview {
+		color: @black-key-tone;
+		position: absolute;
+		display: none;
+		z-index: @popup-layer;
+		border: 2px solid fade( @advisor-theme, 40% );
+		border-radius: 4px;
+		font-size: @tiny-font-size;
+		padding: 0 10px;
+		background:     url( "resources/background.jpg" ) repeat fixed;
+		opacity: 0.8;
+		&.sparkly {
+			display: block;
 		}
 	}
 

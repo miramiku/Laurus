@@ -73,6 +73,11 @@
 		li {
 			padding-left: 1em;
 			text-indent: -1em;
+			p {
+				font-size:   @sub-font-size;
+				padding:     0 15px;
+				text-indent: 0;
+			}
 		}
 		li::before {
 			border-radius: 0;
@@ -118,4 +123,11 @@
 	display: inline-block;
 	width:   290px;
 	&::after { content: "："; }
+}
+
+.emunate-same {
+	color:       @dif-same;
+	font-family: "Maven Pro";
+	font-size:   @tiny-font-size;
+	font-weight: bold;
 }
