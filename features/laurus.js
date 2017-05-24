@@ -1163,6 +1163,7 @@ LAURUS.advisor = ( function () {
 		sanitizeHTML = LAURUS.STATIC_ITEMS.utils.sanitizeHTML,
 		unsanitizeHTML = LAURUS.STATIC_ITEMS.utils.unsanitizeHTML,
 		map4IdString = LAURUS.STATIC_ITEMS.utils.map4IdString,
+		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
 		restore = LAURUS.STATIC_ITEMS.restore,
 
 		scoring = LAURUS.scoring,
@@ -1551,6 +1552,11 @@ LAURUS.advisor = ( function () {
 								orderedItems = SCORING_BY_SLOT[ slot ],
 								serial = orderedItems[ pos ],
 								$slot = $( "#slot-" + slot ),
+								score = {
+									current: 0 <= serial ? LAURUS.SCORE[ serial ] : 0,                                // serial === -1 is terminus.
+									prev: 0 <= pos - 1 ? LAURUS.SCORE[ orderedItems[ pos - 1 ] ] : 0,                 // pos === -1 is before first.
+									next: 0 <= orderedItems[ pos + 1 ] ? LAURUS.SCORE[ orderedItems[ pos + 1 ] ] : 0  // orderedItems[ pos + 1 ] === -1 is terminus.
+								},
 								terminusBranch = ( serial === -1 ) ?
 									{
 										card: "<div class=\"terminus-item\"><span>推奨アイテムなし...</span> <span>( &gt;﹏&lt;。)</span></div>",
@@ -1580,6 +1586,21 @@ LAURUS.advisor = ( function () {
 									return matcher( tags[ 0 ] ) || matcher( tags[ 1 ] );
 								}() );
 
+							$.each( [ "prev", "next" ], function () {
+								var dif = score[ this ] - score.current,
+									$dif = $slot.find( "." + this + " .dif" ),
+									cls = dif === 0 ? "same" : dif < 0 ? "minus" : "plus";
+
+								$dif
+									.removeClass( "same minus plus" )
+									.text( {
+										same: "same!",
+										plus: "+" + digitGrouping( dif ),
+										minus: digitGrouping( dif )
+									}[ cls ] )
+									.addClass( cls );
+							} );
+
 							$slot
 								.find( ".item-card-area" )
 								.html( terminusBranch.card );
@@ -1587,9 +1608,9 @@ LAURUS.advisor = ( function () {
 								.find( ".rcm-page" )
 								.text( terminusBranch.page );
 							$slot
-								.find( ".rcm-next" )[ terminusBranch.next ]( "disabled" );
+								.find( ".next" )[ terminusBranch.next ]( "disabled" );
 							$slot
-								.find( ".rcm-prev" )[ pos === 0 ? "addClass" : "removeClass" ]( "disabled" );
+								.find( ".prev" )[ pos === 0 ? "addClass" : "removeClass" ]( "disabled" );
 							$slot
 								.find( ".sparkline" )
 								.peity( "line", PIETY_LAURUS_OPTIONS.card );
@@ -1601,9 +1622,33 @@ LAURUS.advisor = ( function () {
 							var $this = $( this ),
 								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
 
-							_pos[ slot ] += ( $this.hasClass( "rcm-next" ) ? 1 : -1 );
+							_pos[ slot ] += ( $this.hasClass( "next" ) ? 1 : -1 );
 							_write( slot );
 							_observe();
+						},
+						/** @summary アイテム名プレビュー */
+						_preview = function () {
+							var TOP_BIAS = 63,
+								LEFT_BIAS = 11,
+								$this = $( this ),
+								$preview = $( "#rcm-preview" ),
+								offset = $this.offset(),
+								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" ),
+								orderedItems = SCORING_BY_SLOT[ slot ],
+								serial = orderedItems[ _pos[ slot ] + ( $this.hasClass( "next" ) ? 1 : -1 ) ];
+
+							$preview
+								.text( 0 <= serial ? LAURUS.WARDROBE[ serial ][ COLUMN.NAME ] : "terminus!" )
+								.addClass( "sparkly" )
+								.offset( {
+									top: offset.top + TOP_BIAS,
+									left: offset.left - $preview.width() / 2 + LEFT_BIAS
+								} );
+						},
+						/** @summary アイテム名プレビュー（終了） */
+						_previewFinish = function () {
+							$( "#rcm-preview" )
+								.removeClass( "sparkly" );
 						},
 						/** @summary 推奨アイテムの UI を初期化する */
 						_init = function () {
@@ -1657,6 +1702,8 @@ LAURUS.advisor = ( function () {
 					return {
 						init: _init,
 						reset: _reset,
+						preview: _preview,
+						previewFinish: _previewFinish,
 						traversal: _traversal
 					};
 				}() ),
@@ -2177,8 +2224,11 @@ LAURUS.advisor = ( function () {
 				.on( "click", "#rcm-reset", Medium.recommend.reset )
 				.on( "click", "#rcm-edit-lock", event.changeEditable )
 				// 推奨コーディネート
-				.on( "click", "#recommends .rcm-prev:not( .disabled )", Medium.recommend.traversal )
-				.on( "click", "#recommends .rcm-next:not( .disabled )", Medium.recommend.traversal );
+				.on( {
+					"mouseenter": Medium.recommend.preview,
+					"mouseleave": Medium.recommend.previewFinish,
+					"click": Medium.recommend.traversal
+				}, "#recommends .rcm-controle-wrapper:not( .disabled )" );
 
 			$( "#dialogue" )
 				// ステージ選択
