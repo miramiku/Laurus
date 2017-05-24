@@ -1617,15 +1617,6 @@ LAURUS.advisor = ( function () {
 
 							$slot[ isTagsMatch ? "addClass" : "removeClass" ]( "tags-match" );
 						},
-						/** @summary 推奨アイテムを移動する */
-						_traversal = function () {
-							var $this = $( this ),
-								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
-
-							_pos[ slot ] += ( $this.hasClass( "next" ) ? 1 : -1 );
-							_write( slot );
-							_observe();
-						},
 						/** @summary アイテム名プレビュー */
 						_preview = function () {
 							var TOP_BIAS = 63,
@@ -1649,6 +1640,20 @@ LAURUS.advisor = ( function () {
 						_previewFinish = function () {
 							$( "#rcm-preview" )
 								.removeClass( "sparkly" );
+						},
+						/** @summary 推奨アイテムを移動する */
+						_traversal = function () {
+							var $this = $( this ),
+								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
+
+							_pos[ slot ] += ( $this.hasClass( "next" ) ? 1 : -1 );
+							_write( slot );
+							_observe();
+
+							$this.mouseenter();
+							if ( $this.hasClass( "disabled" ) ) {
+								_previewFinish();
+							}
 						},
 						/** @summary 推奨アイテムの UI を初期化する */
 						_init = function () {
