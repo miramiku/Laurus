@@ -826,11 +826,16 @@ LAURUS.scoring = function ( objective ) {
 	$.each( LAURUS.WARDROBE, calc );
 
 	$.each( [ "blacklist", "whitelist" ], function () {
-		var list = this;
+		var list = objective[ this ],
+			size = list.length;
 
-		$.each( objective[ this ], function () {
-			branch[ list ][ isNaN( this ) ? "nan" : "serial" ]( this );
-		} );
+		if ( size !== 0 ) {
+			branch[ this ][ isNaN( list[ 0 ] ) ? "nan" : "serial" ]( list[ 0 ] );
+
+			for ( var i = 1; i < size; i += 1 ) {
+				branch[ this ].serial( list[ i ] );
+			}
+		}
 	} );
 };
 
@@ -1538,7 +1543,7 @@ LAURUS.advisor = ( function () {
 								rank += 1;
 							} );
 						},
-						/** @summary 内容変更時のオブザーバ― */
+						/** @summary 内容変更時のオブザーバ */
 						_observe = function () {
 							_isnpection4ExclusiveSlot();
 							_inspection4ComplexSlot();
