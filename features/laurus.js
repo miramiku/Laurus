@@ -1174,6 +1174,26 @@ LAURUS.advisor = ( function () {
 		/** @type {Array} スコアによるソート済みワードロープ */
 		_sortedWardrobe = [],
 
+		/** @summary 章ラベルの生成
+		 * @param {String} 章生ラベル
+		 * @returns {String} 章ラベル
+		 */
+		_makeChapterLabel = function ( chapter ) {
+			var
+				getTerm = function ( term ) {
+					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "($1/$2/$3 - $4/$5/$6)" );
+				},
+				title = chapter.split( "｜" );
+
+			switch ( title.length ) {
+				case 1:
+					return title[ 0 ];
+				case 2:
+					return title[ 0 ] + " " + getTerm( title[ 1 ] );
+				case 3:
+					return title[ 0 ] + "#" + title[ 1 ] + " " + getTerm( title[ 2 ] );
+			}
+		},
 		/** @type {Class} 編集中のオブジェクト保持及び操作に関するクラス */
 		Medium = ( function () {
 			var /** @type {?String} 現在編集中の項目 (ID) */
@@ -1193,7 +1213,7 @@ LAURUS.advisor = ( function () {
 							$( "#request-stage-title" )
 								.text( stage );
 							$( "#request-chapter" )
-								.text( chapter );
+								.text( _makeChapterLabel( chapter ) );
 							$( "#current-stage" )
 								.text( stage );
 						},
@@ -1888,9 +1908,8 @@ LAURUS.advisor = ( function () {
 		}() ),
 		/** @summary Wardrobe の初期化処理 */
 		_wakeup = function () {
-			var
-				loadStage = localStorage.getItem( "stage" ),
-				/** @type {Object} ステージ選択用ボタンの生成 */
+			var loadStage = localStorage.getItem( "stage" ),
+				/** @summary ステージ選択用ボタンの生成 */
 				writeStages = function () {
 					var buildStageButton = function ( key, stage ) {
 						return "<span class=\"select-stage\" data-stage=\"" + key + "\"><span>" + stage + "</span></span>";
@@ -1904,7 +1923,7 @@ LAURUS.advisor = ( function () {
 							$( "#stage-" + section )
 								.append( $chapter );
 							$( $chapter )
-								.append( section === "colosseum" ? "" : "<span class=\"chapter-label\">" + chapter + "</span>" )
+								.append( section === "colosseum" ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
 								.append( $stageArea );
 							$stageArea
 								.data( "section", section )
