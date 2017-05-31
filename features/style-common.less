@@ -248,6 +248,26 @@ input {
 					&::before { content: "[未所持] "; }
 				}
 			}
+			.fails {
+				color:           @accent-color;
+				text-decoration: line-through;
+				&::before {
+					.slant-stripe-background( @advisor-theme, 25% );
+					border-radius: 4px;
+					color:         @accent-color;
+					content:       "NG";
+					display:       inline-block;
+					font-family:   "Maven Pro";
+					font-size:     @tiny-font-size;
+					font-weight:   bold;
+					line-height:   1.2;
+					margin-right:  5px;
+					padding:       0 5px;
+				}
+				& > span {
+					color: @insparkly-color;
+				}
+			}
 		}
 		.editable & tr { .disable-select(); }
 		.editable & tr:hover {
@@ -480,6 +500,27 @@ input {
 			}
 		}
 	}
+	.fails {
+		color:           @accent-color;
+		text-decoration: line-through;
+		&::before {
+			.slant-stripe-background( @advisor-theme, 25% );
+			border-radius:  4px;
+			color:          @accent-color;
+			content:        "NG";
+			display:        inline-block;
+			font-family:    "Maven Pro";
+			font-size:      @tiny-font-size;
+			font-weight:    bold;
+			line-height:    1.2;
+			margin-right:   5px;
+			padding:        0 5px;
+			vertical-align: 1px;
+		}
+		& > span {
+			color: @insparkly-color;
+		}
+	}
 }
 	.item-icon-box {
 		float:        left;
@@ -494,7 +535,6 @@ input {
 			height:            @card-icon-side;
 			width:             @card-icon-side;
 
-			// カテゴリーアイコンでの実装
 			background-image: url( "resources/slot-icons.png" );
 			.slot-icon( @pos ) {
 				background-position: 0 ( @pos * -40px );
@@ -538,51 +578,6 @@ input {
 			&.head-ornaments       { .slot-icon( 35 ); }
 			&.ground               { .slot-icon( 36 ); }
 			&.skin                 { .slot-icon( 37 ); }
-
-			// &.hair-0       { background-image: url( "resources/item-icons/hair-0.png"       ); }
-			// &.hair-1       { background-image: url( "resources/item-icons/hair-1.png"       ); }
-			// &.hair-2       { background-image: url( "resources/item-icons/hair-2.png"       ); }
-			// &.hair-3       { background-image: url( "resources/item-icons/hair-3.png"       ); }
-			// &.hair-4       { background-image: url( "resources/item-icons/hair-4.png"       ); }
-			// &.hair-5       { background-image: url( "resources/item-icons/hair-5.png"       ); }
-			// &.dress-0      { background-image: url( "resources/item-icons/dress-0.png"      ); }
-			// &.dress-1      { background-image: url( "resources/item-icons/dress-1.png"      ); }
-			// &.dress-2      { background-image: url( "resources/item-icons/dress-2.png"      ); }
-			// &.dress-3      { background-image: url( "resources/item-icons/dress-3.png"      ); }
-			// &.coat-0       { background-image: url( "resources/item-icons/coat-0.png"       ); }
-			// &.coat-1       { background-image: url( "resources/item-icons/coat-1.png"       ); }
-			// &.coat-2       { background-image: url( "resources/item-icons/coat-2.png"       ); }
-			// &.coat-3       { background-image: url( "resources/item-icons/coat-3.png"       ); }
-			// &.coat-4       { background-image: url( "resources/item-icons/coat-4.png"       ); }
-			// &.coat-5       { background-image: url( "resources/item-icons/coat-5.png"       ); }
-			// &.coat-6       { background-image: url( "resources/item-icons/coat-6.png"       ); }
-			// &.tops-0       { background-image: url( "resources/item-icons/tops-0.png"       ); }
-			// &.tops-1       { background-image: url( "resources/item-icons/tops-1.png"       ); }
-			// &.tops-2       { background-image: url( "resources/item-icons/tops-2.png"       ); }
-			// &.bottoms-0    { background-image: url( "resources/item-icons/bottoms-0.png"    ); }
-			// &.bottoms-1    { background-image: url( "resources/item-icons/bottoms-1.png"    ); }
-			// &.bottoms-2    { background-image: url( "resources/item-icons/bottoms-2.png"    ); }
-			// &.hosiery-0    { background-image: url( "resources/item-icons/hosiery-0.png"    ); }
-			// &.hosiery-1    { background-image: url( "resources/item-icons/hosiery-1.png"    ); }
-			// &.hosiery-2    { background-image: url( "resources/item-icons/hosiery-2.png"    ); }
-			// &.shoes-0      { background-image: url( "resources/item-icons/shoes-0.png"      ); }
-			// &.shoes-1      { background-image: url( "resources/item-icons/shoes-1.png"      ); }
-			// &.shoes-2      { background-image: url( "resources/item-icons/shoes-2.png"      ); }
-			// &.shoes-3      { background-image: url( "resources/item-icons/shoes-3.png"      ); }
-			// &.shoes-4      { background-image: url( "resources/item-icons/shoes-4.png"      ); }
-			// &.shoes-5      { background-image: url( "resources/item-icons/shoes-5.png"      ); }
-			// &.accessory-0  { background-image: url( "resources/item-icons/accessory-0.png"  ); }
-			// &.accessory-1  { background-image: url( "resources/item-icons/accessory-1.png"  ); }
-			// &.accessory-2  { background-image: url( "resources/item-icons/accessory-2.png"  ); }
-			// &.accessory-3  { background-image: url( "resources/item-icons/accessory-3.png"  ); }
-			// &.accessory-4  { background-image: url( "resources/item-icons/accessory-4.png"  ); }
-			// &.accessory-5  { background-image: url( "resources/item-icons/accessory-5.png"  ); }
-			// &.accessory-6  { background-image: url( "resources/item-icons/accessory-6.png"  ); }
-			// &.accessory-7  { background-image: url( "resources/item-icons/accessory-7.png"  ); }
-			// &.accessory-8  { background-image: url( "resources/item-icons/accessory-8.png"  ); }
-			// &.accessory-9  { background-image: url( "resources/item-icons/accessory-9.png"  ); }
-			// &.accessory-10 { background-image: url( "resources/item-icons/accessory-10.png" ); }
-			// &.makeup-0     { background-image: url( "resources/item-icons/makeup-0.png"     ); }
 		}
 		.item-tags-box {
 			display:    block;
