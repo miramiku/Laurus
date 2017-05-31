@@ -711,6 +711,9 @@ LAURUS.STAGES = ( function () {
 /** @type {Object} スコア保持用オブジェクト */
 LAURUS.SCORE = {};
 
+/** @type {Object} 不可アイテムリスト */
+LAURUS.FAILS = {};
+
 /** @type {Object} スコアリングのスロット別集計 */
 LAURUS.SCORING_BY_SLOT = {};
 
@@ -722,6 +725,7 @@ LAURUS.WARDROBE = ( function () {
 	"use strict";
 
 	var SCORE = LAURUS.SCORE,
+		FAILS = LAURUS.FAILS,
 		POSSESSIONS = LAURUS.POSSESSIONS,
 		_wardrobe = {};
 
@@ -734,6 +738,7 @@ LAURUS.WARDROBE = ( function () {
 				_wardrobe[ serial ] = this;
 				SCORE[ serial ] = -1;
 				POSSESSIONS[ serial ] = true;
+				FAILS[ serial ] = false;
 			} );
 
 			LAURUS.STATIC_ITEMS.ALL_RECORDS = data.length;
@@ -943,7 +948,6 @@ LAURUS.itemCard = function ( serial ) {
 	var // dependence
 		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
-		// CATEGORY_ICONS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.ICONS,
 		TAG_CLASS = LAURUS.STATIC_ITEMS.TAG_DEFS.CLASSES,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 
@@ -961,19 +965,6 @@ LAURUS.itemCard = function ( serial ) {
 
 		// concrete HTML
 		icon = ( function () {
-			/* Note:
-			 * style="background-image: url( Filename );"
-			 * ではスラッシュがHTML描画時に空白に置き換えられてしまうため、CSSで対応。
-			 */
-			// var ROW = 20,
-			// 	SIDE = 40,
-			// 	UNIT = 200,
-
-			// 	iconFile = CATEGORY_ICONS[ keys.category ] + "-" + Math.floor( keys.id / UNIT ),
-			// 	rowPos = -1 * ( keys.id % ROW ) * SIDE,
-			// 	colPos = -1 * Math.floor( ( keys.id % ROW ) / ROW ) * SIDE;
-
-			// return "<span class=\"item-icon " + iconFile + "\" style=\"background-position: " + rowPos + "px " + colPos + "px;\"></span>";
 			return "<span class=\"item-icon " + CATEGORY_DEFS.SLOT[ item[ COLUMN.SLOTS ][ 0 ] ] + "\"></span>";
 		}() ),
 		tags = "<span class=\"item-tags-box\"><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 0 ] ] + "\"></span><span class=\"item-tags item-tags-" + TAG_CLASS[ tag[ 1 ] ] + "\"></span></span>",
@@ -1146,6 +1137,7 @@ LAURUS.advisor = ( function () {
 		WARDROBE = LAURUS.WARDROBE,
 		STAGES = LAURUS.STAGES,
 		SCORE = LAURUS.SCORE,
+		FAILS = LAURUS.FAILS,
 		SCORING_BY_SLOT = LAURUS.SCORING_BY_SLOT,
 		POSSESSIONS = LAURUS.POSSESSIONS,
 
@@ -1435,6 +1427,10 @@ LAURUS.advisor = ( function () {
 						this.reset();
 					} );
 					_senarioClasses.off();
+
+					$.each( FAILS, function () {
+						FAILS[ this ] = false;
+					} );
 
 					$( "#blacklist-heading, #whitelist-heading" )
 						.hide();
@@ -1784,32 +1780,53 @@ LAURUS.advisor = ( function () {
 					$( "#blacklist-heading, #whitelist-heading" )
 						.show();
 					$.each( [ "blacklist", "whitelist" ], function () {
-						var $list = $( "#" + this + "-items" );
+						var $list = $( "#" + this + "-items" ),
+							list = _stage[ STAGE[ this.toUpperCase() ] ],
+							size = list.length,
+							name = "",
+							slot = 0,
+							item = function ( s ) {
+								name = WARDROBE[ s ][ COLUMN.NAME ];
+								slot = WARDROBE[ s ][ COLUMN.SLOTS ][ 0 ];
+								$list
+									.append( "<span class=\"bw-item\"><span class=\"slot-icon " + CATEGORY_DEFS.SLOT[ slot ] + "\"></span><span class=\"bw-item-name\" title=\"" + name + "\">" + name + "</span></span>" );
+							},
+							branch = {
+								blacklist: {
+									nan: function ( l ) {
+										$.each( l.type, function () {
+											$list
+												.append( "<span class=\"bw-category\"><span class=\"slot-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
+										} );
+									},
+									serial: function ( serial ) {
+										item( serial );
+										FAILS[ serial ] = true;
+									}
+								},
+								whitelist: {
+									nan: function ( l ) {
+										$.each( l.tag, function () {
+											$list
+												.append( "<span class=\"bw-tag " + this + "\"><span>" + TAG_DEFS.MAP[ TAG_DEFS.REVERSE[ this ] ] + "</span></span>" );
+										} );
+									},
+									serial: function ( serial ) {
+										item( serial );
+										FAILS[ serial ] = false;
+									}
+								}
+							};
 
-						if ( _stage[ STAGE[ this.toUpperCase() ] ].length === 0 ) {
+						if ( size === 0 ) {
 							$list
 								.html( "<span class=\"unseen\"><span>未発見</span></span>" );
 						} else {
-							$.each( _stage[ STAGE[ this.toUpperCase() ] ], function () {
-								var name = "",
-									slot = 0;
+							branch[ this ][ isNaN( list[ 0 ] ) ? "nan" : "serial" ]( list[ 0 ] );
 
-								if ( !isNaN( this ) ) {
-									name = WARDROBE[ this ][ COLUMN.NAME ];
-									slot = WARDROBE[ this ][ COLUMN.SLOTS ][ 0 ];
-									$list
-										.append( "<span class=\"bw-item\"><span class=\"slot-icon " + CATEGORY_DEFS.SLOT[ slot ] + "\"></span><span class=\"bw-item-name\" title=\"" + name + "\">" + name + "</span></span>" );
-								} else {
-									$.each( this.type, function () {
-										$list
-											.append( "<span class=\"bw-category\"><span class=\"slot-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ CATEGORY_DEFS.CODE.CATEGORY[ this ] ] + "</span></span>" );
-									} );
-									$.each( this.tag, function () {
-										$list
-											.append( "<span class=\"bw-tag " + this + "\"><span>" + TAG_DEFS.MAP[ TAG_DEFS.REVERSE[ this ] ] + "</span></span>" );
-									} );
-								}
-							} );
+							for ( var i = 1; i < size; i += 1 ) {
+								branch[ this ].serial( list[ i ] );
+							}
 						}
 					} );
 				},
