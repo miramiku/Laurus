@@ -1181,7 +1181,7 @@ LAURUS.advisor = ( function () {
 		_makeChapterLabel = function ( chapter ) {
 			var
 				getTerm = function ( term ) {
-					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "($1/$2/$3 - $4/$5/$6)" );
+					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "[$1/$2/$3 - $4/$5/$6]" );
 				},
 				title = chapter.split( "｜" );
 
