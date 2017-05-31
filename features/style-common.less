@@ -248,6 +248,26 @@ input {
 					&::before { content: "[未所持] "; }
 				}
 			}
+			.fails {
+				color:           @accent-color;
+				text-decoration: line-through;
+				&::before {
+					.slant-stripe-background( @advisor-theme, 25% );
+					border-radius: 4px;
+					color:         @accent-color;
+					content:       "NG";
+					display:       inline-block;
+					font-family:   "Maven Pro";
+					font-size:     @tiny-font-size;
+					font-weight:   bold;
+					line-height:   1.2;
+					margin-right:  5px;
+					padding:       0 5px;
+				}
+				& > span {
+					color: @insparkly-color;
+				}
+			}
 		}
 		.editable & tr { .disable-select(); }
 		.editable & tr:hover {
@@ -478,6 +498,27 @@ input {
 				display:     inline-block;
 				margin-left: 5px;
 			}
+		}
+	}
+	.fails {
+		color:           @accent-color;
+		text-decoration: line-through;
+		&::before {
+			.slant-stripe-background( @advisor-theme, 25% );
+			border-radius:  4px;
+			color:          @accent-color;
+			content:        "NG";
+			display:        inline-block;
+			font-family:    "Maven Pro";
+			font-size:      @tiny-font-size;
+			font-weight:    bold;
+			line-height:    1.2;
+			margin-right:   5px;
+			padding:        0 5px;
+			vertical-align: 1px;
+		}
+		& > span {
+			color: @insparkly-color;
 		}
 	}
 }

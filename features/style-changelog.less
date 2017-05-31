@@ -30,6 +30,17 @@
 			top:           9px;
 			width:         8px;
 		}
+		> .wardrobe {
+			display:     block;
+			float:       left;
+			font-size:   @sub-font-size;
+			font-family: "Maven Pro";
+			margin-left: 20px;
+			width:       600px;
+			&::before {
+				content: "アイテム登録数：";
+			}
+		}
 	}
 	.version {
 		color:       @sub-key-tone;
@@ -47,17 +58,6 @@
 		font-family: "Maven Pro";
 		margin-left: 20px;
 		width:       100px;
-	}
-	.wardrobe {
-		display:     block;
-		float:       left;
-		font-size:   @sub-font-size;
-		font-family: "Maven Pro";
-		margin-left: 20px;
-		width:       600px;
-		&::before {
-			content: "アイテム登録数：";
-		}
 	}
 	.description {
 		float:   left;
