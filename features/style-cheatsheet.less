@@ -15,7 +15,20 @@
 		font-weight: bold;
 		line-height: 1;
 	}
-	// #cs-chapter {}
+	#cs-chapter {
+		sup {
+			font-family: "Maven Pro";
+			font-weight: bold;
+		}
+		.term {
+			display:     inline;
+			font-family: "Maven Pro";
+			font-size:   @tiny-font-size;
+			&::before {
+				content: " : ";
+			}
+		}
+	}
 	#cs-subject {
 		color:  @StrawberryPink;
 		margin: 15px 0;

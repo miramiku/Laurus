@@ -15,6 +15,22 @@
 	}
 }
 
+.chapter-label-factory() {
+	sup {
+		color:       @advisor-theme;
+		font-family: "Maven Pro";
+		font-weight: bold;
+	}
+	.term {
+		color:         @sub-key-tone;
+		display:       inline-block;
+		font-family:   "Maven Pro";
+		font-size:     @tiny-font-size;
+		float:         right;
+		margin-right:  10px;
+	}
+}
+
 #objective {
 	overflow:      auto;
 	margin-bottom: 20px;
@@ -49,6 +65,7 @@
 				font-size:   @sub-font-size;
 				display:     block;
 				line-height: 1;
+				.chapter-label-factory();
 			}
 		#optimal-search {
 			float:      left;
@@ -764,8 +781,14 @@
 		margin: 0 20px;
 	}
 		.chapter-label {
+			display:     block;
 			font-size:   @sub-font-size;
 			font-weight: bold;
+			.chapter-label-factory();
+			.term {
+				font-weight: normal;
+				line-height: 21px;
+			}
 		}
 		.stage-area.colosseum {
 			margin-top: 5px;

@@ -1131,7 +1131,7 @@ LAURUS.advisor = ( function () {
 		_makeChapterLabel = function ( chapter ) {
 			var
 				getTerm = function ( term ) {
-					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "[$1/$2/$3 - $4/$5/$6]" );
+					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "<span class=\"term\">$1/$2/$3 - $4/$5/$6</span>" );
 				},
 				title = chapter.split( "｜" );
 
@@ -1140,8 +1140,10 @@ LAURUS.advisor = ( function () {
 					return title[ 0 ];
 				case 2:
 					return title[ 0 ] + " " + getTerm( title[ 1 ] );
-				case 3:
-					return title[ 0 ] + "#" + title[ 1 ] + " " + getTerm( title[ 2 ] );
+				case 3: // 未利用
+					return title[ 0 ];
+				case 4:
+					return title[ 0 ] + "<sup>" + title[ 1 ] + "</sup>" + "&lt;" + title[ 2 ] + "&gt;" + getTerm( title[ 3 ] );
 			}
 		},
 		/** @type {Class} 編集中のオブジェクト保持及び操作に関するクラス */
@@ -1163,7 +1165,7 @@ LAURUS.advisor = ( function () {
 							$( "#request-stage-title" )
 								.text( stage );
 							$( "#request-chapter" )
-								.text( _makeChapterLabel( chapter ) );
+								.html( _makeChapterLabel( chapter ) );
 							$( "#current-stage" )
 								.text( stage );
 						},
@@ -3593,7 +3595,7 @@ LAURUS.cheatsheet = ( function () {
 
 					$( "#cs-version" ).html( "ミラクルニキ " + _nikki + " 対応 / アイテム登録数：" + digitGrouping( REGISTERD_ITEMS ) + " / " + year + "." + ( month < 10 ? "0" + month : month ) + "." + ( date < 10 ? "0" + date : date ) + " 作成" );
 					$( "#cs-stage" ).text( $( "#request-stage-title" ).text() );
-					$( "#cs-chapter" ).text( $( "#request-chapter" ).text() );
+					$( "#cs-chapter" ).html( $( "#request-chapter" ).html() );
 					$( "#cs-subject" ).html( $( "#criteria-subject" ).html() );
 				},
 				/** @summary criteria style */
