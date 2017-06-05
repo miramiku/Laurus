@@ -1131,7 +1131,7 @@ LAURUS.advisor = ( function () {
 		_makeChapterLabel = function ( chapter ) {
 			var
 				getTerm = function ( term ) {
-					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "<span class=\"term\">$1/$2/$3 - $4/$5/$6</span>" );
+					return term.replace( /(\d\d\d\d)(\d\d)(\d\d)(\d\d\d\d)(\d\d)(\d\d)/, "<span class=\"term\">$1.$2.$3 - $4.$5.$6</span>" );
 				},
 				title = chapter.split( "｜" );
 
@@ -3863,6 +3863,49 @@ LAURUS.changelog = ( function () {
 
 	var /** @summary Changelog の初期化処理 */
 		_wakeup = function () {
+			var /** @summary Changelog データベースを読み込んで追加する */
+				loadLogs = function ( moreLogs ) {
+					var _logs = "",
+						_build = function ( log ) {
+							var withFigure = log.hasOwnProperty( "with-figure" ),
+								content = "<div class=\"content\"><span class=\"version\">" + log.version + "</span><span class=\"release\">" + log.release + "</span>" + ( log.hasOwnProperty( "closet" ) ? "<span class=\"closet\">" + log.closet + "</span>" : "" ) + "<ul class=\"change-list" + ( withFigure ? " with-figure" : "" ) + "\">";
+
+							$.each( [ "advisor", "wardrobe", "cheatsheet", "credit", "changelog", "database", "foundation" ], function () {
+								if ( log.hasOwnProperty( this ) ) {
+									content += "<li class=\"" + this + "\"><span class=\"changelog-tab\">Laurus :: " + ( this.charAt( 0 ).toUpperCase() + this.slice( 1 ) ) + "</span><ul>";
+
+									$.each( log[ this ], function () {
+										content += "<li>" + this + "</li>";
+									} );
+
+									content += "</ul></li>";
+								}
+							} );
+
+							return content + "</ul>" + ( withFigure ? "<img alt=\"\" class=\"lazyload figure\" src=\"resources/placeholder.png\" data-src=\"resources/changelog/" + log.version + ".png\">" : "" ) + "</div>";
+						};
+
+					$.each( moreLogs, function () {
+						_logs += _build( this );
+					} );
+
+					$( "#timeline" )
+						.append(
+						_logs
+							.replace( /\/\//g, "<br>" )
+							.replace( /\*\*(.+)\*\*/g, "<strong>$1</strong>" )
+							.replace( /\[(.+)\]/g, "<p>$1</p>" )
+							.replace( /(Issues #)(\d+)/g, "<a href=\"https://github.com/miramiku/Laurus/issues/$2\">$1$2</a>" )
+						);
+
+					$( "#changelog-more" )
+						.remove();
+				};
+
+			$( "#changelog" )
+				.on( "click", "#changelog-more > span", function () {
+					$.getJSON( "resources/changelog.json", loadLogs );
+				} );
 		},
 		/** @summary Changelog のモード切替時処理 */
 		_changeMode = function () {

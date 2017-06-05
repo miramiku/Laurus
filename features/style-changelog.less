@@ -27,19 +27,8 @@
 			left:          100px;
 			margin-left:   -3px;
 			position:      absolute;
-			top:           9px;
+			top:           7px;
 			width:         8px;
-		}
-		> .wardrobe {
-			display:     block;
-			float:       left;
-			font-size:   @sub-font-size;
-			font-family: "Maven Pro";
-			margin-left: 20px;
-			width:       600px;
-			&::before {
-				content: "アイテム登録数：";
-			}
 		}
 	}
 	.version {
@@ -59,6 +48,17 @@
 		margin-left: 20px;
 		width:       100px;
 	}
+	.closet {
+		display:     block;
+		float:       left;
+		font-size:   @sub-font-size;
+		font-family: "Maven Pro";
+		margin-left: 20px;
+		width:       600px;
+		&::before {
+			content: "アイテム登録数：";
+		}
+	}
 	.description {
 		float:   left;
 		margin:  0 0 30px 0;
@@ -66,22 +66,24 @@
 		width:   800px;
 	}
 	.change-list {
+		clear:   both;
 		float:   left;
-		margin:  10px 0 30px 0;
-		padding: 0 0 0 120px;
+		margin:  5px 0 30px 120px;
+		padding: 0;
 		width:   800px;
 		li {
-			padding-left: 1em;
-			text-indent: -1em;
+			padding-left:   1em;
+			text-indent:   -1em;
+			width:        600px;
 			p {
 				font-size:   @sub-font-size;
 				padding:     0 15px;
 				text-indent: 0;
 			}
-		}
-		li::before {
-			border-radius: 0;
-			margin-bottom: 2px;
+			&::before {
+				border-radius: 0;
+				margin-bottom: 2px;
+			}
 		}
 		.changelog-tab {
 			font-family: "Maven Pro";
@@ -100,22 +102,19 @@
 
 		.foundation { &::before, ::before { background: fade( @changelog-theme,  60% ); } }
 		.database   { &::before, ::before { background: fade( @wardrobe-theme,   60% ); } }
-	}
-	.with-figure {
-		float:   left;
-		margin:  10px 0 30px 0;
-		padding: 0 0 0 120px;
-		width:   850px;
-		.change-list {
-			padding: 0;
-			margin:  0;
-			width:   400px;
+
+		&.with-figure {
+			width: 400px;
+			li {
+				width: 370px;
+			}
 		}
 	}
 	.figure {
-		box-shadow:   1px 1px 2px fade( @BlackInk, 50% );
-		float:        right;
-		max-width:    300px;
+		box-shadow: 1px 1px 2px fade( @BlackInk, 50% );
+		float:      right;
+		margin:     10px 30px 30px 0;
+		max-width:  300px;
 	}
 }
 
@@ -130,4 +129,29 @@
 	font-family: "Maven Pro";
 	font-size:   @tiny-font-size;
 	font-weight: bold;
+}
+
+#changelog-more {
+	display:    block;
+	font-size:  @sub-font-size;
+	text-align: center;
+	& > span {
+		.disable-select();
+		border:         2px solid transparent;
+		border-radius:  4px;
+		color:          @sub-key-tone;
+		cursor:         pointer;
+		display:        inline-block;
+		padding:        0 20px;
+		vertical-align: middle;
+		&:hover {
+			.transition( 0.2s );
+			border-color: fade( @changelog-theme, 40% );
+			color:        @key-tone;
+		}
+		&:active {
+			.slant-stripe-background( @changelog-theme, 25% );
+			color: @key-tone;
+		}
+	}
 }
