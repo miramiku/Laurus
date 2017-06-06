@@ -2166,6 +2166,29 @@ LAURUS.advisor = ( function () {
 						$( "#custom-stage-title" ).val( $( "#request-stage-title" ).text() );
 						$( "#custom-request-chapter" ).val( $( "#request-chapter" ).text() );
 					},
+					/** @summary ステージプレビュー */
+					stagePreview: function () {
+						var TOP_BIAS = 25,
+							LEFT_BIAS = 20,
+							$this = $( this ),
+							offset = $this.offset(),
+							stage = STAGES[ $this.parent().data( "stage" ) ];
+
+						if ( stage[ STAGE.SECTION ] !== "colosseum" ) {
+							$( "#stage-preview" )
+								.text( stage[ STAGE.TITLE ] )
+								.addClass( "sparkly" )
+								.offset( {
+									top: offset.top + TOP_BIAS,
+									left: offset.left + $this.width() / 2 + LEFT_BIAS
+								} );
+						}
+					},
+					/** @summary ステージプレビュー（終了） */
+					stagePreviewFinish: function () {
+						$( "#stage-preview" )
+							.removeClass( "sparkly" );
+					},
 					/** 選択したステージをセットする */
 					stageSelect: function () {
 						Medium.setStage( $( this ).parent().data( "stage" ) );
@@ -2249,7 +2272,11 @@ LAURUS.advisor = ( function () {
 
 			$( "#dialogue" )
 				// ステージ選択
-				.on( "click", ".select-stage span", event.stageSelect )
+				.on( {
+					"mouseenter": event.stagePreview,
+					"mouseleave": event.stagePreviewFinish,
+					"click": event.stageSelect
+				}, ".select-stage span" )
 				.on( "click", "#custom-input-determination", event.customStageInput )
 				.on( "focus", "#custom-stage-title", event.thisSelect )
 				.on( "focus", "#custom-request-chapter", event.thisSelect )

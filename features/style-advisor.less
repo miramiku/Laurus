@@ -864,6 +864,21 @@
 					}
 					&:active { .slant-stripe-background( @advisor-theme, 25% ); }
 				}
+		#stage-preview {
+			background:     url( "resources/background.jpg" ) repeat fixed;
+			border:         2px solid fade( @advisor-theme, 40% );
+			border-radius:  4px;
+			color:          @black-key-tone;
+			display:        none;
+			font-size:      @tiny-font-size;
+			opacity:        0.9;
+			padding:        0 8px;
+			position:       absolute;
+			z-index:        @popup-layer;
+			&.sparkly {
+				display: block;
+			}
+		}
 
 #tag-select {
 	width:   720px;
