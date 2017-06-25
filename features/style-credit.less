@@ -97,22 +97,22 @@
 }
 
 .licenses {
-	margin:      0 125px 30px 125px;
+	margin:      0 100px 30px 100px;
 	overflow:    hidden;
-	font-family: "Maven Pro";
+	font-family: "Maven Pro", Meiryo, sans-self;
 	a       { color: @key-tone;  }
 	a:hover { color: @link-color; }
 	.item-group {
 		clear:   both;
 		display: block;
-		width:   650px;
-		span {
+		width:   700px;
+		& > span {
 			display: block;
 			float:   left;
 		}
 	}
 	.framework {
-		width: 150px;
+		width: 200px;
 	}
 	.author {
 		width: 300px;
@@ -127,5 +127,11 @@
 		margin:     10px 100px;
 		height:     2px;
 		width:      300px;
+	}
+	.thumbnail {
+		border-radius:  8px;
+		display:        inline-block;
+		margin-right:   5px;
+		vertical-align: text-bottom;
 	}
 }
