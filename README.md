@@ -23,8 +23,9 @@ usage page.
 ### Fonts, Icons and Images
 * Maven Pro
 	* Open Font License
-* Laurus Icon (Envato logo?)
-	* Creative Commons (Attribution 3.0 Unported)
+* Disqus Default Icon
+* Laurus Icon
+	* Copyright (@tinacca)
 * Material Icons
 	* Apache License Version 2.0
 * Font Awesome
@@ -35,4 +36,3 @@ usage page.
 * Category Icons
 * Skill Icons
 	* Copyright
-	* MIT License
