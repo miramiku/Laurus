@@ -11,10 +11,9 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<!--
 	<script src="laurus.min.js?ver=1.9.0" defer></script>
-	-->
 
+	<!--
 	<script src="features/jquery.min.js" defer></script>
 	<script src="features/jquery.peity.js" defer></script>
 	<script src="features/jquery.perfect-scrollbar.js" defer></script>
@@ -22,6 +21,7 @@
 	<script src="features/toastr.js" defer></script>
 	<script src="features/extensions.js" defer></script>
 	<script src="features/laurus.js" defer></script>
+	-->
 
 	<!-- style / favicon -->
 	<link href="theme.css" rel="stylesheet" type="text/css">
@@ -281,7 +281,7 @@
 			<div id="filter-tag"><span class="label">タグ</span><span class="filter-key"></span></div>
 			<div id="filter-name"><span class="label">アイテム名</span><input id="filter-word" type="text"></div>
 			<div id="filter-rarity"><span class="label">レアリティ</span><span class="filter-key"></span></div>
-			<div id="sort-key"><span class="label">並べ替え</span><span class="filter-key"></span></div>
+			<div id="sort-key"><span class="label">表示設定</span><span class="filter-key"></span></div>
 		</div>
 
 		<h3 id="head-wardrobe">クローゼット
@@ -463,86 +463,29 @@
 		<h3 id="head-changelog">変更履歴</h3>
 		<div id="timeline">
 			<div class="content" data-nikki="v2.0.1 (2) 音楽会-クラシックの調べ">
-				<span class="version">v1.8.0</span><span class="release">2017.06.27</span><span class="closet">3,262 （ミラクルニキ v2.0.1 (2) 2017.06.23 対応）</span>
-				<ul class="change-list">
-					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
-						<ul>
-							<li>期間限定イベント<span class="coord">音楽会-クラシックの調べ</span>のアイテムが登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div class="content" data-nikki="v2.0.0 (2) 真夜中のレクイエム / ギルド依頼第４章追加">
-				<span class="version">v1.8.0</span><span class="release">2017.06.14</span><span class="closet">3,235 （ミラクルニキ v2.0.0 (2) 2017.06.14 対応）</span>
-				<ul class="change-list">
-					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
-						<ul>
-							<li>期間限定イベント<span class="coord">真夜中のレクイエム</span>、ギルド依頼第４章追加に伴う<span class="coord">ギルド工房</span>、ギルドショップに追加された<span class="coord">愛の王冠</span>およびチャージキャンペーンの<span class="coord">ジャスミンの芳香</span>が登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div class="content" data-nikki="v1.9.2 (2) 愛の誓い">
-				<span class="version">v1.8.0</span><span class="release">2017.06.09</span>
-				<ul class="change-list">
-					<li class="foundation"><span class="changelog-tab">Laurus :: Foundation</span>
-						<ul>
-							<li>Laurus 内部で利用しているデータ構造を大幅に変更しました <a href="https://github.com/miramiku/Laurus/issues/12">Issues #12</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div class="content" data-nikki="v1.9.2 (2) 愛の誓い">
-				<span class="version">v1.7.0</span><span class="release">2017.06.06</span>
+				<span class="version">v1.9.0</span><span class="release">2017.07.04</span>
 				<ul class="change-list with-figure">
-					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
+					<li class="wardrobe"><span class="changelog-tab">Laurus :: Wardrobe</span>
 						<ul>
-							<li>ステージ選択においてステージ名が確認できるようになりました <a href="https://github.com/miramiku/Laurus/issues/16">Issues #16</a></li>
-						</ul>
-					</li>
-				</ul>
-				<img alt="" class="lazyload figure" src="resources/placeholder.png" data-src="resources/changelog/v1.7.0.png">
-			</div>
-			<div class="content" data-nikki="v1.9.2 (2) 愛の誓い">
-				<span class="version">v1.6.0</span><span class="release">2017.06.05</span>
-				<ul class="change-list">
-					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
-						<ul>
-							<li>イベントタイトルにおける年月日の区切りを斜線 (/) 区切りからピリオド (.) 区切りに変更（他の表記と統一）</li>
+							<li>フィルタの「並べ替え」という名称を「表示設定」に変更</li>
+							<li>
+								表示設定の並べ替え基準に「カテゴリ」を追加 <a href="https://github.com/miramiku/Laurus/issues/22">Issues #22</a>
+								<p>
+									「シリアル」と「カテゴリ」の違いはアクセサリーの中分類（「ヘアアクセサリー」、「耳飾り」など）とメイクの並べ替え順序にあります。<br>
+									<strong>シリアル</strong>：Laurus にて管理されているシリアルナンバーによりソートされます。アクセサリー中分類で分離されて、メイクがアクセサリーより前に配置されます<br>
+									<strong>カテゴリ</strong>：ミラクルニキ内のクローゼット順にソートされます。アクセサリーの中分類で分離されず、メイクがアクセサリより後に配置されます<br>
+									名称および挙動が分かりづらく申し訳ございません
+								</p>
+							</li>
 						</ul>
 					</li>
 					<li class="changelog"><span class="changelog-tab">Laurus :: Changelog</span>
 						<ul>
-							<li>変更履歴のデータベース化および省略表示 <a href="https://github.com/miramiku/Laurus/issues/15">Issues #15</a></li>
+							<li>変更履歴のデータベースに新たな記法を追加</li>
 						</ul>
 					</li>
 				</ul>
-			</div>
-			<div class="content" data-nikki="v1.9.2 (2) 愛の誓い">
-				<span class="version">v1.5.1</span><span class="release">2017.06.03</span>
-				<ul class="change-list with-figure">
-					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
-						<ul>
-							<li>イベントタイトルに期間およびシーズンデータにスタイル適用 <a href="https://github.com/miramiku/Laurus/issues/14">Issues #14</a></li>
-						</ul>
-					</li>
-					<li class="cheatsheet"><span class="changelog-tab">Laurus :: Cheatsheet</span>
-						<ul>
-							<li>イベントタイトルに期間およびシーズンデータにスタイル適用</li>
-						</ul>
-					</li>
-				</ul>
-				<img alt="" class="lazyload figure" src="resources/placeholder.png" data-src="resources/changelog/v1.5.1.png">
-			</div>
-			<div class="content" data-nikki="v1.9.2 (2) 愛の誓い">
-				<span class="version">v1.5.0</span><span class="release">2017.06.01</span><span class="closet">3,155 （ミラクルニキ v1.9.2 (2) 2017.05.31 対応）</span>
-				<ul class="change-list">
-					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
-						<ul>
-							<li>期間限定イベント「愛の誓い」のアイテムが登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました</li>
-						</ul>
-					</li>
-				</ul>
+				<img alt="" class="figure lazyload" src="resources/placeholder.png" data-src="resources/changelog/v1.9.0.png">
 			</div>
 		</div>
 
@@ -762,7 +705,7 @@
 	</div>
 
 	<div id="sort-filter" class="dialogue-content wardrobe">
-		<div class="dialogue-header"><span class="dialogue-title">並べ替え設定</span><span class="dialogue-close"><span>close</span></span></div>
+		<div class="dialogue-header"><span class="dialogue-title">表示設定</span><span class="dialogue-close"><span>close</span></span></div>
 		<div class="content">
 			<div id="sort-config-order">
 				<h6>並べ替え順序</h6>
@@ -771,7 +714,7 @@
 			<div id="sort-config-key">
 				<h6>並べ替え基準</h6>
 				<div class="item-group">
-					<span class="sort-item"><span data-key="serial">シリアル</span></span><span class="sort-item"><span data-key="name">名前</span></span><span class="sort-item"><span data-key="rarity">レアリティ</span></span><span class="sort-item"><span data-key="tag-f">タグF</span></span><span class="sort-item"><span data-key="tag-l">タグL</span></span>
+					<span class="sort-item"><span data-key="serial">シリアル</span></span><span class="sort-item"><span data-key="category">カテゴリ</span></span><span class="sort-item"><span data-key="name">名前</span></span><span class="sort-item"><span data-key="rarity">レアリティ</span></span><span class="sort-item"><span data-key="tag-f">タグF</span></span><span class="sort-item"><span data-key="tag-l">タグL</span></span>
 					<span class="sort-item"><span data-key="tags">タグ総合</span></span><span class="sort-item"><span data-key="score">スコア</span></span>
 				</div>
 				<div class="item-group">
@@ -862,8 +805,6 @@
 		ga( 'create', 'UA-98310829-1', 'auto' );
 		ga( 'send', 'pageview' );
 	</script>
-
-	<script type="text/javascript">var _lrscript = document.createElement('script');_lrscript.type = 'text/javascript';_lrscript.defer = _lrscript.async = true;_lrscript.src = '//' + ((null||location.host).split(':')[0]) + ':35729/livereload.js?';document.body.appendChild(_lrscript);</script>
 </body>
 
 </html>
