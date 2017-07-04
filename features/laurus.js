@@ -430,6 +430,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		/** @type {Object} ソートキー対応表 */
 		_sortKeys = {
 			"serial": "シリアル",
+			"category": "カテゴリ",
 			"name": "名前",
 			"rarity": "レアリティ",
 			"tag-f": "タグF",
@@ -2431,7 +2432,11 @@ LAURUS.wardrobe = ( function () {
 				 * @returns {Function} 設定項目に対応した比較関数
 				 */
 				_makeSortCompareFunction = function () {
-					var order = _sortConfig.order === "asc" ? 1 : -1,
+					var CAGEGORY_BIAS = 10000,
+						MAKEUP_BIAS = 10 * CAGEGORY_BIAS,
+						ACCESSORY_BIAS = 11 * CAGEGORY_BIAS,
+						ALT_MAKEUP_BIAS = 41 * CAGEGORY_BIAS,
+						order = _sortConfig.order === "asc" ? 1 : -1,
 						tag = function ( position ) {
 							return function ( a, b ) {
 								return ( restore.tag( WARDROBE[ a ].item[ COLUMN.TAGS ] )[ position ] - restore.tag( WARDROBE[ b ].item[ COLUMN.TAGS ] )[ position ] ) * order;
@@ -2448,9 +2453,24 @@ LAURUS.wardrobe = ( function () {
 								return ( attrA - attrB ) * order;
 							};
 						},
+						isAccessory = function ( serial ) {
+							return ACCESSORY_BIAS <= serial;
+						},
+						isMakeup = function ( serial ) {
+							return MAKEUP_BIAS <= serial && serial < ACCESSORY_BIAS;
+						},
 						compare = {
 							"serial": function ( a, b ) {
 								return ( WARDROBE[ a ].item[ COLUMN.SERIAL ] - WARDROBE[ b ].item[ COLUMN.SERIAL ] ) * order;
+							},
+							"category": function ( a, b ) {
+								var serialA = WARDROBE[ a ].item[ COLUMN.SERIAL ],
+									serialB = WARDROBE[ b ].item[ COLUMN.SERIAL ];
+
+								serialA = isAccessory( serialA ) ? ACCESSORY_BIAS + serialA % CAGEGORY_BIAS : isMakeup( serialA ) ? ALT_MAKEUP_BIAS + serialA % CAGEGORY_BIAS : serialA;
+								serialB = isAccessory( serialB ) ? ACCESSORY_BIAS + serialB % CAGEGORY_BIAS : isMakeup( serialB ) ? ALT_MAKEUP_BIAS + serialB % CAGEGORY_BIAS : serialB;
+
+								return ( serialA - serialB ) * order;
 							},
 							"name": function ( a, b ) {
 								var nameA = WARDROBE[ a ].item[ COLUMN.NAME ],
@@ -3205,6 +3225,7 @@ LAURUS.wardrobe = ( function () {
 								},
 								orderText = {
 									"serial": NUMERIC,
+									"category": NUMERIC,
 									"name": LEXICOGRAPHIC,
 									"rarity": RARITY,
 									"tag-f": TAG,
@@ -3900,6 +3921,7 @@ LAURUS.changelog = ( function () {
 						.append(
 						_logs
 							.replace( /\/\//g, "<br>" )
+							.replace( /\|(.[^\|]+)\|/g, "<span class=\"coord\">$1</span>" )
 							.replace( /\*\*(.+)\*\*/g, "<strong>$1</strong>" )
 							.replace( /\[(.+)\]/g, "<p>$1</p>" )
 							.replace( /(Issues #)(\d+)/g, "<a href=\"https://github.com/miramiku/Laurus/issues/$2\">$1$2</a>" )
