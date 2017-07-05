@@ -152,12 +152,12 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"skin", "complex"
 			],
 			/** @type {Array} アクセサリリスト */
-			ACCESSORY_LIST_WITHOUT_BOTH_HAND: [
+			ACCESSORY_LIST: [
 				/* headwear */ "hair-ornaments", "veil", "hairpin", "ear",
 				/* earrings */ "earrings",
 				/* necklace */ "scarf", "necklace",
 				/* bracelet */ "right-hand-ornaments", "left-hand-ornaments", "glove",
-				/* handheld */ "right-hand-holding", "left-hand-holding", // "both-hand-holding",
+				/* handheld */ "right-hand-holding", "left-hand-holding", "both-hand-holding",
 				/* waist    */ "waist",
 				/* special  */ "face", "brooch", "tatoo", "wing", "tail", "foreground", "background", "head-ornaments", "ground", "skin"
 			],
@@ -287,9 +287,17 @@ LAURUS.STATIC_ITEMS = ( function () {
 				0, 0, 0.2, 0.2, 0.2,
 				0.2, 0.2, 0, 0.2, 0.2,
 				0, 0.2, 0.2, 0.2, 0,
-				0.2, 0.2, 0.4, 0.2, 0,
+				0.2, 0.2, 0.2, 0.2, 0,
 				0.2, 0.2, 0.2, 0.2, 0.2,
 				0.2, 0.2, 0.2, 0.2, 0.2
+			],
+			/** @type {Array} アクセサリの装着数による減衰率 */
+			DAMPING: [
+				1, 1, 1, 0.95, 0.9,
+				0.825, 0.75, 0.7, 0.65, 0.6,
+				0.55, 0.51, 0.47, 0.45, 0.425,
+				0.4, 0.4, 0.4, 0.4, 0.4,
+				0.4, 0.4, 0.4
 			]
 		},
 		/** @type {Object} タグの定義 */
@@ -489,7 +497,17 @@ LAURUS.STATIC_ITEMS = ( function () {
 				stroke: "#8dd68d"
 			}
 		},
+		/** @type {@Object} アイテムのシリアル値におけるバイアス */
+		_bias = ( function () {
+			var category = 10000;
 
+			return {
+				CATEGORY: category,
+				MAKEUP: 10 * category, // @todo: magic number
+				ACCESSORY: 11 * category, // @todo: magic number
+				ALT_MAKEUP: 41 * category // @todo: magic number
+			};
+		}() ),
 		/** @type {MethodCollection} 全体的に共通して利用される普遍的な処理 */
 		_utils = {
 			/** @summary 全角の数字を半角に変換する
@@ -552,6 +570,23 @@ LAURUS.STATIC_ITEMS = ( function () {
 			 */
 			map4IdString: function ( id ) {
 				return id.replace( / /g, "-" );
+			},
+			/** @summary カテゴリー判定 */
+			categoryOf: {
+				/** @summary アクセサリー判定
+				 * @param {Number} シリアル値
+				 * @returns {Booelan} true -> アクセサリー
+				 */
+				accessory: function ( serial ) {
+					return _bias.ACCESSORY <= serial;
+				},
+				/** @summary メイク判定
+				 * @param {Number} シリアル値
+				 * @returns {Booelan} true -> メイク
+				 */
+				makeup: function ( serial ) {
+					return _bias.MAKEUP <= serial && serial < _bias.ACCESSORY;
+				}
 			}
 		},
 		/** @summary Laurus 用のデータベース取得用関数
@@ -660,6 +695,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 
 		VALUES: _values,
 		ORDERED_LIST: _orderedList,
+		BIAS: _bias,
 		BOUNDS: _bounds,
 		COLUMN: _column,
 		STYLE_DEFS: _styleDefs,
@@ -740,7 +776,7 @@ LAURUS.WARDROBE = ( function () {
 LAURUS.SCORING_BY_SLOT = {};
 
 /** @summary スコアリングを行い結果を格納する
- * @param {Function} objective スコアリング条件
+ * @param {Object} objective スコアリング条件
  */
 LAURUS.scoring = function ( objective ) {
 	"use strict";
@@ -748,6 +784,8 @@ LAURUS.scoring = function ( objective ) {
 	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
 		SCALE = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.SCALE,
+
+		categoryOf = LAURUS.STATIC_ITEMS.utils.categoryOf,
 
 		restore = LAURUS.STATIC_ITEMS.restore,
 		OBJECTIVE = {
@@ -773,10 +811,11 @@ LAURUS.scoring = function ( objective ) {
 			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) );
 
 		$.each( item[ COLUMN.SLOTS ], function () {
-			var scale = SCALE[ this ];
+			var scale = SCALE[ this ],
+				damping = categoryOf.accessory( serial ) ? 0.4 : 1; // @todo: magic number
 
 			$.each( objective.style, function ( index ) {
-				score += ( VALUES.FACTOR[ attributes[ index ] ] + tagBonus ) * scale * this;
+				score += ( VALUES.FACTOR[ attributes[ index ] ] * damping + tagBonus ) * scale * this;
 			} );
 		} );
 
@@ -1474,17 +1513,12 @@ LAURUS.advisor = ( function () {
 							var accessories = [],
 								rank = 1;
 
-							$.each( CATEGORY_DEFS.ACCESSORY_LIST_WITHOUT_BOTH_HAND, function () {
+							$.each( CATEGORY_DEFS.ACCESSORY_LIST, function () {
 								accessories.push( {
 									slot: this,
 									score: getScoreBySlot( this )
 								} );
 							} );
-							accessories.push( {
-								slot: "both-hand-holding",
-								score: getScoreBySlot( "both-hand-holding" ) / 2
-							} );
-
 							accessories.sort( function ( a, b ) {
 								return b.score - a.score;
 							} );
@@ -2300,6 +2334,7 @@ LAURUS.wardrobe = ( function () {
 		WARDROBE = LAURUS.WARDROBE,
 
 		ALL_RECORDS = LAURUS.STATIC_ITEMS.ALL_RECORDS,
+		BIAS = LAURUS.STATIC_ITEMS.BIAS,
 		COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		CATEGORY_DEFS = LAURUS.STATIC_ITEMS.CATEGORY_DEFS,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
@@ -2309,6 +2344,7 @@ LAURUS.wardrobe = ( function () {
 		CATEGORY = CATEGORY_DEFS.CODE.CATEGORY,
 		SLOT = CATEGORY_DEFS.CODE.SLOT,
 
+		categoryOf = LAURUS.STATIC_ITEMS.utils.categoryOf,
 		digitGrouping = LAURUS.STATIC_ITEMS.utils.digitGrouping,
 
 		getImposes = LAURUS.STATIC_ITEMS.getImposes,
@@ -2432,11 +2468,7 @@ LAURUS.wardrobe = ( function () {
 				 * @returns {Function} 設定項目に対応した比較関数
 				 */
 				_makeSortCompareFunction = function () {
-					var CAGEGORY_BIAS = 10000,
-						MAKEUP_BIAS = 10 * CAGEGORY_BIAS,
-						ACCESSORY_BIAS = 11 * CAGEGORY_BIAS,
-						ALT_MAKEUP_BIAS = 41 * CAGEGORY_BIAS,
-						order = _sortConfig.order === "asc" ? 1 : -1,
+					var order = _sortConfig.order === "asc" ? 1 : -1,
 						tag = function ( position ) {
 							return function ( a, b ) {
 								return ( restore.tag( WARDROBE[ a ].item[ COLUMN.TAGS ] )[ position ] - restore.tag( WARDROBE[ b ].item[ COLUMN.TAGS ] )[ position ] ) * order;
@@ -2453,12 +2485,6 @@ LAURUS.wardrobe = ( function () {
 								return ( attrA - attrB ) * order;
 							};
 						},
-						isAccessory = function ( serial ) {
-							return ACCESSORY_BIAS <= serial;
-						},
-						isMakeup = function ( serial ) {
-							return MAKEUP_BIAS <= serial && serial < ACCESSORY_BIAS;
-						},
 						compare = {
 							"serial": function ( a, b ) {
 								return ( WARDROBE[ a ].item[ COLUMN.SERIAL ] - WARDROBE[ b ].item[ COLUMN.SERIAL ] ) * order;
@@ -2467,8 +2493,8 @@ LAURUS.wardrobe = ( function () {
 								var serialA = WARDROBE[ a ].item[ COLUMN.SERIAL ],
 									serialB = WARDROBE[ b ].item[ COLUMN.SERIAL ];
 
-								serialA = isAccessory( serialA ) ? ACCESSORY_BIAS + serialA % CAGEGORY_BIAS : isMakeup( serialA ) ? ALT_MAKEUP_BIAS + serialA % CAGEGORY_BIAS : serialA;
-								serialB = isAccessory( serialB ) ? ACCESSORY_BIAS + serialB % CAGEGORY_BIAS : isMakeup( serialB ) ? ALT_MAKEUP_BIAS + serialB % CAGEGORY_BIAS : serialB;
+								serialA = categoryOf.accessory( serialA ) ? ( BIAS.ACCESSORY + serialA % BIAS.CATEGORY ) : categoryOf.makeup( serialA ) ? ( BIAS.ALT_MAKEUP + serialA % BIAS.CATEGORY ) : serialA;
+								serialB = categoryOf.accessory( serialB ) ? ( BIAS.ACCESSORY + serialB % BIAS.CATEGORY ) : categoryOf.makeup( serialB ) ? ( BIAS.ALT_MAKEUP + serialB % BIAS.CATEGORY ) : serialB;
 
 								return ( serialA - serialB ) * order;
 							},
