@@ -13,7 +13,9 @@ LAURUS.STATIC_ITEMS = ( function () {
 		_values = {
 			/** @type {Array} 属性値の対応値 */
 			INDEX: [ "", "C", "B", "A", "S", "SS" ],
+			/** @type {Array} 属性係数 */
 			FACTOR: [ 0, 817.5, 1309.8, 1690.65, 2089.35, 2612.7 ],
+			/** @type {Object} 属性コードからインデックス逆引き */
 			CODE: {
 				"-": 0,
 				C: 1,
@@ -44,12 +46,13 @@ LAURUS.STATIC_ITEMS = ( function () {
 		},
 		/** @type {Object} 数値範囲の定義 */
 		_bounds = {
-			/** @type {Object} スタイルウェイト */
+			/** @type {Object} スタイルウェイトの範囲 */
 			STYLES: {
 				initial: 1,
 				floor: 0,
 				ceil: 99
 			},
+			/** @type {Array} タグボーナス係数の範囲 */
 			PRODUCT: {
 				initial: 1,
 				floor: 0,
