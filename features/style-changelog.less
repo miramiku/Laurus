@@ -116,6 +116,89 @@
 		margin:     10px 30px 30px 0;
 		max-width:  300px;
 	}
+	li.database dl {
+		text-indent: 0;
+		dt {
+			clear:      both;
+			margin-top: 10px;
+			.category {
+				.strong-basis();
+				&.nations   { .strong-color( @nations   ); }
+				&.festivals { .strong-color( @festivals ); }
+				&.troupe    { .strong-color( @troupe    ); }
+				&.cements   { .strong-color( @cements   ); }
+				&.stars     { .strong-color( @stars     ); }
+				&.happiness { .strong-color( @happiness ); }
+				&.others    { .strong-color( @none-category ); }
+				&.all       { .strong-color( @changelog-theme ); }
+			}
+			.coordinate {
+				.strong-basis();
+				.strong-color( @total-coodinate );
+			}
+			.entries {
+				display:     inline-block;
+				font-family: "Maven Pro";
+				font-size:    @sub-font-size;
+				margin-left: 10px;
+				&::before {
+					content: "(";
+					background: none;
+				}
+				&::after  { content: ")"; }
+			}
+		}
+		dd {
+			margin:      0;
+			text-indent: 0;
+			.item-command-set {
+				display:     table;
+				.append-items {
+					// margin:        5px 10px 15px 10px;
+					display: table-cell;
+					width:   500px;
+					> span {
+						border:        1px solid @separate-color;
+						border-radius: 2px;
+						cursor:        pointer;
+						display:       block;
+						font-size:     @tiny-font-size;
+						line-height:   1.2;
+						padding:       5px;
+					}
+				}
+				.filter-macro-button {
+					.disable-select();
+					display:        table-cell;
+					text-align:     center;
+					vertical-align: middle;
+					width:          100px;
+					> span {
+						border-radius: 2px;
+						color:         @insparkly-color;
+						cursor:        pointer;
+						display:       inline-block;
+						line-height:   1.2;
+						padding:       2px 10px;
+						box-sizing:    border-box;
+						&:hover {
+							border: 1px solid @changelog-theme;
+							color:  @key-tone;
+						}
+						&:active {
+							.slant-stripe-background( @changelog-theme, 25% );
+							color: @key-tone;
+						}
+					}
+				}
+			}
+			.note {
+				color:       @StrawberryPink;
+				font-size:   @tiny-font-size;
+				margin-left: 20px;
+			}
+		}
+	}
 }
 
 .item-proc-type {
@@ -124,15 +207,23 @@
 	&::after { content: "："; }
 }
 
-.coord {
-	.slant-stripe-background( @wardrobe-theme, 15% );
+.strong-basis() {
 	box-sizing:  border-box;
-	color:       @wardrobe-theme;
 	display:     inline-block;
 	line-height: 1.2;
 	margin:      0 3px;
 	padding:     0 3px;
 	text-indent: 0;
+}
+
+.strong-color( @color ) {
+	.slant-stripe-background( @color, 15% );
+	color: @color;
+}
+
+.coord {
+	.strong-basis();
+	.strong-color( @wardrobe-theme );
 }
 
 .emunate-same {
