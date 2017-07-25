@@ -7,14 +7,13 @@
 
 	<!-- meta data -->
 	<meta name="author" content="Miku">
-	<meta name="keyword" content="ミラクルニキ,Miracle Nikki,ローラス,Laurus,コーディネート,ツール">
+	<meta name="keyword" content="ミラクルニキ,Miracle Nikki,ローラス,Laurus,コーディネート,ツール,攻略">
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<!--
 	<script src="laurus.min.js?ver=1.10.0" defer></script>
-	-->
 
+	<!--
 	<script src="features/jquery.min.js" defer></script>
 	<script src="features/jquery.peity.js" defer></script>
 	<script src="features/jquery.perfect-scrollbar.js" defer></script>
@@ -22,6 +21,7 @@
 	<script src="features/toastr.js" defer></script>
 	<script src="features/extensions.js" defer></script>
 	<script src="features/laurus.js" defer></script>
+	-->
 
 	<!-- style / favicon -->
 	<link href="theme.css" rel="stylesheet" type="text/css">
@@ -463,11 +463,48 @@
 		<h3 id="head-changelog">変更履歴</h3>
 		<div id="timeline">
 			<div class="content" data-nikki="v2.1.0 (2) 夜空の華">
+				<span class="version">v1.10.0</span><span class="release">2017.07.25</span>
+				<ul class="change-list with-figure">
+					<li class="wardrobe"><span class="changelog-tab">Laurus :: Wardrobe</span>
+						<ul>
+							<li>並び替えの表示ラベルを修正（カテゴリ）</li>
+						</ul>
+					</li>
+					<li class="changelog"><span class="changelog-tab">Laurus :: Changelog</span>
+						<ul>
+							<li>追加アイテム抽出用コマンドの記載開始
+								<p>
+									フィルタコマンドをクリックするとコマンド全体が選択されるので、それをコピーして　Laurus :: Wardrobe の<strong>アイテム名</strong>にペーストすると該当するアイテム群が抽出されます。<br>
+									また、フィルタコマンドの右にある<strong>抽出</strong>ボタンを押すと該当するフィルタおよび並び替え基準を<strong>カテゴリ：正順</strong>に設定して Laurus :: Wardrobe に画面が遷移します。
+								</p>
+							</li>
+							<li>変更履歴のデータベースに追加アイテムデータに関する仕様追加</li>
+						</ul>
+					</li>
+				</ul>
+				<img alt="" class="figure lazyload" src="resources/placeholder.png" data-src="resources/changelog/v1.10.0.png">
+			</div>
+			<div class="content" data-nikki="v2.1.0 (2) 夜空の華">
 				<span class="version">v1.9.1</span><span class="release">2017.07.19</span><span class="closet">3,464 （ミラクルニキ v2.1.0 (2) 2017.07.11 対応）</span>
 				<ul class="change-list">
 					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
 						<ul>
-							<li>期間限定イベント<span class="coord">夜空の華</span>のアイテムがすべて登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました</li>
+							<li>期間限定イベント<span class="coord">夜空の華</span>のアイテムがすべて登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました
+								<dl>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">星空柄の浴衣</span><span class="entries">10</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>流星に願いを|星空柄の浴衣|星降る夏の日|鼓動と花火|星柄の下駄|運命の夏|星空イヤーカフ|繋ぎかけの手|君だけに見せる顔|夏祭りの思い出</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">屋台のお手伝い</span><span class="entries">11</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>お家の手伝い|和菓子屋台の少女|おまけ付きジャンケン|幸せな夏祭り|心躍る夏|友との祭り|和柄のヘッドアクセ|おこづかいの目標|祭り見物|おしながき|和菓子の屋台</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">金魚ガール</span><span class="entries">10</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>一人ぼっちの夏祭り|少女と夏の幻想|金魚と夏の幻想|金魚掬い|夏の雑音|水色の下駄|水色の花飾り|小花の腕飾り|祭りの土産|金魚とお揃い</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">金魚姫</span><span class="entries">9</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>夏の命|金魚鉢の幸せ|金魚の救い|去年の夏のこと|掬われへの望み|金魚の花飾り|幸せの詰め合わせ|美しき世界|自慢の尾鰭</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">妖狐と芥子</span><span class="entries">8</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>狐耳ヘア|妖狐と芥子|春色ケープ|冬影ケープ|不気味な靴|芥子飾り|錦の鼓|フォックステイル</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category all">すべて</span><span class="entries">48</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>夏の命|金魚鉢の幸せ|金魚の救い|去年の夏のこと|掬われへの望み|金魚の花飾り|幸せの詰め合わせ|美しき世界|自慢の尾鰭|一人ぼっちの夏祭り|少女と夏の幻想|金魚と夏の幻想|金魚掬い|夏の雑音|水色の下駄|水色の花飾り|小花の腕飾り|祭りの土産|金魚とお揃い|狐耳ヘア|妖狐と芥子|春色ケープ|冬影ケープ|不気味な靴|芥子飾り|錦の鼓|フォックステイル|お家の手伝い|和菓子屋台の少女|おまけ付きジャンケン|幸せな夏祭り|心躍る夏|友との祭り|和柄のヘッドアクセ|おこづかいの目標|祭り見物|おしながき|和菓子の屋台|流星に願いを|星空柄の浴衣|星降る夏の日|鼓動と花火|星柄の下駄|運命の夏|星空イヤーカフ|繋ぎかけの手|君だけに見せる顔|夏祭りの思い出</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+								</dl>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -477,7 +514,36 @@
 				<ul class="change-list">
 					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
 						<ul>
-							<li>ミラクルニキのアイテム収録数と Laurus のアイテム登録数が <strong>取り急ぎ</strong> 一致させました。<br>アイテムデータのチェックを順次行っていきます。属性やアイテム分類などに誤りがあればお知らせいただければ幸いです</li>
+							<li>ミラクルニキのアイテム収録数と Laurus のアイテム登録数が <strong>取り急ぎ</strong> 一致させました。<br>アイテムデータのチェックを順次行っていきます。属性やアイテム分類などに誤りがあればお知らせいただければ幸いです
+								<dl>
+									<dt><span class="category nations">パテール連邦</span><span class="coordinate">マジカルスター</span><span class="entries">24</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>[^モノトーン]ギャラクシー|^ギャラクシー|シースルーコート|魔力|ファッションアイコン|グレイライン.*ソックス|厚底ハイカット靴|ストライプ野球帽|黒い野球帽|十字架のイヤリング|十字架のペンダント|ダイヤのバッグ|丸いサングラス</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">パテール連邦</span><span class="coordinate">白黒のお嬢様</span><span class="entries">6</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>ジュエリーの輝き|白黒のお嬢様|^夜の歌|金箔淑女|レディのレトロ帽|夜の薔薇</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">パテール連邦</span><span class="coordinate">青春の歌</span><span class="entries">7</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>青春の歌|アカデミックドレス|青春の歩み|学士帽|卒業証書\(白\)</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">パテール連邦</span><span class="coordinate">パストラルホリデー</span><span class="entries">10</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>きらめく太陽|パストラルホリデー|日の出|金の砂浜|シュロと花|海底の珊瑚|夕暮れの海|ウクレレ|真夏のシュロ</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">雲上帝国</span><span class="coordinate">霧の竹林</span><span class="entries">16</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>^竹$|-竹$|春山の雨|竹枝詞|霧の竹林|竹の小道|竹の語らい</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">カルファ王国</span><span class="coordinate">仮面舞踏会</span><span class="entries">20+1</span></dt>
+									<dd>
+										<span class="item-command-set"><span class="append-items"><span>宴の夜|宴の夢|チャンスの夜|独り舞台|仮面舞踏会|^美酒|ご馳走|夢の舞|華の舞|[^蝶]リボンの髪飾り|^リボンの髪飾り|舞踏会のマスク</span></span><span class="filter-macro-button"><span>抽出</span></span></span>
+										<span class="note">同名アイテム「115 美酒」（ボトムス）も抽出されてしまいます</span>
+									</dd>
+									<dt><span class="category nations">ノーザン王国</span><span class="coordinate">陸軍将校</span><span class="entries">14</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>氷原の勇士|海洋遠征|陸軍少佐|海軍少佐|アーミーベスト|ネイビーベスト|ミリタリーパンツ|将校のピストル|将校長靴|陸軍帽|海軍帽|革の長手袋|海軍の長手袋</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category nations">ウェイストランド</span><span class="coordinate">トライブトーテム</span><span class="entries">12+1</span></dt>
+									<dd>
+										<span class="item-command-set"><span class="append-items"><span>トライブガール|大地のトーテム|空のトーテム|トライバル・スピリット|レースアップブーツ|荒野|狩人のチョーカー|トライバルの首飾り|結縄の記録|荒野のポシェット</span></span><span class="filter-macro-button"><span>抽出</span></span></span>
+										<span class="note">同名アイテム「563 荒野」（ヘアスタイル）も抽出されてしまいます</span>
+									</dd>
+									<dt><span class="category others">ガール級獲得可能アイテムとそのカスタマイズ</span><span class="entries">23</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>華やかダンディ|カフェオーナー|優しき心|ホルターネックワンピ|黒のラビリンス|灰色のラビリンス|青色のラビリンス|ハーフカラー|アーバンレディ|チョコレート制服|お嬢様トップス|マーメイドスカート\(|ストライプズボン\(青\)|お嬢様スカート|ガールズスニーカー|ゴージャス\(</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category all">すべて</span><span class="entries">132+2</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>[^モノトーン]ギャラクシー|^ギャラクシー|シースルーコート|魔力|ファッションアイコン|グレイライン.*ソックス|厚底ハイカット靴|ストライプ野球帽|黒い野球帽|十字架のイヤリング|十字架のペンダント|ダイヤのバッグ|丸いサングラス|ジュエリーの輝き|白黒のお嬢様|^夜の歌|金箔淑女|レディのレトロ帽|夜の薔薇|青春の歌|アカデミックドレス|青春の歩み|学士帽|卒業証書\(白\)|きらめく太陽|パストラルホリデー|日の出|金の砂浜|シュロと花|海底の珊瑚|夕暮れの海|ウクレレ|真夏のシュロ|^竹$|-竹$|春山の雨|竹枝詞|霧の竹林|竹の小道|竹の語らい|宴の夜|宴の夢|チャンスの夜|独り舞台|仮面舞踏会|^美酒|ご馳走|夢の舞|華の舞|[^蝶]リボンの髪飾り|^リボンの髪飾り|舞踏会のマスク|氷原の勇士|海洋遠征|陸軍少佐|海軍少佐|アーミーベスト|ネイビーベスト|ミリタリーパンツ|将校のピストル|将校長靴|陸軍帽|海軍帽|革の長手袋|海軍の長手袋|トライブガール|大地のトーテム|空のトーテム|トライバル・スピリット|レースアップブーツ|荒野|狩人のチョーカー|トライバルの首飾り|結縄の記録|荒野のポシェット|華やかダンディ|カフェオーナー|優しき心|ホルターネックワンピ|黒のラビリンス|灰色のラビリンス|青色のラビリンス|ハーフカラー|アーバンレディ|チョコレート制服|お嬢様トップス|マーメイドスカート\(|ストライプズボン\(青\)|お嬢様スカート|ガールズスニーカー|ゴージャス\(</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+								</dl>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -487,7 +553,20 @@
 				<ul class="change-list">
 					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
 						<ul>
-							<li>期間限定イベント<span class="coord">七夕の願い</span>のアイテムがすべて登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました</li>
+							<li>期間限定イベント<span class="coord">七夕の願い</span>のアイテムがすべて登録され、ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致しました
+								<dl>
+									<dt><span class="category festivals">祭日セレモニー</span><span class="coordinate">淡い恋の願い事</span><span class="entries">5</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>花飾りとお団子|淡い恋の願い事|薄紅の履物|君への気持ち|薄紅色の傘</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category festivals">祭日セレモニー</span><span class="coordinate">織姫と七夕の宵</span><span class="entries">7</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>夕夜|織姫の衣|翡翠の履|雀のかんざし|翠玉の腕輪|天の川の誓い|彦星との約束</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category others">七夕の願いチャージキャンペーン</span><span class="entries">4</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>幸せの四つ葉|七夕の夜|願い玉|笹の葉と短冊</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category others">ショップ売り追加</span><span class="entries">6</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>すっきりツイン|真夏のお出かけ|夏日|風そよぐ|爽やかな日差し|紺色の団扇</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+									<dt><span class="category all">すべて</span><span class="entries">22</span></dt>
+									<dd><span class="item-command-set"><span class="append-items"><span>花飾りとお団子|淡い恋の願い事|薄紅の履物|君への気持ち|薄紅色の傘|夕夜|織姫の衣|翡翠の履|雀のかんざし|翠玉の腕輪|天の川の誓い|彦星との約束|幸せの四つ葉|七夕の夜|願い玉|笹の葉と短冊|すっきりツイン|真夏のお出かけ|夏日|風そよぐ|爽やかな日差し|紺色の団扇</span></span><span class="filter-macro-button"><span>抽出</span></span></span></dd>
+								</dl>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -850,8 +929,6 @@
 		ga( 'create', 'UA-98310829-1', 'auto' );
 		ga( 'send', 'pageview' );
 	</script>
-
-	<script type="text/javascript">var _lrscript = document.createElement('script');_lrscript.type = 'text/javascript';_lrscript.defer = _lrscript.async = true;_lrscript.src = '//' + ((null||location.host).split(':')[0]) + ':35729/livereload.js?';document.body.appendChild(_lrscript);</script>
 </body>
 
 </html>

@@ -3236,6 +3236,10 @@ LAURUS.wardrobe = ( function () {
 									asc: "0 → 999",
 									desc: "999 → 0"
 								},
+								CATEGORY = {
+									asc: "ヘアスタイル → メイク",
+									desc: "メイク → ヘアスタイル"
+								},
 								LEXICOGRAPHIC = {
 									asc: "A → Z",
 									desc: "Z → A"
@@ -3254,7 +3258,7 @@ LAURUS.wardrobe = ( function () {
 								},
 								orderText = {
 									"serial": NUMERIC,
-									"category": NUMERIC,
+									"category": CATEGORY,
 									"name": LEXICOGRAPHIC,
 									"rarity": RARITY,
 									"tag-f": TAG,
@@ -3613,7 +3617,8 @@ LAURUS.wardrobe = ( function () {
 
 	return {
 		wakeup: _wakeup,
-		changeMode: _changeMode
+		changeMode: _changeMode,
+		Medium: Medium
 	};
 }() );
 
@@ -3923,16 +3928,40 @@ LAURUS.changelog = ( function () {
 			var /** @summary Changelog データベースを読み込んで追加する */
 				loadLogs = function ( moreLogs ) {
 					var _logs = "",
+						items = [],
+						appendItemsNum = 0,
 						_build = function ( log ) {
 							var withFigure = log.hasOwnProperty( "with-figure" ),
-								content = "<div class=\"content\"><span class=\"version\">" + log.version + "</span><span class=\"release\">" + log.release + "</span>" + ( log.hasOwnProperty( "closet" ) ? "<span class=\"closet\">" + log.closet + "</span>" : "" ) + "<ul class=\"change-list" + ( withFigure ? " with-figure" : "" ) + "\">";
+								content = "<div class=\"content\"><span class=\"version\">" + log.version + "</span><span class=\"release\">" + log.release + "</span>" + ( log.hasOwnProperty( "closet" ) ? "<span class=\"closet\">" + log.closet + "</span>" : "" ) + "<ul class=\"change-list" + ( withFigure ? " with-figure" : "" ) + "\">",
+
+								appendItems = function () {
+									var hasAppendItems = "";
+
+									if ( log.hasOwnProperty( "append-items" ) ) {
+										var appendItems = log[ "append-items" ],
+											coordinate = "";
+
+
+										$.each( appendItems, function () {
+											coordinate += "<dt>" + "<span class=\"category " + this[ 0 ] + "\">" + this[ 1 ] + "</span>" + ( this[ 2 ] ? "<span class=\"coordinate\">" + this[ 2 ] + "</span>" : "" ) + "<span class=\"entries\">" + this[ 3 ] + "</span></dt>" +
+												"<dd><span class=\"item-command-set\"><span class=\"append-items\"><span>" + this[ 4 ] + "</span></span><span class=\"filter-macro-button\"><span>抽出</span></span></span></dd>" +
+												( this[ 5 ] ? "<span class=\"note\">" + this[ 5 ] + "</span>" : "" );
+										} );
+
+										items.push( coordinate );
+										hasAppendItems = "hasAppendItems" + appendItemsNum;
+										appendItemsNum += 1;
+									}
+
+									return hasAppendItems;
+								};
 
 							$.each( [ "advisor", "wardrobe", "cheatsheet", "credit", "changelog", "database", "foundation" ], function () {
 								if ( log.hasOwnProperty( this ) ) {
 									content += "<li class=\"" + this + "\"><span class=\"changelog-tab\">Laurus :: " + ( this.charAt( 0 ).toUpperCase() + this.slice( 1 ) ) + "</span><ul>";
 
 									$.each( log[ this ], function () {
-										content += "<li>" + this + "</li>";
+										content += "<li>" + this + appendItems() + "</li>";
 									} );
 
 									content += "</ul></li>";
@@ -3946,15 +3975,19 @@ LAURUS.changelog = ( function () {
 						_logs += _build( this );
 					} );
 
+					_logs = _logs
+						.replace( /\/\//g, "<br>" )
+						.replace( /\|(.[^\|]+)\|/g, "<span class=\"coord\">$1</span>" )
+						.replace( /\*\*(.+)\*\*/g, "<strong>$1</strong>" )
+						.replace( /\[(.+)\]/g, "<p>$1</p>" )
+						.replace( /(Issues #)(\d+)/g, "<a href=\"https://github.com/miramiku/Laurus/issues/$2\">$1$2</a>" );
+
+					for ( var i = 0; i < appendItemsNum; i += 1 ) {
+						_logs = _logs.replace( "hasAppendItems" + i, "<dl>" + items[ i ] + "</dl>" );
+					}
+
 					$( "#timeline" )
-						.append(
-						_logs
-							.replace( /\/\//g, "<br>" )
-							.replace( /\|(.[^\|]+)\|/g, "<span class=\"coord\">$1</span>" )
-							.replace( /\*\*(.+)\*\*/g, "<strong>$1</strong>" )
-							.replace( /\[(.+)\]/g, "<p>$1</p>" )
-							.replace( /(Issues #)(\d+)/g, "<a href=\"https://github.com/miramiku/Laurus/issues/$2\">$1$2</a>" )
-						);
+						.append( _logs );
 
 					$( "#changelog-more" )
 						.remove();
@@ -3963,6 +3996,26 @@ LAURUS.changelog = ( function () {
 			$( "#changelog" )
 				.on( "click", "#changelog-more > span", function () {
 					$.getJSON( "resources/changelog.json", loadLogs );
+				} )
+				.on( "click", ".append-items > span", function () {
+					var range = document.createRange(),
+						selection = window.getSelection();
+
+					range.selectNodeContents( $( this ).get( 0 ) );
+					selection.removeAllRanges();
+					selection.addRange( range );
+				} )
+				.on( "click", ".filter-macro-button > span", function () {
+					var WardrobeMedium = LAURUS.wardrobe.Medium;
+
+					$( "#filter-word" ).val( $( this ).parent().prev().children().text() );
+					WardrobeMedium.sort.change( "asc" );
+					WardrobeMedium.sort.change( "category" );
+					WardrobeMedium.sort.setLabel();
+					WardrobeMedium.word.change();
+
+					$( "#wardrobe-button" ).click();
+					$( "#back2top a" ).click();
 				} );
 		},
 		/** @summary Changelog のモード切替時処理 */
