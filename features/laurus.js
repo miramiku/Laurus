@@ -3612,13 +3612,37 @@ LAURUS.wardrobe = ( function () {
 			setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
 			Medium.initialize();
 		},
+		/** @type {MethodCollection} メディウム操作窓口の提供 */
+		_facade = ( function () {
+			var /** @summary ソート基準を変更する（引数の順序を間違えても動作に影響はない）
+				 * @param {String} オーダーキー
+				 * @param {String} ソート項目
+				 */
+				_setSortConfig = function ( key, order ) {
+					Medium.sort.change( key );
+					Medium.sort.change( order );
+					Medium.sort.setLabel();
+				},
+				/** @summary ワードフィルタに設定して実行する
+				 * @param {String} ワードフィルタ（コマンド）
+				 */
+				_setWardFilter = function ( word ) {
+					$( "#filter-word" ).val( word );
+					Medium.word.change();
+				};
+
+			return {
+				setSortConfig: _setSortConfig,
+				setWardFilter: _setWardFilter
+			};
+		}() ),
 		/** @summary Wardrobe のモード切替時処理 */
 		_changeMode = Medium.execFilter;
 
 	return {
 		wakeup: _wakeup,
 		changeMode: _changeMode,
-		Medium: Medium
+		facade: _facade
 	};
 }() );
 
@@ -3941,11 +3965,9 @@ LAURUS.changelog = ( function () {
 										var appendItems = log[ "append-items" ],
 											coordinate = "";
 
-
 										$.each( appendItems, function () {
 											coordinate += "<dt>" + "<span class=\"category " + this[ 0 ] + "\">" + this[ 1 ] + "</span>" + ( this[ 2 ] ? "<span class=\"coordinate\">" + this[ 2 ] + "</span>" : "" ) + "<span class=\"entries\">" + this[ 3 ] + "</span></dt>" +
-												"<dd><span class=\"item-command-set\"><span class=\"append-items\"><span>" + this[ 4 ] + "</span></span><span class=\"filter-macro-button\"><span>抽出</span></span></span></dd>" +
-												( this[ 5 ] ? "<span class=\"note\">" + this[ 5 ] + "</span>" : "" );
+												"<dd><span class=\"item-command-set\"><span class=\"append-items\"><span>" + this[ 4 ] + "</span></span><span class=\"filter-macro-button\"><span>抽出</span></span></span>" + ( this[ 5 ] ? "<span class=\"note\">" + this[ 5 ] + "</span>" : "" ) + "</dd>";
 										} );
 
 										items.push( coordinate );
@@ -3956,12 +3978,12 @@ LAURUS.changelog = ( function () {
 									return hasAppendItems;
 								};
 
-							$.each( [ "advisor", "wardrobe", "cheatsheet", "credit", "changelog", "database", "foundation" ], function () {
+							$.each( [ "advisor", "wardrobe", "cheatsheet", "credit", "changelog", "database", "foundation" ], function ( index, module ) {
 								if ( log.hasOwnProperty( this ) ) {
 									content += "<li class=\"" + this + "\"><span class=\"changelog-tab\">Laurus :: " + ( this.charAt( 0 ).toUpperCase() + this.slice( 1 ) ) + "</span><ul>";
 
 									$.each( log[ this ], function () {
-										content += "<li>" + this + appendItems() + "</li>";
+										content += "<li>" + this + ( module === "database" ? appendItems() : "" ) + "</li>";
 									} );
 
 									content += "</ul></li>";
@@ -4006,16 +4028,19 @@ LAURUS.changelog = ( function () {
 					selection.addRange( range );
 				} )
 				.on( "click", ".filter-macro-button > span", function () {
-					var WardrobeMedium = LAURUS.wardrobe.Medium;
+					var filterCommand = $( this ).parent().prev().children().text(),
+						$subject = $( this ).parent().parent().parent().prev(),
+						$category = $subject.find( ".category" ),
+						$coordinate = $subject.find( ".coordinate" ),
+						wardrobeFacade = LAURUS.wardrobe.facade;
 
-					$( "#filter-word" ).val( $( this ).parent().prev().children().text() );
-					WardrobeMedium.sort.change( "asc" );
-					WardrobeMedium.sort.change( "category" );
-					WardrobeMedium.sort.setLabel();
-					WardrobeMedium.word.change();
+					wardrobeFacade.setSortConfig( "category", "asc" );
+					wardrobeFacade.setWardFilter( filterCommand );
 
 					$( "#wardrobe-button" ).click();
 					$( "#back2top a" ).click();
+
+					toastr.info( $category.text() + ( !( $category.hasClass( "all" ) || $category.hasClass( "others" ) ) ? " " + $coordinate.text() : "" ) + "のアイテムを抽出しました" );
 				} );
 		},
 		/** @summary Changelog のモード切替時処理 */
