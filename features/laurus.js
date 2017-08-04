@@ -4000,8 +4000,8 @@ LAURUS.changelog = ( function () {
 					_logs = _logs
 						.replace( /\/\//g, "<br>" )
 						.replace( /\|(.[^\|]+)\|/g, "<span class=\"coord\">$1</span>" )
-						.replace( /\*\*(.+)\*\*/g, "<strong>$1</strong>" )
-						.replace( /\[(.+)\]/g, "<p>$1</p>" )
+						.replace( /\*\*([^\*]+)\*\*/g, "<strong>$1</strong>" )
+						.replace( /\[([^\]]+)\]/g, "<p>$1</p>" )
 						.replace( /(Issues #)(\d+)/g, "<a href=\"https://github.com/miramiku/Laurus/issues/$2\">$1$2</a>" );
 
 					for ( var i = 0; i < appendItemsNum; i += 1 ) {
