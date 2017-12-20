@@ -3609,7 +3609,21 @@ LAURUS.wardrobe = ( function () {
 			} );
 
 			// constructor
-			setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
+			/* Start シリアル変更コンバータ */
+			var
+				replaceItemSerial = function ( serialzedData, oldSerial, newSerial ) {
+					return serialzedData.replace( oldSerial, newSerial );
+				},
+				serializedImposes = localStorage.getItem( "imposes" );
+
+			serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" );
+
+			setImposes( $.unique( JSON.parse( serializedImposes ) ) );
+			localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+			/* End シリアル変更コンバータ */
+
+			// 当分の間、シリアル変更用コンバータで対応 since: 2017.12.20
+			// setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
 			Medium.initialize();
 		},
 		/** @type {MethodCollection} メディウム操作窓口の提供 */
