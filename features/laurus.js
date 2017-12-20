@@ -3616,10 +3616,11 @@ LAURUS.wardrobe = ( function () {
 				},
 				serializedImposes = localStorage.getItem( "imposes" );
 
-			serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" );
-
-			setImposes( $.unique( JSON.parse( serializedImposes ) ) );
-			localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+			if ( serializedImposes ) {
+				serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" );
+				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
+				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
+			}
 			/* End シリアル変更コンバータ */
 
 			// 当分の間、シリアル変更用コンバータで対応 since: 2017.12.20
