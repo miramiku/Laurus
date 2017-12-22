@@ -3617,6 +3617,7 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = localStorage.getItem( "imposes" );
 
 			if ( serializedImposes ) {
+				serializedImposes = replaceItemSerial( serializedImposes, "303314", "253314" );
 				serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" );
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
