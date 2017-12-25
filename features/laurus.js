@@ -3617,14 +3617,15 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = localStorage.getItem( "imposes" );
 
 			if ( serializedImposes ) {
-				serializedImposes = replaceItemSerial( serializedImposes, "303314", "253314" );
-				serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" );
+				serializedImposes = replaceItemSerial( serializedImposes, "121154", "291154" ); // シロツメクサの幸せ since: 2017.12.25
+				serializedImposes = replaceItemSerial( serializedImposes, "303314", "253314" ); // 雪だるま since: 2017.12.21
+				serializedImposes = replaceItemSerial( serializedImposes, "300247", "120247" ); // 蝶のベール since: 2017.12.20
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
 			}
 			/* End シリアル変更コンバータ */
 
-			// 当分の間、シリアル変更用コンバータで対応 since: 2017.12.20
+			// 当分の間、シリアル変更用コンバータで対応
 			// setImposes( JSON.parse( localStorage.getItem( "imposes" ) ) );
 			Medium.initialize();
 		},
