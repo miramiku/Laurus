@@ -63,6 +63,39 @@
 	}
 }
 
+#resources {
+	font-family: "Maven Pro";
+	margin:      50px 200px;
+	overflow:    hidden;
+	.item-group {
+		display: block;
+		width:   500px;
+		span {
+			display: block;
+			float:   left;
+		}
+		&:nth-child( 1 ) .resource .laurus-icon {
+			color: @excel-color;
+		}
+		&:nth-child( 4 ) .resource .laurus-icon {
+			color: @github-color;
+		}
+	}
+	.label {
+		font-weight: bold;
+		width:       250px;
+		&::after {
+			content: "：";
+		}
+	}
+	.resource {
+		width: 250px;
+		.laurus-icon { padding-right: 5px; }
+		a:link, a:visited { color: @key-tone; }
+		a:hover { color: @link-color; }
+	}
+}
+
 #sns {
 	font-family: "Maven Pro";
 	margin:      50px 335px;
@@ -89,6 +122,37 @@
 		}
 	}
 	.account {
+		width: 150px;
+		.laurus-icon { padding-right: 5px; }
+		a:link, a:visited { color: @key-tone; }
+		a:hover { color: @link-color; }
+	}
+}
+
+#donate {
+	p {
+		margin: 50px 150px;
+		width:  600px;
+	}
+	.item-group {
+		display:      block;
+		font-family: "Maven Pro";
+		margin:      50px 300px;
+		overflow:    hidden;
+		width:       300px;
+		span {
+			display: block;
+			float:   left;
+		}
+	}
+	.label {
+		font-weight: bold;
+		width:       150px;
+		&::after {
+			content: "：";
+		}
+	}
+	.resource {
 		width: 150px;
 		.laurus-icon { padding-right: 5px; }
 		a:link, a:visited { color: @key-tone; }
