@@ -1564,12 +1564,12 @@ LAURUS.advisor = ( function () {
 
 									return _pos[ slot ];
 								},
+								pos = initPos(),
 								prevCard = function () {
 									var PREV_ITEM_MAX = 2,
-										itemCards = "",
-										_pos = 0;
+										itemCards = "";
 
-									for ( var i = _pos - PREV_ITEM_MAX; i < _pos; i += 1 ) {
+									for ( var i = pos - PREV_ITEM_MAX; i < pos; i += 1 ) {
 										if ( i < 0 ) {
 											continue;
 										}
@@ -1577,7 +1577,6 @@ LAURUS.advisor = ( function () {
 									}
 									return itemCards;
 								},
-								pos = initPos(),
 								serial = orderedItems[ pos ],
 								$slot = $( "#slot-" + slot ),
 								terminusBranch = ( serial === -1 ) ?
