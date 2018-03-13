@@ -1540,30 +1540,55 @@ LAURUS.advisor = ( function () {
 							_inspection4ComplexSlot();
 							_accessoryRank();
 						},
-						/** @summary 推奨アイテムをを書き込む
+						/** @summary 推奨アイテムを書き込む
 						 * @param {String} slot スロットキー
 						 */
-						_write = function ( slot ) {
-							var pos = _pos[ slot ],
-								orderedItems = SCORING_BY_SLOT[ slot ],
+						_write = function ( slot, initFlg ) {
+							var orderedItems = SCORING_BY_SLOT[ slot ],
+								initPos = function() {
+									if (!initFlg) {
+										return _pos[ slot ];
+									}
+									for (var i = _pos[ slot ]; i <= orderedItems.length; i++) {
+										if (WARDROBE[ orderedItems[ i ] ] && WARDROBE[ orderedItems[ i ] ].possession) {
+											_pos[ slot ] = i;
+											return i;
+										}
+									}
+									return _pos[ slot ] = orderedItems.length - 1;
+								},
+								prevCard = function() {
+									var PREV_ITEM_MAX = 2;
+									var itemCards = '';
+									for (var i = pos - PREV_ITEM_MAX; i < pos; i++) {
+										if (i < 0) {
+											continue;
+										}
+										itemCards += LAURUS.itemCard( orderedItems[ i ] )
+									}
+									return itemCards;
+								},
+								pos = initPos(),
 								serial = orderedItems[ pos ],
 								$slot = $( "#slot-" + slot ),
-								score = {
-									current: 0 <= serial ? WARDROBE[ serial ].score : 0,                                // serial === -1 is terminus.
-									prev: 0 <= pos - 1 ? WARDROBE[ orderedItems[ pos - 1 ] ].score : 0,                 // pos === -1 is before first.
-									next: 0 <= orderedItems[ pos + 1 ] ? WARDROBE[ orderedItems[ pos + 1 ] ].score : 0  // orderedItems[ pos + 1 ] === -1 is terminus.
-								},
 								terminusBranch = ( serial === -1 ) ?
 									{
+										prevCard: prevCard(),
 										card: "<div class=\"terminus-item\"><span>推奨アイテムなし...</span> <span>( &gt;﹏&lt;。)</span></div>",
 										next: "addClass",
 										page: "terminus!"
 									} : {
-										card: LAURUS.itemCard( serial ),
+										prevCard: prevCard(),
+										card: LAURUS.itemCard( orderedItems[ pos ] ),
 										next: "removeClass",
 										page: ( pos + 1 ) + " of " + ( orderedItems.length - 1 )
 									},
-								isTagsMatch = ( function () {
+									score = {
+										current: 0 <= serial ? WARDROBE[ serial ].score : 0,                                // serial === -1 is terminus.
+										prev: 0 <= pos - 1 ? WARDROBE[ orderedItems[ pos - 1 ] ].score : 0,                 // pos === -1 is before first.
+										next: 0 <= orderedItems[ pos + 1 ] ? WARDROBE[ orderedItems[ pos + 1 ] ].score : 0  // orderedItems[ pos + 1 ] === -1 is terminus.
+									},
+									isTagsMatch = ( function () {
 									var tags = [],
 										matcher = function ( tag ) {
 											if ( tag ) {
@@ -1597,6 +1622,14 @@ LAURUS.advisor = ( function () {
 									.addClass( cls );
 							} );
 
+							$slot
+								.find( ".prev-item-card-area" )
+								.html( terminusBranch.prevCard );
+							if ($( "#advisor" ).hasClass( "multiRecommendMode" ) ) {
+								$slot.find( ".prev-item-card-area" ).show();
+							} else {
+								$slot.find( ".prev-item-card-area" ).hide();
+							}
 							$slot
 								.find( ".item-card-area" )
 								.html( terminusBranch.card );
@@ -1643,7 +1676,7 @@ LAURUS.advisor = ( function () {
 								slot = $this.parents( ".rcm-item" ).data( "rcm-slot" );
 
 							_pos[ slot ] += ( $this.hasClass( "next" ) ? 1 : -1 );
-							_write( slot );
+							_write( slot, false );
 							_observe();
 
 							$this.mouseenter();
@@ -1669,14 +1702,17 @@ LAURUS.advisor = ( function () {
 								_pos[ this ] = 0;
 							} );
 
+							var isMultiRecommendMode = $( "#advisor" ).hasClass("multiRecommendMode");
 							$.each( _sortedWardrobe, function () {
 								var record = WARDROBE[ this ],
 									slots = record.item[ COLUMN.SLOTS ],
 									slot = slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex";
 
-								if ( record.possession && !record.fail && record.score ) {
-									SCORING_BY_SLOT[ slot ].push( this );
-								}
+								if (isMultiRecommendMode || record.possession) {
+									if ( !record.fail && record.score ) {
+										SCORING_BY_SLOT[ slot ].push( this );
+									}
+								}									
 							} );
 
 							_criteriaTags = [
@@ -1686,7 +1722,7 @@ LAURUS.advisor = ( function () {
 
 							$.each( SCORING_BY_SLOT, function ( slot ) {
 								this.push( -1 );
-								_write( slot );
+								_write( slot, true );
 							} );
 
 							_observe();
@@ -1695,7 +1731,7 @@ LAURUS.advisor = ( function () {
 						_reset = function () {
 							$.each( SCORING_BY_SLOT, function ( slot ) {
 								_pos[ slot ] = 0;
-								_write( slot );
+								_write( slot, true );
 							} );
 
 							_observe();
@@ -2260,6 +2296,24 @@ LAURUS.advisor = ( function () {
 
 						$advisor[ proc.cls ]( "editable" );
 						$( this ).html( proc.html );
+					},
+					/** @summary 推奨コーデの表示を単一/複数で切り替える */
+					changeMultiRecommendMode: function () {
+						var $advisor = $( "#advisor" ),
+							html = "";
+						if ($advisor.hasClass( "multiRecommendMode" )) {
+							$advisor.removeClass( "multiRecommendMode" );
+							html = "<span class=\"laurus-icon\">&#x2634;</span> 単一表示";
+							$( ".prev-item-card-area" ).hide();
+							localStorage.removeItem( "multiRecommendMode");
+						} else {
+							$advisor.addClass( "multiRecommendMode" );
+							html = "<span class=\"laurus-icon\">&#x2635;</span> 複数表示";
+							$( ".prev-item-card-area" ).show();
+							localStorage.setItem( "multiRecommendMode", true );
+						}
+						Medium.recommend.init();
+						$( this ).html( html );
 					}
 				};
 
@@ -2283,6 +2337,7 @@ LAURUS.advisor = ( function () {
 				// コントロール
 				.on( "click", "#rcm-reset", Medium.recommend.reset )
 				.on( "click", "#rcm-edit-lock", event.changeEditable )
+				.on( "click", "#rcm-recommend-mode", event.changeMultiRecommendMode )
 				// 推奨コーディネート
 				.on( {
 					"mouseenter": Medium.recommend.preview,
@@ -2307,6 +2362,12 @@ LAURUS.advisor = ( function () {
 				Medium.writeStage( loadStage );
 			} else {
 				Medium.writeStage( "1-1" );
+			}
+
+			// 推奨コーデ複数表示設定読み込み
+			if ( localStorage.getItem( "multiRecommendMode" ) ) {
+				// デフォルトが単一表示なので、クリックイベント発火して切り替え
+				$("#rcm-recommend-mode").click();
 			}
 		},
 		/** @summary 現在のステージ情報を返す
@@ -2444,7 +2505,7 @@ LAURUS.wardrobe = ( function () {
 									};
 								} else {
 									return function ( item ) {
-										return item[ COLUMN.NAME ].match( _condition.word ) !== null;
+										return item[ COLUMN.NAME ].toLowerCase().match( _condition.word.toLowerCase() ) !== null;
 									};
 								}
 							}() ),
