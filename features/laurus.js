@@ -2312,12 +2312,12 @@ LAURUS.advisor = ( function () {
 							html = "";
 						if ( $advisor.hasClass( "multiRecommendMode" ) ) {
 							$advisor.removeClass( "multiRecommendMode" );
-							html = "<span class=\"laurus-icon\">&#x2634;</span> 単一表示";
+							html = "<span class=\"laurus-icon\">&#x2635;</span> 複数表示";
 							$( ".prev-item-card-area" ).hide();
 							localStorage.removeItem( "multiRecommendMode" );
 						} else {
 							$advisor.addClass( "multiRecommendMode" );
-							html = "<span class=\"laurus-icon\">&#x2635;</span> 複数表示";
+							html = "<span class=\"laurus-icon\">&#x2634;</span> 単一表示";
 							$( ".prev-item-card-area" ).show();
 							localStorage.setItem( "multiRecommendMode", true );
 						}
