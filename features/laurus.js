@@ -1543,28 +1543,37 @@ LAURUS.advisor = ( function () {
 						/** @summary 推奨アイテムを書き込む
 						 * @param {String} slot スロットキー
 						 */
-						_write = function ( slot, initFlg ) {
+						_write = function ( slot, initFlag ) {
 							var orderedItems = SCORING_BY_SLOT[ slot ],
-								initPos = function() {
-									if (!initFlg) {
+								initPos = function () {
+									var length = 0;
+
+									if ( !initFlag ) {
 										return _pos[ slot ];
 									}
-									for (var i = _pos[ slot ]; i <= orderedItems.length; i++) {
-										if (WARDROBE[ orderedItems[ i ] ] && WARDROBE[ orderedItems[ i ] ].possession) {
+
+									length = orderedItems.length;
+									for ( var i = _pos[ slot ]; i <= length; i += 1 ) {
+										if ( WARDROBE[ orderedItems[ i ] ] && WARDROBE[ orderedItems[ i ] ].possession ) {
 											_pos[ slot ] = i;
 											return i;
 										}
 									}
-									return _pos[ slot ] = orderedItems.length - 1;
+
+									_pos[ slot ] = orderedItems.length - 1;
+
+									return _pos[ slot ];
 								},
-								prevCard = function() {
-									var PREV_ITEM_MAX = 2;
-									var itemCards = '';
-									for (var i = pos - PREV_ITEM_MAX; i < pos; i++) {
-										if (i < 0) {
+								prevCard = function () {
+									var PREV_ITEM_MAX = 2,
+										itemCards = "",
+										_pos = 0;
+
+									for ( var i = _pos - PREV_ITEM_MAX; i < _pos; i += 1 ) {
+										if ( i < 0 ) {
 											continue;
 										}
-										itemCards += LAURUS.itemCard( orderedItems[ i ] )
+										itemCards += LAURUS.itemCard( orderedItems[ i ] );
 									}
 									return itemCards;
 								},
@@ -1583,12 +1592,12 @@ LAURUS.advisor = ( function () {
 										next: "removeClass",
 										page: ( pos + 1 ) + " of " + ( orderedItems.length - 1 )
 									},
-									score = {
-										current: 0 <= serial ? WARDROBE[ serial ].score : 0,                                // serial === -1 is terminus.
-										prev: 0 <= pos - 1 ? WARDROBE[ orderedItems[ pos - 1 ] ].score : 0,                 // pos === -1 is before first.
-										next: 0 <= orderedItems[ pos + 1 ] ? WARDROBE[ orderedItems[ pos + 1 ] ].score : 0  // orderedItems[ pos + 1 ] === -1 is terminus.
-									},
-									isTagsMatch = ( function () {
+								score = {
+									current: 0 <= serial ? WARDROBE[ serial ].score : 0,                                // serial === -1 is terminus.
+									prev: 0 <= pos - 1 ? WARDROBE[ orderedItems[ pos - 1 ] ].score : 0,                 // pos === -1 is before first.
+									next: 0 <= orderedItems[ pos + 1 ] ? WARDROBE[ orderedItems[ pos + 1 ] ].score : 0  // orderedItems[ pos + 1 ] === -1 is terminus.
+								},
+								isTagsMatch = ( function () {
 									var tags = [],
 										matcher = function ( tag ) {
 											if ( tag ) {
@@ -1625,7 +1634,7 @@ LAURUS.advisor = ( function () {
 							$slot
 								.find( ".prev-item-card-area" )
 								.html( terminusBranch.prevCard );
-							if ($( "#advisor" ).hasClass( "multiRecommendMode" ) ) {
+							if ( $( "#advisor" ).hasClass( "multiRecommendMode" ) ) {
 								$slot.find( ".prev-item-card-area" ).show();
 							} else {
 								$slot.find( ".prev-item-card-area" ).hide();
@@ -1702,17 +1711,17 @@ LAURUS.advisor = ( function () {
 								_pos[ this ] = 0;
 							} );
 
-							var isMultiRecommendMode = $( "#advisor" ).hasClass("multiRecommendMode");
+							var isMultiRecommendMode = $( "#advisor" ).hasClass( "multiRecommendMode" );
 							$.each( _sortedWardrobe, function () {
 								var record = WARDROBE[ this ],
 									slots = record.item[ COLUMN.SLOTS ],
 									slot = slots.length === 1 ? CATEGORY_DEFS.SLOT[ slots[ 0 ] ] : "complex";
 
-								if (isMultiRecommendMode || record.possession) {
+								if ( isMultiRecommendMode || record.possession ) {
 									if ( !record.fail && record.score ) {
 										SCORING_BY_SLOT[ slot ].push( this );
 									}
-								}									
+								}
 							} );
 
 							_criteriaTags = [
@@ -2301,11 +2310,11 @@ LAURUS.advisor = ( function () {
 					changeMultiRecommendMode: function () {
 						var $advisor = $( "#advisor" ),
 							html = "";
-						if ($advisor.hasClass( "multiRecommendMode" )) {
+						if ( $advisor.hasClass( "multiRecommendMode" ) ) {
 							$advisor.removeClass( "multiRecommendMode" );
 							html = "<span class=\"laurus-icon\">&#x2634;</span> 単一表示";
 							$( ".prev-item-card-area" ).hide();
-							localStorage.removeItem( "multiRecommendMode");
+							localStorage.removeItem( "multiRecommendMode" );
 						} else {
 							$advisor.addClass( "multiRecommendMode" );
 							html = "<span class=\"laurus-icon\">&#x2635;</span> 複数表示";
@@ -2367,7 +2376,7 @@ LAURUS.advisor = ( function () {
 			// 推奨コーデ複数表示設定読み込み
 			if ( localStorage.getItem( "multiRecommendMode" ) ) {
 				// デフォルトが単一表示なので、クリックイベント発火して切り替え
-				$("#rcm-recommend-mode").click();
+				$( "#rcm-recommend-mode" ).click();
 			}
 		},
 		/** @summary 現在のステージ情報を返す
