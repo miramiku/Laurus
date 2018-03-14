@@ -1694,6 +1694,7 @@ LAURUS.advisor = ( function () {
 						},
 						/** @summary 推奨アイテムの UI を初期化する */
 						_init = function () {
+							var isMultiRecommendMode = $( "#advisor" ).hasClass( "multiRecommendMode" );
 							_sortedWardrobe = [];
 
 							$.each( WARDROBE, function ( serial ) {
@@ -1710,7 +1711,6 @@ LAURUS.advisor = ( function () {
 								_pos[ this ] = 0;
 							} );
 
-							var isMultiRecommendMode = $( "#advisor" ).hasClass( "multiRecommendMode" );
 							$.each( _sortedWardrobe, function () {
 								var record = WARDROBE[ this ],
 									slots = record.item[ COLUMN.SLOTS ],
@@ -2313,11 +2313,13 @@ LAURUS.advisor = ( function () {
 							$advisor.removeClass( "multiRecommendMode" );
 							html = "<span class=\"laurus-icon\">&#x2634;</span> 単一表示";
 							$( ".prev-item-card-area" ).hide();
+							$( ".rcm-item.dummy" ).show();
 							localStorage.removeItem( "multiRecommendMode" );
 						} else {
 							$advisor.addClass( "multiRecommendMode" );
 							html = "<span class=\"laurus-icon\">&#x2635;</span> 複数表示";
 							$( ".prev-item-card-area" ).show();
+							$( ".rcm-item.dummy" ).hide();
 							localStorage.setItem( "multiRecommendMode", true );
 						}
 						Medium.recommend.init();
