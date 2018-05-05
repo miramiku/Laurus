@@ -1795,6 +1795,10 @@ LAURUS.advisor = ( function () {
 					_stage = STAGES[ stage ];
 
 					_resetUI();
+					if ( !STAGES.hasOwnProperty( stage ) ) {
+						_stage = STAGES[ "1-1" ];
+					}
+
 					_fundamentals.set(
 						_stage[ STAGE.STAGE ] + " " + _stage[ STAGE.TITLE ],
 						_stage[ STAGE.CHAPTER ]
