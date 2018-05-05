@@ -886,6 +886,31 @@
 			}
 		}
 
+		#events-more {
+			display:    block;
+			font-size:  @sub-font-size;
+			text-align: center;
+			& > span {
+				.disable-select();
+				border:         2px solid transparent;
+				border-radius:  4px;
+				color:          @sub-key-tone;
+				cursor:         pointer;
+				display:        inline-block;
+				padding:        0 20px;
+				vertical-align: middle;
+				&:hover {
+					.transition( 0.2s );
+					border-color: fade( @advisor-theme, 40% );
+					color:        @key-tone;
+				}
+				&:active {
+					.slant-stripe-background( @advisor-theme, 25% );
+					color: @key-tone;
+				}
+			}
+		}
+
 #tag-select {
 	width:   720px;
 

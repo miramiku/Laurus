@@ -1968,35 +1968,60 @@ LAURUS.advisor = ( function () {
 			var loadStage = localStorage.getItem( "stage" ),
 				/** @summary ステージ選択用ボタンの生成 */
 				writeStages = function () {
-					var buildStageButton = function ( key, stage ) {
-						return "<span class=\"select-stage\" data-stage=\"" + key + "\"><span>" + stage + "</span></span>";
-					};
+					var
+						buildStageButton = function ( key, stage ) {
+							return "<span class=\"select-stage\" data-stage=\"" + key + "\"><span>" + stage + "</span></span>";
+						},
+						buildStageKeys = function () {
+							$.each( STRUCTURE, function ( section ) {
+								$.each( this, function ( index, chapter ) {
+									var $chapter = $( "<div class=\"chapter\"></div>" ),
+										$stageArea = $( "<div class=\"chapter\"></div>" );
 
-					$.each( STRUCTURE, function ( section ) {
-						$.each( this, function ( index, chapter ) {
-							var $chapter = $( "<div class=\"chapter\"></div>" ),
-								$stageArea = $( "<div class=\"chapter\"></div>" );
+									$( "#stage-" + section + " > div" )
+										.append( $chapter );
+									$( $chapter )
+										.append( section === "colosseum" ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
+										.append( $stageArea );
+									$stageArea
+										.data( "section", section )
+										.attr( "id", map4IdString( chapter ) )
+										.addClass( section );
+								} );
+							} );
 
-							$( "#stage-" + section )
-								.append( $chapter );
-							$( $chapter )
-								.append( section === "colosseum" ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
-								.append( $stageArea );
-							$stageArea
-								.data( "section", section )
-								.attr( "id", map4IdString( chapter ) )
-								.addClass( section );
+							$.each( STAGES, function () {
+								$( "#" + map4IdString( this[ STAGE.CHAPTER ] ) )
+									.append(
+									this[ STAGE.SECTION ] === "colosseum" ?
+										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
+										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
+									);
+							} );
+						},
+						loadEventsArchives = function ( moreEvents ) {
+							var EVENT = STRUCTURE.event;
+
+							$.each( moreEvents, function ( id ) {
+								EVENT.push( id );
+
+								$.each( this, function ( i, stage ) {
+									STAGES[ this[ 0 ] ] = [ "event", id ].concat( stage );
+								} );
+							} );
+
+							$( "#stage-scenario div, #stage-colosseum div, #stage-guild div, #stage-event div" ).empty();
+							buildStageKeys();
+
+							$( "#events-more" ).remove();
+						};
+
+					buildStageKeys();
+
+					$( "#dialogue" )
+						.on( "click", "#events-more > span", function () {
+							$.getJSON( "resources/events.archive.json", loadEventsArchives );
 						} );
-					} );
-
-					$.each( STAGES, function () {
-						$( "#" + map4IdString( this[ STAGE.CHAPTER ] ) )
-							.append(
-							this[ STAGE.SECTION ] === "colosseum" ?
-								buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
-								buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
-							);
-					} );
 				},
 				/** @summary ミッションの説明の編集 */
 				editCriteriaSubject = function () {
