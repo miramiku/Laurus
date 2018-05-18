@@ -1165,8 +1165,8 @@ LAURUS.advisor = ( function () {
 					return title[ 0 ];
 				case 2:
 					return title[ 0 ] + " " + getTerm( title[ 1 ] );
-				case 3: // 未利用
-					return title[ 0 ];
+				case 3:
+					return title[ 0 ] + "<sup>" + title[ 1 ] + "</sup>" + getTerm( title[ 2 ] );
 				case 4:
 					return title[ 0 ] + "<sup>" + title[ 1 ] + "</sup>" + "&lt;" + title[ 2 ] + "&gt;" + getTerm( title[ 3 ] );
 			}
