@@ -9,6 +9,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 
 	var /** @type {Number} 全アイテム数 */
 		_allRecords = 0,
+		/** @type {Number} アクセサリ装着数 */
+		_wearAccessories = 0,
 		/** @type {Object} スタイル評価値の定義 */
 		_values = {
 			/** @type {Array} 属性値の対応値 */
@@ -297,11 +299,10 @@ LAURUS.STATIC_ITEMS = ( function () {
 			],
 			/** @type {Array} アクセサリの装着数による減衰率 */
 			DAMPING: [
-				1, 1, 1, 0.95, 0.9,
-				0.825, 0.75, 0.7, 0.65, 0.6,
-				0.55, 0.51, 0.475, 0.45, 0.425,
-				0.4, 0.4, 0.4, 0.4, 0.4,
-				0.4, 0.4, 0.4
+				1, 0.95, 0.9, 0.825,
+				0.75, 0.7, 0.65, 0.6,
+				0.55, 0.51, 0.475, 0.45,
+				0.425, 0.4
 			]
 		},
 		/** @type {Object} タグの定義 */
@@ -696,6 +697,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 	return {
 		// consts
 		ALL_RECORDS: _allRecords,
+		WEAR_ACCESSORIES: _wearAccessories,
 
 		VALUES: _values,
 		ORDERED_LIST: _orderedList,
@@ -798,7 +800,8 @@ LAURUS.scoring = function ( objective ) {
 			TAG_ID: 0,
 			TAG_VALUE: 1,
 			TAG_PRODUCT: 2
-		};
+		},
+		DAMPING = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.DAMPING[ LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES ];
 
 	$.each( LAURUS.WARDROBE, function ( serial, record ) {
 		var item = record.item,
@@ -816,7 +819,7 @@ LAURUS.scoring = function ( objective ) {
 
 		$.each( item[ COLUMN.SLOTS ], function () {
 			var scale = SCALE[ this ],
-				damping = categoryOf.accessory( serial ) ? 0.4 : 1; // @todo: magic number
+				damping = categoryOf.accessory( serial ) ? DAMPING : 1;
 
 			$.each( objective.style, function ( index ) {
 				score += ( VALUES.FACTOR[ attributes[ index ] ] * damping + tagBonus ) * scale * this;
@@ -2363,6 +2366,27 @@ LAURUS.advisor = ( function () {
 			$.each( LAURUS.STATIC_ITEMS.STYLE_DEFS.LIST, editCriteriaStyle );
 			$.each( [ 1, 2 ], editTagProduct );
 			tagAddValueSelect();
+
+			LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES = localStorage.getItem( "wear-accessories" ) || 13;
+			$( "#wear-accessories" )
+				.ionRangeSlider( {
+					"values": [
+						"≧3", "4", "5", "6",
+						"7", "8", "9", "10",
+						"11", "12", "13", "14",
+						"15", "16≦"
+					],
+					"from": LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES,
+					"onFinish": function () {
+						var wears = $( "#wear-accessories" ).data( "from" );
+
+						if ( wears !== LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES ) {
+							LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES = wears;
+							toastr.info( "アクセサリ装着数を変更しましたら「条件確定」ボタンを押してスコアを再計算してください" );
+							localStorage.setItem( "wear-accessories", LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES );
+						}
+					}
+				} );
 
 			$( "#advisor" )
 				// ダイアログの呼び出し
