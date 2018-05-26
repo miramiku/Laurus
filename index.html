@@ -11,17 +11,18 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<!--
 	<script src="laurus.min.js?ver=1.14.0" defer></script>
-	-->
 
+	<!--
 	<script src="features/jquery.min.js" defer></script>
 	<script src="features/jquery.peity.js" defer></script>
 	<script src="features/jquery.perfect-scrollbar.js" defer></script>
+	<script src="features/ion.rangeSlider.js" defer></script>
 	<script src="features/lazysizes.js" defer></script>
 	<script src="features/toastr.js" defer></script>
 	<script src="features/extensions.js" defer></script>
 	<script src="features/laurus.js" defer></script>
+	-->
 
 	<!-- style / favicon -->
 	<link href="theme.css" rel="stylesheet" type="text/css">
@@ -110,7 +111,12 @@
 				<h5 id="whitelist-heading">ホワイトリスト</h5>
 				<div id="whitelist-items"></div>
 			</div>
-			<div id="options"></div>
+			<div id="options">
+				<h5 id="wear-accessories-heading">アクセサリ装着数</h5>
+				<div id="wear-accessories-box">
+					<input type="text" id="wear-accessories" name="wear-accessories" value="">
+				</div>
+			</div>
 		</div>
 
 		<h3 id="head-recommends">
@@ -485,6 +491,17 @@
 		<h3 id="head-changelog">変更履歴</h3>
 		<div id="timeline">
 			<div class="content" data-nikki="v3.10.0 (290) 道化師とダイヤの仮面（スマイルのサーカス）">
+				<span class="version">v1.14.0</span><span class="release">2018.05.26</span><span class="closet">6,099（ミラクルニキ v3.10.0 (290) 2018.05.19 対応）</span>
+				<ul class="change-list with-figure">
+					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
+						<ul>
+							<li>アクセサリ装着数によるスコア減衰率の調整用オプション追加</li>
+						</ul>
+					</li>
+				</ul>
+				<img alt="" class="figure lazyloaded" src="resources/changelog/v1.14.0.png" data-src="resources/changelog/v1.14.0.png">
+			</div>
+			<div class="content" data-nikki="v3.10.0 (290) 道化師とダイヤの仮面（スマイルのサーカス）">
 				<span class="version">v1.13.1</span><span class="release">2018.05.21</span><span class="closet">6,099（ミラクルニキ v3.10.0 (290) 2018.05.19 対応）</span>
 				<ul class="change-list">
 					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
@@ -702,6 +719,7 @@
 			<li><a href="#" id="credit-me"><img src="resources/miku-icon.jpg" class="profile-icon lazyload" alt="miku"> みく(๑・ω・๑)</a></li>
 			<li id="footer-twitter"><a href="https://twitter.com/miramiku"><span class="laurus-icon">&#x2630;</span> @miramiku</a></li>
 			<li id="footer-repository"><a href="https://github.com/miramiku/Laurus"><span class="laurus-icon">&#x2631;</span> SourceCode</a></li>
+			<li id="footer-mimi-laurus"><a href="https://yukyt.github.io/mimi-laurus/"><img src="resources/mimi-laurus.png" class="mimi-laurus-icon lazyload" alt="Mimi Laurus"> Mimi Laurus</a></li>
 		</ul>
 	</footer>
 
@@ -996,8 +1014,6 @@
 		ga( 'create', 'UA-98310829-1', 'auto' );
 		ga( 'send', 'pageview' );
 	</script>
-
-	<script type="text/javascript">var _lrscript = document.createElement('script');_lrscript.type = 'text/javascript';_lrscript.defer = _lrscript.async = true;_lrscript.src = '//' + ((null||location.host).split(':')[0]) + ':35729/livereload.js?';document.body.appendChild(_lrscript);</script>
 </body>
 
 </html>
