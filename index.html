@@ -11,7 +11,7 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<script src="laurus.min.js?ver=1.14.0" defer></script>
+	<script src="laurus.min.js?ver=1.14.1" defer></script>
 
 	<!--
 	<script src="features/jquery.min.js" defer></script>
@@ -112,7 +112,7 @@
 				<div id="whitelist-items"></div>
 			</div>
 			<div id="options">
-				<h5 id="wear-accessories-heading">アクセサリ装着数</h5>
+				<h5 id="wear-accessories-heading">アクセサリ装着数<span id="damping-rate"></span></h5>
 				<div id="wear-accessories-box">
 					<input type="text" id="wear-accessories" name="wear-accessories" value="">
 				</div>
@@ -364,6 +364,12 @@
 			<div id="cs-other-class"><div class="cs-skills"></div></div>
 		</div>
 
+		<h5>アイテム装着数</h5>
+		<div id="cs-accessories">
+			<div id="cs-equip-accessories"><span></span></div>
+			<div id="cs-damping-rate"><span></span></div>
+		</div>
+
 		<h3 id="head-cs-recommends">推奨コーディネート</h3>
 		<p class="attention">
 			推奨コーディネートはパラメータに基づいて機械的に算出したものです。必ずしも高スコアがはじき出せることを保証したものではありません。<br>
@@ -490,6 +496,22 @@
 	<article id="changelog" class="tab">
 		<h3 id="head-changelog">変更履歴</h3>
 		<div id="timeline">
+			<div class="content" data-nikki="v3.10.0 (290) 道化師とダイヤの仮面（スマイルのサーカス）">
+				<span class="version">v1.14.1</span><span class="release">2018.05.27</span><span class="closet">6,099（ミラクルニキ v3.10.0 (290) 2018.05.19 対応）</span>
+				<ul class="change-list with-figure">
+					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
+						<ul>
+							<li>アクセサリの減衰率を表示</li>
+						</ul>
+					</li>
+					<li class="cheatsheet"><span class="changelog-tab">Laurus :: Cheatsheet</span>
+						<ul>
+							<li>アクセサリ装着数・減衰率情報を追加</li>
+						</ul>
+					</li>
+				</ul>
+				<img alt="" class="figure lazyloaded" src="resources/changelog/v1.14.1.png" data-src="resources/changelog/v1.14.1.png">
+			</div>
 			<div class="content" data-nikki="v3.10.0 (290) 道化師とダイヤの仮面（スマイルのサーカス）">
 				<span class="version">v1.14.0</span><span class="release">2018.05.26</span><span class="closet">6,099（ミラクルニキ v3.10.0 (290) 2018.05.19 対応）</span>
 				<ul class="change-list with-figure">

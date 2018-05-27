@@ -2255,6 +2255,25 @@ LAURUS.advisor = ( function () {
 						Medium.skill.set( scenarioClass );
 					};
 				},
+				/** @summary アイテム減衰率のテキスト生成
+				 * @param {Number} index 減衰率のインデックス
+				 */
+				setDampingRate = function ( index ) {
+					var $rate = $( "#damping-rate" );
+
+					if ( index === 0 ) {
+						$rate
+							.removeClass()
+							.addClass( "none-damping" )
+							.text( "（減衰なし）" );
+					} else {
+						$rate
+							.removeClass()
+							.addClass( "damping" )
+							.text( " (-" + ( Math.floor( 100 - ( LAURUS.STATIC_ITEMS.CATEGORY_DEFS.DAMPING[ index ] * 100 ) ) ) + "%)" );
+					}
+
+				},
 				/** @type {MethodCollection} イベントハンドラ用イベントのコレクション */
 				event = {
 					/** @summary 現在のステージタイトルをダイアログ側のカスタムステージ入力用のフィールドへ入力する */
@@ -2368,6 +2387,7 @@ LAURUS.advisor = ( function () {
 			tagAddValueSelect();
 
 			LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES = localStorage.getItem( "wear-accessories" ) || 13;
+			setDampingRate( parseInt( LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES, 10 ) );
 			$( "#wear-accessories" )
 				.ionRangeSlider( {
 					"values": [
@@ -2377,6 +2397,9 @@ LAURUS.advisor = ( function () {
 						"15", "16≦"
 					],
 					"from": LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES,
+					"onChange": function () {
+						setDampingRate( $( "#wear-accessories" ).data( "from" ) );
+					},
 					"onFinish": function () {
 						var wears = $( "#wear-accessories" ).data( "from" );
 
@@ -3918,6 +3941,30 @@ LAURUS.cheatsheet = ( function () {
 						$( "#cs-other-class" ).show();
 					}
 				},
+				/** @summary accessories */
+				accessories = function () {
+					var accessoriesText = "",
+						rateText = "",
+						accessories = parseInt( LAURUS.STATIC_ITEMS.WEAR_ACCESSORIES, 10 ),
+						rate = Math.floor( 100 - ( LAURUS.STATIC_ITEMS.CATEGORY_DEFS.DAMPING[ accessories ] * 100 ) );
+
+					if ( accessories === 0 ) {
+						accessoriesText = "3箇所以下";
+					} else if ( accessories === 13 ) {
+						accessoriesText = "16箇所以上";
+					} else {
+						accessoriesText = ( accessories + 3 ) + "箇所";
+					}
+
+					if ( rate === 0 ) {
+						rateText = "減衰なし";
+					} else {
+						rateText = "-" + rate + "%";
+					}
+
+					$( "#cs-equip-accessories span" ).text( "アクセサリ装着個数：" + accessoriesText );
+					$( "#cs-damping-rate span" ).text( "スコア減衰率：" + rateText );
+				},
 				/** @summary slots */
 				slots = function () {
 					var criteriaTags = [ $( "#criteria-tag-1" ).data( "id" ), $( "#criteria-tag-2" ).data( "id" ) ],
@@ -4046,6 +4093,7 @@ LAURUS.cheatsheet = ( function () {
 			criteriaStyle();
 			tagBonus();
 			skills();
+			accessories();
 			slots();
 			recommends();
 		},
