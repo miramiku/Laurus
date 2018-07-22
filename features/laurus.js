@@ -84,7 +84,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				NAME: 3,
 				ATTRIBUTES: 4,
 				TAGS: 5,
-				PROC: 6
+				VITA: 6
 			},
 			/** @type {Object} ステージ */
 			STAGE: {
@@ -99,6 +99,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				BLACKLIST: 8,
 				WHITELIST: 9
 			},
+			/** @type {Object} スタイル */
 			STYLE: {
 				GORGEOUS: 0,
 				SIMPLE: 1,
@@ -111,6 +112,19 @@ LAURUS.STATIC_ITEMS = ( function () {
 				WARM: 8,
 				COOL: 9
 			}
+		},
+		/** @type {Object} ヴィータのスタイル識別子 */
+		_vitaStyle = {
+			a: _column.STYLE.GORGEOUS,
+			b: _column.STYLE.SIMPLE,
+			c: _column.STYLE.ELEGANCE,
+			d: _column.STYLE.LIVELY,
+			e: _column.STYLE.MATURE,
+			f: _column.STYLE.CUTE,
+			g: _column.STYLE.SEXY,
+			h: _column.STYLE.PURE,
+			i: _column.STYLE.WARM,
+			j: _column.STYLE.COOL
 		},
 		/** @type {Object} スタイルの定義 */
 		_styleDefs = {
@@ -684,13 +698,18 @@ LAURUS.STATIC_ITEMS = ( function () {
 						category: _categoryDefs.REVERSE[ Math.floor( serial / CATEGORY_BASE ) ],
 						id: serial % CATEGORY_BASE
 					};
+				},
+				/** @summary */
+				_vita = function ( vita ) {
+
 				};
 
 			return {
 				attributes: _attributes,
 				attributes2serial: _attributes2serial,
 				tag: _tag,
-				categoryAndId: _categoryAndId
+				categoryAndId: _categoryAndId,
+				vita: _vita
 			};
 		}() );
 
@@ -705,6 +724,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		BOUNDS: _bounds,
 		COLUMN: _column,
 		STYLE_DEFS: _styleDefs,
+		VITA_STYLE: _vitaStyle,
 		CATEGORY_DEFS: _categoryDefs,
 		TAG_DEFS: _tagDefs,
 		SKILL_DEFS: _skillDefs,
