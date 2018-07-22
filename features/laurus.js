@@ -34,7 +34,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 			CATEGORY: [
 				"ヘアスタイル", "ドレス", "コート", "トップス", "ボトムス",
 				"靴下", "シューズ", "ヘアアクセサリー", "耳飾り", "首飾り",
-				"腕飾り", "手持品", "腰飾り", "特殊", "メイク"
+				"腕飾り", "手持品", "腰飾り", "特殊", "メイク", "ヴィータ"
 			],
 			/** @type {Array} スロット */
 			SLOT: [
@@ -44,7 +44,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"右手飾り", "左手飾り", "手袋", "右手持ち", "左手持ち",
 				"両手持ち", "腰飾り", "フェイス", "ボディ", "タトゥー",
 				"羽根", "しっぽ", "前景", "後景", "吊り",
-				"床", "肌", "メイク", "complex"
+				"床", "肌", "メイク", "ヴィータ", "complex"
 			]
 		},
 		/** @type {Object} 数値範囲の定義 */
@@ -157,7 +157,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"necklace", "right-hand-ornaments", "left-hand-ornaments", "glove", "right-hand-holding",
 				"left-hand-holding", "both-hand-holding", "waist", "face", "brooch",
 				"tatoo", "wing", "tail", "foreground", "background",
-				"head-ornaments", "ground", "skin", "complex"
+				"head-ornaments", "ground", "skin", "vita", "complex"
 			],
 			/** @type {Array} スロットコード対応表 */
 			SLOT: [
@@ -169,7 +169,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"handheld", "right-hand-holding", "left-hand-holding", "both-hand-holding", "waist",
 				"special", "face", "brooch", "tatoo", "wing",
 				"tail", "foreground", "background", "head-ornaments", "ground",
-				"skin", "complex"
+				"skin", "vita", "complex"
 			],
 			/** @type {Array} アクセサリリスト */
 			ACCESSORY_LIST: [
@@ -197,7 +197,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品": "handheld",
 				"腰飾り": "waist",
 				"特殊": "special",
-				"メイク": "makeup"
+				"メイク": "makeup",
+				"ヴィータ": "vita"
 			},
 			/** @type {Dictionary} アイテムアイコンの対応ファイル名 */
 			ICONS: {
@@ -215,7 +216,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品": "accessory",
 				"腰飾り": "accessory",
 				"特殊": "accessory",
-				"メイク": "makeup"
+				"メイク": "makeup",
+				"ヴィータ": "vita"
 			},
 			/** @type {Object} サブカテゴリを所持するカテゴリ */
 			HAS_SUB: {
@@ -248,7 +250,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 					handheld: 25,
 					waist: 29,
 					special: 30,
-					makeup: 10
+					makeup: 10,
+					vita: 41
 				},
 				/** @type {Object} スロット */
 				SLOT: {
@@ -284,7 +287,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 					"head-ornaments": 38,
 					"ground": 39,
 					"skin": 40,
-					"makeup": 10
+					"makeup": 10,
+					"vita": 41
 				}
 			},
 			/** @type {Array} コード逆引き */
@@ -297,7 +301,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品", "右手持ち", "左手持ち", "両手持ち", "腰飾り",
 				"特殊", "フェイス", "ボディ", "タトゥー", "羽根",
 				"しっぽ", "前景", "後景", "吊り", "床",
-				"肌", "complex"
+				"肌", "ヴィータ", "complex"
 			],
 			/** @type {Array} スロットにおけるスコア倍率 */
 			SCALE: [
@@ -309,7 +313,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				0, 0.2, 0.2, 0.2, 0,
 				0.2, 0.2, 0.2, 0.2, 0,
 				0.2, 0.2, 0.2, 0.2, 0.2,
-				0.2, 0.2, 0.2, 0.2, 0.2
+				0.2, 0.2, 0.2, 0.2, 0.2,
+				0.2
 			],
 			/** @type {Array} アクセサリの装着数による減衰率 */
 			DAMPING: [
