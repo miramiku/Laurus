@@ -11,10 +11,9 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<!--
 	<script src="laurus.min.js?ver=1.15.0" defer></script>
-	-->
 
+	<!--
 	<script src="features/jquery.min.js" defer></script>
 	<script src="features/jquery.peity.js" defer></script>
 	<script src="features/jquery.perfect-scrollbar.js" defer></script>
@@ -23,6 +22,7 @@
 	<script src="features/toastr.js" defer></script>
 	<script src="features/extensions.js" defer></script>
 	<script src="features/laurus.js" defer></script>
+	-->
 
 	<!-- style / favicon -->
 	<link href="theme.css" rel="stylesheet" type="text/css">
@@ -116,6 +116,11 @@
 				<div id="wear-accessories-box">
 					<input type="text" id="wear-accessories" name="wear-accessories" value="">
 				</div>
+				<h5 id="vita-effect-heading">ヴィータ効果</h5>
+				<div id="vita-effect-box">
+					<span id="vita-effect-style-box"><span id="vita-effect-style"></span></span>
+					<span id="vita-effect-value"></span>
+				</div>
 			</div>
 		</div>
 
@@ -129,12 +134,12 @@
 		</h3>
 		<div id="feasible">
 			<div id="recommends">
-				<div id="slot-vita" class="rcm-item" data-rcm-slot="vita">
-					<div class="slot-name"><span class="rcm-note"></span><span class="rcm-tags"></span><span class="label">ヴィータ</span><span class="rcm-page"></span></div>
-					<div class="prev-item-card-area"></div><span class="rcm-controle-wrapper prev"><span class="dif"></span><span class="controle laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper next"><span class="dif"></span><span class="controle laurus-icon">&#x2611;</span></span>
-				</div>
 				<div id="slot-hair" class="rcm-item" data-rcm-slot="hair">
 					<div class="slot-name"><span class="rcm-note"></span><span class="rcm-tags"></span><span class="label">ヘアスタイル</span><span class="rcm-page"></span></div>
+					<div class="prev-item-card-area"></div><span class="rcm-controle-wrapper prev"><span class="dif"></span><span class="controle laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper next"><span class="dif"></span><span class="controle laurus-icon">&#x2611;</span></span>
+				</div>
+				<div id="slot-vita" class="rcm-item" data-rcm-slot="vita">
+					<div class="slot-name"><span class="rcm-note"></span><span class="rcm-tags"></span><span class="label">ヴィータ</span><span class="rcm-page"></span></div>
 					<div class="prev-item-card-area"></div><span class="rcm-controle-wrapper prev"><span class="dif"></span><span class="controle laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper next"><span class="dif"></span><span class="controle laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-dress" class="rcm-item" data-rcm-slot="dress">
@@ -389,6 +394,7 @@
 			<div id="cs-hosiery" class="cs-slot"><span class="label"><span>靴下</span></span><div class="cs-recommends-list"></div></div>
 			<div id="cs-shoes" class="cs-slot"><span class="label"><span>シューズ</span></span><div class="cs-recommends-list"></div></div>
 			<div id="cs-makeup" class="cs-slot"><span class="label"><span>メイク</span></span><div class="cs-recommends-list"></div></div>
+			<div id="cs-vita" class="cs-slot"><span class="label"><span>ヴィータ</span></span><div class="cs-recommends-list"></div></div>
 
 			<h4 id="head-cs-accessory">アクセサリー</h4>
 			<div id="cs-hair-ornaments" class="cs-slot"><span class="label"><span>ヘッドアクセ</span></span><div class="cs-recommends-list"></div></div>
@@ -647,6 +653,7 @@
 						<span class="slot"><span data-slot="10">メイク<span class="has"></span></span></span>
 					</div>
 					<div class="category-line">
+						<span class="slot"><span data-slot="41">ヴィータ<span class="has"></span></span></span>
 						<span class="slot"><span data-slot="11">アクセサリー<span class="has"></span></span></span>
 					</div>
 					<div class="category-line" data-accessory="1">
@@ -685,6 +692,7 @@
 					<div class="category-line" data-accessory="1">
 						<span class="slot"><span data-slot="29">腰飾り<span class="has"></span></span></span>
 						<span class="slot"><span data-slot="30">特殊<span class="has"></span></span></span>
+						<span class="slot"><span data-slot="40" data-special>肌<span class="has"></span></span></span>
 					</div>
 					<div class="category-line" data-accessory="1">
 						<div class="sub-category" data-special data-parent="30">
@@ -701,7 +709,6 @@
 							<span class="slot"><span data-slot="37" data-special>後景<span class="has"></span></span></span>
 							<span class="slot"><span data-slot="38" data-special>吊り<span class="has"></span></span></span>
 							<span class="slot"><span data-slot="39" data-special>床<span class="has"></span></span></span>
-							<span class="slot"><span data-slot="40" data-special>肌<span class="has"></span></span></span>
 						</div>
 					</div>
 				</div>
@@ -849,8 +856,6 @@
 		ga( 'create', 'UA-98310829-1', 'auto' );
 		ga( 'send', 'pageview' );
 	</script>
-
-	<script type="text/javascript">var _lrscript = document.createElement('script');_lrscript.type = 'text/javascript';_lrscript.defer = _lrscript.async = true;_lrscript.src = '//' + ((null||location.host).split(':')[0]) + ':35729/livereload.js?';document.body.appendChild(_lrscript);</script>
 </body>
 
 </html>

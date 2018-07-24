@@ -148,7 +148,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		/** @type {Object} カテゴリの定義 */
 		_categoryDefs = {
 			/** @type {Number} スロットの総数 */
-			SLOT_COUNT: 40,
+			SLOT_COUNT: 41,
 			/** @type {Array} スロットリスト */
 			SLOT_LIST: [
 				"hair", "dress", "coat", "tops", "bottoms",
@@ -706,7 +706,10 @@ LAURUS.STATIC_ITEMS = ( function () {
 				},
 				/** @summary */
 				_vita = function ( vita ) {
-
+					return {
+						style: vita.substring( 0, 1 ),
+						value: _utils.digitGrouping( parseInt( vita.slice( 1 ), 10 ) )
+					};
 				};
 
 			return {
@@ -1159,6 +1162,7 @@ LAURUS.advisor = ( function () {
 		STRUCTURE = LAURUS.STATIC_ITEMS.STAGE_STRUCTURE,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+		VITA_STYLE = LAURUS.STATIC_ITEMS.VITA_STYLE,
 		PIETY_LAURUS_OPTIONS = LAURUS.STATIC_ITEMS.PIETY_LAURUS_OPTIONS,
 
 		digit2Half = LAURUS.STATIC_ITEMS.utils.digit2Half,
@@ -1562,11 +1566,24 @@ LAURUS.advisor = ( function () {
 								rank += 1;
 							} );
 						},
+						/** @summary ヴィータの効果案内 */
+						_vitaEffect = function () {
+							var serial = SCORING_BY_SLOT.vita[ _pos.vita ],
+								vitaEffect = restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
+
+							$( "#vita-effect-style" )
+								.removeClass()
+								.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
+								.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
+							$( "#vita-effect-value" )
+								.text( "+" + vitaEffect.value );
+						},
 						/** @summary 内容変更時のオブザーバ */
 						_observe = function () {
 							_isnpection4ExclusiveSlot();
 							_inspection4ComplexSlot();
 							_accessoryRank();
+							_vitaEffect();
 						},
 						/** @summary 推奨アイテムを書き込む
 						 * @param {String} slot スロットキー
@@ -3064,7 +3081,8 @@ LAURUS.wardrobe = ( function () {
 											special: familySlot
 										} );
 									} ),
-									makeup: singleSlot
+									makeup: singleSlot,
+									vita: singleSlot
 								} );
 							}
 
