@@ -592,10 +592,10 @@
 			margin:    5px 25px;
 		}
 		#vita-effect-style-box {
-			display: inline-block;
-			width: 100px;
-			text-align: center;
+			display:     inline-block;
 			font-weight: bold;
+			text-align:  center;
+			width:       100px;
 		}
 			#vita-effect-style {
 				border:        2px solid transparent;
@@ -611,6 +611,11 @@
 				&.pure     { border-color: fade( @PURE    , 50% ); color: @PURE;     }
 				&.warm     { border-color: fade( @WARM    , 50% ); color: @WARM;     }
 				&.cool     { border-color: fade( @COOL    , 50% ); color: @COOL;     }
+
+				&.non-vita {
+					border: none;
+					color: @inaccent-color;
+				}
 			}
 		#vita-effect-value {
 			display: inline-block;

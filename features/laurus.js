@@ -1569,14 +1569,24 @@ LAURUS.advisor = ( function () {
 						/** @summary ヴィータの効果案内 */
 						_vitaEffect = function () {
 							var serial = SCORING_BY_SLOT.vita[ _pos.vita ],
-								vitaEffect = restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
+								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
 
-							$( "#vita-effect-style" )
-								.removeClass()
-								.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
-								.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
-							$( "#vita-effect-value" )
-								.text( "+" + vitaEffect.value );
+
+							if ( vitaEffect ) {
+								$( "#vita-effect-style" )
+									.removeClass()
+									.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
+									.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
+								$( "#vita-effect-value" )
+									.text( "+" + vitaEffect.value );
+							} else {
+								$( "#vita-effect-style" )
+									.removeClass()
+									.addClass( "non-vita" )
+									.text( "ヴィータ未装着" );
+								$( "#vita-effect-value" )
+									.text( "効果なし" );
+							}
 						},
 						/** @summary 内容変更時のオブザーバ */
 						_observe = function () {
