@@ -587,6 +587,35 @@
 			margin: 5px 25px;
 			width:  200px;
 		}
+		#vita-effect-box {
+			font-size: @sub-font-size;
+			margin:    5px 25px;
+		}
+		#vita-effect-style-box {
+			display: inline-block;
+			width: 100px;
+			text-align: center;
+			font-weight: bold;
+		}
+			#vita-effect-style {
+				border:        2px solid transparent;
+				padding:       1px 5px;
+				border-radius: 4px;
+				&.gorgeous { border-color: fade( @GORGEOUS, 50% ); color: @GORGEOUS; }
+				&.simple   { border-color: fade( @SIMPLE  , 50% ); color: @SIMPLE;   }
+				&.elegance { border-color: fade( @ELEGANCE, 50% ); color: @ELEGANCE; }
+				&.lively   { border-color: fade( @LIVELY  , 50% ); color: @LIVELY;   }
+				&.mature   { border-color: fade( @MATURE  , 50% ); color: @MATURE;   }
+				&.cute     { border-color: fade( @CUTE    , 50% ); color: @CUTE;     }
+				&.sexy     { border-color: fade( @SEXY    , 50% ); color: @SEXY;     }
+				&.pure     { border-color: fade( @PURE    , 50% ); color: @PURE;     }
+				&.warm     { border-color: fade( @WARM    , 50% ); color: @WARM;     }
+				&.cool     { border-color: fade( @COOL    , 50% ); color: @COOL;     }
+			}
+		#vita-effect-value {
+			display: inline-block;
+			width:   100px;
+		}
 
 #feasible {
 	position: relative;

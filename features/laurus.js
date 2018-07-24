@@ -34,7 +34,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 			CATEGORY: [
 				"ヘアスタイル", "ドレス", "コート", "トップス", "ボトムス",
 				"靴下", "シューズ", "ヘアアクセサリー", "耳飾り", "首飾り",
-				"腕飾り", "手持品", "腰飾り", "特殊", "メイク"
+				"腕飾り", "手持品", "腰飾り", "特殊", "メイク", "ヴィータ"
 			],
 			/** @type {Array} スロット */
 			SLOT: [
@@ -44,7 +44,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"右手飾り", "左手飾り", "手袋", "右手持ち", "左手持ち",
 				"両手持ち", "腰飾り", "フェイス", "ボディ", "タトゥー",
 				"羽根", "しっぽ", "前景", "後景", "吊り",
-				"床", "肌", "メイク", "complex"
+				"床", "肌", "メイク", "ヴィータ", "complex"
 			]
 		},
 		/** @type {Object} 数値範囲の定義 */
@@ -84,7 +84,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				NAME: 3,
 				ATTRIBUTES: 4,
 				TAGS: 5,
-				PROC: 6
+				VITA: 6
 			},
 			/** @type {Object} ステージ */
 			STAGE: {
@@ -99,6 +99,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				BLACKLIST: 8,
 				WHITELIST: 9
 			},
+			/** @type {Object} スタイル */
 			STYLE: {
 				GORGEOUS: 0,
 				SIMPLE: 1,
@@ -111,6 +112,19 @@ LAURUS.STATIC_ITEMS = ( function () {
 				WARM: 8,
 				COOL: 9
 			}
+		},
+		/** @type {Object} ヴィータのスタイル識別子 */
+		_vitaStyle = {
+			a: _column.STYLE.GORGEOUS,
+			b: _column.STYLE.SIMPLE,
+			c: _column.STYLE.ELEGANCE,
+			d: _column.STYLE.LIVELY,
+			e: _column.STYLE.MATURE,
+			f: _column.STYLE.CUTE,
+			g: _column.STYLE.SEXY,
+			h: _column.STYLE.PURE,
+			i: _column.STYLE.WARM,
+			j: _column.STYLE.COOL
 		},
 		/** @type {Object} スタイルの定義 */
 		_styleDefs = {
@@ -134,7 +148,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		/** @type {Object} カテゴリの定義 */
 		_categoryDefs = {
 			/** @type {Number} スロットの総数 */
-			SLOT_COUNT: 40,
+			SLOT_COUNT: 41,
 			/** @type {Array} スロットリスト */
 			SLOT_LIST: [
 				"hair", "dress", "coat", "tops", "bottoms",
@@ -143,7 +157,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"necklace", "right-hand-ornaments", "left-hand-ornaments", "glove", "right-hand-holding",
 				"left-hand-holding", "both-hand-holding", "waist", "face", "brooch",
 				"tatoo", "wing", "tail", "foreground", "background",
-				"head-ornaments", "ground", "skin", "complex"
+				"head-ornaments", "ground", "skin", "vita", "complex"
 			],
 			/** @type {Array} スロットコード対応表 */
 			SLOT: [
@@ -155,7 +169,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"handheld", "right-hand-holding", "left-hand-holding", "both-hand-holding", "waist",
 				"special", "face", "brooch", "tatoo", "wing",
 				"tail", "foreground", "background", "head-ornaments", "ground",
-				"skin", "complex"
+				"skin", "vita", "complex"
 			],
 			/** @type {Array} アクセサリリスト */
 			ACCESSORY_LIST: [
@@ -183,7 +197,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品": "handheld",
 				"腰飾り": "waist",
 				"特殊": "special",
-				"メイク": "makeup"
+				"メイク": "makeup",
+				"ヴィータ": "vita"
 			},
 			/** @type {Dictionary} アイテムアイコンの対応ファイル名 */
 			ICONS: {
@@ -201,7 +216,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品": "accessory",
 				"腰飾り": "accessory",
 				"特殊": "accessory",
-				"メイク": "makeup"
+				"メイク": "makeup",
+				"ヴィータ": "vita"
 			},
 			/** @type {Object} サブカテゴリを所持するカテゴリ */
 			HAS_SUB: {
@@ -234,7 +250,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 					handheld: 25,
 					waist: 29,
 					special: 30,
-					makeup: 10
+					makeup: 10,
+					vita: 41
 				},
 				/** @type {Object} スロット */
 				SLOT: {
@@ -270,7 +287,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 					"head-ornaments": 38,
 					"ground": 39,
 					"skin": 40,
-					"makeup": 10
+					"makeup": 10,
+					"vita": 41
 				}
 			},
 			/** @type {Array} コード逆引き */
@@ -283,7 +301,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				"手持品", "右手持ち", "左手持ち", "両手持ち", "腰飾り",
 				"特殊", "フェイス", "ボディ", "タトゥー", "羽根",
 				"しっぽ", "前景", "後景", "吊り", "床",
-				"肌", "complex"
+				"肌", "ヴィータ", "complex"
 			],
 			/** @type {Array} スロットにおけるスコア倍率 */
 			SCALE: [
@@ -295,7 +313,8 @@ LAURUS.STATIC_ITEMS = ( function () {
 				0, 0.2, 0.2, 0.2, 0,
 				0.2, 0.2, 0.2, 0.2, 0,
 				0.2, 0.2, 0.2, 0.2, 0.2,
-				0.2, 0.2, 0.2, 0.2, 0.2
+				0.2, 0.2, 0.2, 0.2, 0.2,
+				0.2
 			],
 			/** @type {Array} アクセサリの装着数による減衰率 */
 			DAMPING: [
@@ -684,13 +703,21 @@ LAURUS.STATIC_ITEMS = ( function () {
 						category: _categoryDefs.REVERSE[ Math.floor( serial / CATEGORY_BASE ) ],
 						id: serial % CATEGORY_BASE
 					};
+				},
+				/** @summary */
+				_vita = function ( vita ) {
+					return {
+						style: vita.substring( 0, 1 ),
+						value: _utils.digitGrouping( parseInt( vita.slice( 1 ), 10 ) )
+					};
 				};
 
 			return {
 				attributes: _attributes,
 				attributes2serial: _attributes2serial,
 				tag: _tag,
-				categoryAndId: _categoryAndId
+				categoryAndId: _categoryAndId,
+				vita: _vita
 			};
 		}() );
 
@@ -705,6 +732,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 		BOUNDS: _bounds,
 		COLUMN: _column,
 		STYLE_DEFS: _styleDefs,
+		VITA_STYLE: _vitaStyle,
 		CATEGORY_DEFS: _categoryDefs,
 		TAG_DEFS: _tagDefs,
 		SKILL_DEFS: _skillDefs,
@@ -1134,6 +1162,7 @@ LAURUS.advisor = ( function () {
 		STRUCTURE = LAURUS.STATIC_ITEMS.STAGE_STRUCTURE,
 		TAG_DEFS = LAURUS.STATIC_ITEMS.TAG_DEFS,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+		VITA_STYLE = LAURUS.STATIC_ITEMS.VITA_STYLE,
 		PIETY_LAURUS_OPTIONS = LAURUS.STATIC_ITEMS.PIETY_LAURUS_OPTIONS,
 
 		digit2Half = LAURUS.STATIC_ITEMS.utils.digit2Half,
@@ -1537,11 +1566,24 @@ LAURUS.advisor = ( function () {
 								rank += 1;
 							} );
 						},
+						/** @summary ヴィータの効果案内 */
+						_vitaEffect = function () {
+							var serial = SCORING_BY_SLOT.vita[ _pos.vita ],
+								vitaEffect = restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
+
+							$( "#vita-effect-style" )
+								.removeClass()
+								.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
+								.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
+							$( "#vita-effect-value" )
+								.text( "+" + vitaEffect.value );
+						},
 						/** @summary 内容変更時のオブザーバ */
 						_observe = function () {
 							_isnpection4ExclusiveSlot();
 							_inspection4ComplexSlot();
 							_accessoryRank();
+							_vitaEffect();
 						},
 						/** @summary 推奨アイテムを書き込む
 						 * @param {String} slot スロットキー
@@ -3039,7 +3081,8 @@ LAURUS.wardrobe = ( function () {
 											special: familySlot
 										} );
 									} ),
-									makeup: singleSlot
+									makeup: singleSlot,
+									vita: singleSlot
 								} );
 							}
 
