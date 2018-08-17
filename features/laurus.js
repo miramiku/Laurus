@@ -1893,13 +1893,15 @@ LAURUS.advisor = ( function () {
 								blacklist: {
 									nan: function ( bundle ) {
 										$.each( bundle.type, function () {
-											var code = CATEGORY_DEFS.CODE.CATEGORY[ this ];
+											var isCategory = CATEGORY_DEFS.CODE.CATEGORY[ this ] ? true : false,
+												code = isCategory ? CATEGORY_DEFS.CODE.CATEGORY[ this ] : CATEGORY_DEFS.CODE.SLOT[ this ],
+												slot = isCategory ? null : CATEGORY_DEFS.CODE.SLOT[ this ];
 
 											$list
 												.append( "<span class=\"bw-category\"><span class=\"slot-icon " + this + "\"></span><span class=\"bw-item-category\">" + CATEGORY_DEFS.REVERSE[ code ] + "</span></span>" );
 
 											$.each( WARDROBE, function ( serial ) {
-												if ( Math.round( serial / 10000 ) === code ) {
+												if ( ( isCategory && ( Math.round( serial / 10000 ) === code ) ) || ( slot === WARDROBE[ serial ].item[ COLUMN.SLOTS ][ 0 ] ) ) {
 													this.fail = true;
 												}
 											} );
@@ -3818,7 +3820,6 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = localStorage.getItem( "imposes" );
 
 			if ( serializedImposes ) {
-				serializedImposes = replaceItemSerial( serializedImposes, "100211", "100221" ); // 純白の囁き since: 2018.05.21
 				serializedImposes = replaceItemSerial( serializedImposes, "211174", "251174" ); // 錦鯉の筆 since: 2018.06.14
 				serializedImposes = replaceItemSerial( serializedImposes, "211175", "251175" ); // 淡墨の巻き軸 since: 2018.06.14
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
