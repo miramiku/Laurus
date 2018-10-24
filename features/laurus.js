@@ -3820,9 +3820,7 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = localStorage.getItem( "imposes" );
 
 			if ( serializedImposes ) {
-				serializedImposes = replaceItemSerial( serializedImposes, "211174", "251174" ); // 錦鯉の筆 since: 2018.06.14
-				serializedImposes = replaceItemSerial( serializedImposes, "211175", "251175" ); // 淡墨の巻き軸 since: 2018.06.14
-				serializedImposes = replaceItemSerial( serializedImposes, "101254", "21254" ); // 銀星の魂 since: 2018.08.21
+				serializedImposes = replaceItemSerial( serializedImposes, "294500", "174500" ); // 光年の見守り since: 2018.10.24
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
 			}
