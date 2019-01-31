@@ -3824,9 +3824,9 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = replaceItemSerial( serializedImposes, "62017", "60581" ); // スターニーハイ since: 2018.11.07
 				serializedImposes = replaceItemSerial( serializedImposes, "62018", "60546" ); // 孤独の旅 since: 2018.11.07
 				serializedImposes = replaceItemSerial( serializedImposes, "292764", "292674" ); // ハートポーチ since: 2018.11.30
-				serializedImposes = replaceItemSerial( serializedImposes, "302579", "252579" ); // SR-白樺林の秘密 since: 2018.11.30
-				serializedImposes = replaceItemSerial( serializedImposes, "302583", "252583" ); // 白樺林の秘密-思 since: 2018.11.30
-				serializedImposes = replaceItemSerial( serializedImposes, "302581", "252581" ); // 白樺林の秘密-恋 since: 2018.11.30
+				serializedImposes = replaceItemSerial( serializedImposes, "252579", "302579" ); // SR-白樺林の秘密 since: 2019.01.31
+				serializedImposes = replaceItemSerial( serializedImposes, "252583", "302583" ); // 白樺林の秘密-思 since: 2019.01.31
+				serializedImposes = replaceItemSerial( serializedImposes, "252581", "302581" ); // 白樺林の秘密-恋 since: 2019.01.31
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
 			}
