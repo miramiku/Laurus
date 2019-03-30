@@ -2042,7 +2042,7 @@ LAURUS.advisor = ( function () {
 									$( "#stage-" + section + " > div" )
 										.append( $chapter );
 									$( $chapter )
-										.append( section === "colosseum" ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
+										.append(( ( section === "colosseum" ) || ( section === "styleContest" ) ) ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
 										.append( $stageArea );
 									$stageArea
 										.data( "section", section )
@@ -2054,7 +2054,7 @@ LAURUS.advisor = ( function () {
 							$.each( STAGES, function () {
 								$( "#" + map4IdString( this[ STAGE.CHAPTER ] ) )
 									.append(
-									this[ STAGE.SECTION ] === "colosseum" ?
+									( ( this[ STAGE.SECTION ] === "colosseum" ) || ( this[ STAGE.SECTION ] === "styleContest" ) ) ?
 										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
 										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
 									);
@@ -2071,7 +2071,7 @@ LAURUS.advisor = ( function () {
 								} );
 							} );
 
-							$( "#stage-scenario div, #stage-colosseum div, #stage-guild div, #stage-event div" ).empty();
+							$( "#stage-scenario div, #stage-colosseum div, #stage-styleContest div, #stage-guild div, #stage-event div" ).empty();
 							buildStageKeys();
 
 							$( "#events-more" ).remove();
@@ -2343,7 +2343,7 @@ LAURUS.advisor = ( function () {
 							offset = $this.offset(),
 							stage = STAGES[ $this.parent().data( "stage" ) ];
 
-						if ( stage[ STAGE.SECTION ] !== "colosseum" ) {
+						if ( ( stage[ STAGE.SECTION ] !== "colosseum" ) && ( stage[ STAGE.SECTION ] !== "styleContest" ) ) {
 							$( "#stage-preview" )
 								.text( stage[ STAGE.TITLE ] )
 								.addClass( "sparkly" )
