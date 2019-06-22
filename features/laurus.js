@@ -2042,7 +2042,7 @@ LAURUS.advisor = ( function () {
 									$( "#stage-" + section + " > div" )
 										.append( $chapter );
 									$( $chapter )
-										.append(( ( section === "colosseum" ) || ( section === "styleContest" ) ) ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
+										.append( ( ( section === "colosseum" ) || ( section === "styleContest" ) ) ? "" : "<span class=\"chapter-label\">" + _makeChapterLabel( chapter ) + "</span>" )
 										.append( $stageArea );
 									$stageArea
 										.data( "section", section )
@@ -2054,9 +2054,9 @@ LAURUS.advisor = ( function () {
 							$.each( STAGES, function () {
 								$( "#" + map4IdString( this[ STAGE.CHAPTER ] ) )
 									.append(
-									( ( this[ STAGE.SECTION ] === "colosseum" ) || ( this[ STAGE.SECTION ] === "styleContest" ) ) ?
-										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
-										buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
+										( ( this[ STAGE.SECTION ] === "colosseum" ) || ( this[ STAGE.SECTION ] === "styleContest" ) ) ?
+											buildStageButton( this[ STAGE.STAGE ], this[ STAGE.TITLE ] ) :
+											buildStageButton( this[ STAGE.STAGE ], this[ STAGE.STAGE ] )
 									);
 							} );
 						},
@@ -2378,7 +2378,7 @@ LAURUS.advisor = ( function () {
 					},
 					/** 選択したタグをセットする */
 					tagSelect: function () {
-						Medium.tag.set(( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "criteria-tag" ) );
+						Medium.tag.set( ( $( dialogue.getInvoker() ).attr( "id" ) === "criteria-tag-1" ? 1 : 2 ), $( this ).data( "criteria-tag" ) );
 						dialogue.dispose();
 					},
 					/** @summary スキルの活性 / 不活性化状態を入れ替える */
@@ -3820,13 +3820,8 @@ LAURUS.wardrobe = ( function () {
 				serializedImposes = localStorage.getItem( "imposes" );
 
 			if ( serializedImposes ) {
-				serializedImposes = replaceItemSerial( serializedImposes, "294500", "174500" ); // 光年の見守り since: 2018.10.24
-				serializedImposes = replaceItemSerial( serializedImposes, "62017", "60581" ); // スターニーハイ since: 2018.11.07
-				serializedImposes = replaceItemSerial( serializedImposes, "62018", "60546" ); // 孤独の旅 since: 2018.11.07
-				serializedImposes = replaceItemSerial( serializedImposes, "292764", "292674" ); // ハートポーチ since: 2018.11.30
-				serializedImposes = replaceItemSerial( serializedImposes, "252579", "302579" ); // SR-白樺林の秘密 since: 2019.01.31
-				serializedImposes = replaceItemSerial( serializedImposes, "252583", "302583" ); // 白樺林の秘密-思 since: 2019.01.31
-				serializedImposes = replaceItemSerial( serializedImposes, "252581", "302581" ); // 白樺林の秘密-恋 since: 2019.01.31
+				serializedImposes = replaceItemSerial( serializedImposes, "21846", "21646" ); // 白鳥の恋 since: 2019.06.22
+				serializedImposes = replaceItemSerial( serializedImposes, "21846", "21646" ); // 白鳥の恋 since: 2019.06.22
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
 			}
