@@ -3821,7 +3821,7 @@ LAURUS.wardrobe = ( function () {
 
 			if ( serializedImposes ) {
 				serializedImposes = replaceItemSerial( serializedImposes, "21846", "21646" ); // 白鳥の恋 since: 2019.06.22
-				serializedImposes = replaceItemSerial( serializedImposes, "21846", "21646" ); // 白鳥の恋 since: 2019.06.22
+				serializedImposes = replaceItemSerial( serializedImposes, "21679", "21672" ); // 初恋と仇桜 since: 2019.06.22
 				setImposes( $.unique( JSON.parse( serializedImposes ) ) );
 				localStorage.setItem( "imposes", JSON.stringify( getImposes() ) );
 			}
