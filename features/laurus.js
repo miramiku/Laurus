@@ -1584,6 +1584,9 @@ LAURUS.advisor = ( function () {
 								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] ),
 								stageCriteria = [];
 
+							$( "#rcm-vita" )
+								.removeClass();
+
 							if ( vitaEffect ) {
 								$.each( _stage[ STAGE.CRITERIA_STYLE ], function ( index, criteria ) {
 									if ( 0 < criteria ) {
@@ -1605,9 +1608,11 @@ LAURUS.advisor = ( function () {
 								if ( stageCriteria[ VITA_STYLE[ vitaEffect.style ] ] ) {
 									$( "#vita-effect-style" )
 										.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] );
+									$( "#rcm-vita" )
+										.addClass( "sparkly-vita" );
 								} else {
-									$( "#vita-effect-style, #vita-effect-value" )
-										.addClass( "inactive-vita" );
+									$( "#vita-effect-style, #vita-effect-value, #rcm-vita" )
+										.addClass( "insparkly-vita" );
 								}
 							} else {
 								$( "#vita-effect-style" )
