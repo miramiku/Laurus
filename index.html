@@ -11,7 +11,7 @@
 	<meta name="description" content="">
 
 	<!-- scripts -->
-	<script src="laurus.min.js?ver=1.15.2" defer></script>
+	<script src="laurus.min.js?ver=1.16.0" defer></script>
 
 	<!--
 	<script src="features/jquery.min.js" defer></script>
@@ -139,7 +139,7 @@
 					<div class="prev-item-card-area"></div><span class="rcm-controle-wrapper prev"><span class="dif"></span><span class="controle laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper next"><span class="dif"></span><span class="controle laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-vita" class="rcm-item" data-rcm-slot="vita">
-					<div class="slot-name"><span class="rcm-note"></span><span class="rcm-tags"></span><span class="label">ヴィータ</span><span class="rcm-page"></span></div>
+					<div class="slot-name"><span class="rcm-note"></span><span class="rcm-tags"></span><span id="rcm-vita"></span><span class="label">ヴィータ</span><span class="rcm-page"></span></div>
 					<div class="prev-item-card-area"></div><span class="rcm-controle-wrapper prev"><span class="dif"></span><span class="controle laurus-icon">&#x2610;</span></span><div class="item-card-area"></div><span class="rcm-controle-wrapper next"><span class="dif"></span><span class="controle laurus-icon">&#x2611;</span></span>
 				</div>
 				<div id="slot-dress" class="rcm-item" data-rcm-slot="dress">
@@ -505,8 +505,35 @@
 	<article id="changelog" class="tab">
 		<h3 id="head-changelog">変更履歴</h3>
 		<div id="timeline">
+			<div class="content" data-nikki="v5.8.1 (570) 新世界">
+				<span class="version">v1.16.0</span><span class="release">2019.09.23</span><span class="closet">10,668（ミラクルニキ v5.8.1 (570) 2019.08.28 対応）</span>
+				<ul class="change-list">
+					<li class="advisor"><span class="changelog-tab">Laurus :: Advisor</span>
+						<ul>
+							<li>
+								ヴィータの計算方法を変更しました
+								<p>
+									ヴィータの効果がある場合ヴィータの効果も上乗せして計算するようになりました<br>
+									それに伴いヴィータ効果表示欄でもヴィータの効果がない場合グレーになります<br>
+									ヴィータの効果がある場合は "sparkly" 効果がない場合は "insparkly" のアイコンが付きます。本来なら "active / inactive" を使いたいところですが属性に「アクティブ」があるので "sparkly" を Laurus では採用しています。
+								</p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="content" data-nikki="v5.8.1 (570) 新世界">
+				<span class="version">v1.15.1</span><span class="release">2019.09.15</span><span class="closet">10,668（ミラクルニキ v5.8.1 (570) 2019.08.28 対応）</span>
+				<ul class="change-list">
+					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
+						<ul>
+							<li>ミラクルニキのアイテム収録数と Laurus のアイテム登録数が一致させました</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
 			<div class="content" data-nikki="v5.6.1 (381) データ世界の選択">
-				<span class="version">v1.15.1</span><span class="release">2019.07.22</span><span class="closet">10,158（ミラクルニキ v5.6.1 (381) 2019.07.16 対応）</span>
+				<span class="version">v1.15.1</span><span class="release">2019.07.22</span><span class="closet">10,158（ミラクルニキ v5.8.1 (381) 2019.07.16 対応）</span>
 				<ul class="change-list">
 					<li class="database"><span class="changelog-tab">Laurus :: Database</span>
 						<ul>

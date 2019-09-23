@@ -708,7 +708,7 @@ LAURUS.STATIC_ITEMS = ( function () {
 				_vita = function ( vita ) {
 					return {
 						style: vita.substring( 0, 1 ),
-						value: _utils.digitGrouping( parseInt( vita.slice( 1 ), 10 ) )
+						value: parseInt( vita.slice( 1 ), 10 )
 					};
 				};
 
@@ -817,6 +817,7 @@ LAURUS.scoring = function ( objective ) {
 
 	var COLUMN = LAURUS.STATIC_ITEMS.COLUMN.WARDROBE,
 		VALUES = LAURUS.STATIC_ITEMS.VALUES,
+		VITA_STYLE = LAURUS.STATIC_ITEMS.VITA_STYLE,
 		SCALE = LAURUS.STATIC_ITEMS.CATEGORY_DEFS.SCALE,
 
 		categoryOf = LAURUS.STATIC_ITEMS.utils.categoryOf,
@@ -843,7 +844,16 @@ LAURUS.scoring = function ( objective ) {
 						( itemTags[ channel ] === bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_ID ] ) ? VALUES.FACTOR[ bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_VALUE ] ] * bonusTags[ OBJECTIVE.LATTER ][ OBJECTIVE.TAG_PRODUCT ] : 0 :
 					0;
 			},
-			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) );
+			tagBonus = ( addTagBonus( OBJECTIVE.FORMER ) + addTagBonus( OBJECTIVE.LATTER ) ),
+			vitaEffect = ( function () {
+				var effect = restore.vita( item[ COLUMN.VITA ] );
+
+				if ( effect.value ) {
+					return objective.style[ VITA_STYLE[ effect.style ] ] ? effect.value : 0;
+				} else {
+					return 0;
+				}
+			} )();
 
 		$.each( item[ COLUMN.SLOTS ], function () {
 			var scale = SCALE[ this ],
@@ -852,6 +862,8 @@ LAURUS.scoring = function ( objective ) {
 			$.each( objective.style, function ( index ) {
 				score += ( VALUES.FACTOR[ attributes[ index ] ] * damping + tagBonus ) * scale * this;
 			} );
+
+			score += vitaEffect;
 		} );
 
 		record.score = Math.round( score / ( record.fail ? 10 : 1 ) );
@@ -1569,22 +1581,46 @@ LAURUS.advisor = ( function () {
 						/** @summary ヴィータの効果案内 */
 						_vitaEffect = function () {
 							var serial = SCORING_BY_SLOT.vita[ _pos.vita ],
-								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
+								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] ),
+								stageCriteria = [];
 
+							$( "#rcm-vita" )
+								.removeClass();
 
 							if ( vitaEffect ) {
+								$.each( _stage[ STAGE.CRITERIA_STYLE ], function ( index, criteria ) {
+									if ( 0 < criteria ) {
+										stageCriteria.push( 1 );
+										stageCriteria.push( 0 );
+									} else {
+										stageCriteria.push( 0 );
+										stageCriteria.push( 1 );
+									}
+								} );
+
 								$( "#vita-effect-style" )
 									.removeClass()
-									.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
 									.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
 								$( "#vita-effect-value" )
-									.text( "+" + vitaEffect.value );
+									.removeClass()
+									.text( "+" + digitGrouping( vitaEffect.value ) );
+
+								if ( stageCriteria[ VITA_STYLE[ vitaEffect.style ] ] ) {
+									$( "#vita-effect-style" )
+										.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] );
+									$( "#rcm-vita" )
+										.addClass( "sparkly-vita" );
+								} else {
+									$( "#vita-effect-style, #vita-effect-value, #rcm-vita" )
+										.addClass( "insparkly-vita" );
+								}
 							} else {
 								$( "#vita-effect-style" )
 									.removeClass()
 									.addClass( "non-vita" )
 									.text( "ヴィータ未装着" );
 								$( "#vita-effect-value" )
+									.removeClass()
 									.text( "効果なし" );
 							}
 						},

@@ -602,16 +602,17 @@
 				border:        2px solid transparent;
 				padding:       1px 5px;
 				border-radius: 4px;
-				&.gorgeous { border-color: fade( @GORGEOUS, 50% ); color: @GORGEOUS; }
-				&.simple   { border-color: fade( @SIMPLE  , 50% ); color: @SIMPLE;   }
-				&.elegance { border-color: fade( @ELEGANCE, 50% ); color: @ELEGANCE; }
-				&.lively   { border-color: fade( @LIVELY  , 50% ); color: @LIVELY;   }
-				&.mature   { border-color: fade( @MATURE  , 50% ); color: @MATURE;   }
-				&.cute     { border-color: fade( @CUTE    , 50% ); color: @CUTE;     }
-				&.sexy     { border-color: fade( @SEXY    , 50% ); color: @SEXY;     }
-				&.pure     { border-color: fade( @PURE    , 50% ); color: @PURE;     }
-				&.warm     { border-color: fade( @WARM    , 50% ); color: @WARM;     }
-				&.cool     { border-color: fade( @COOL    , 50% ); color: @COOL;     }
+				&.gorgeous       { border-color: fade( @GORGEOUS,        50% ); color: @GORGEOUS;        }
+				&.simple         { border-color: fade( @SIMPLE  ,        50% ); color: @SIMPLE;          }
+				&.elegance       { border-color: fade( @ELEGANCE,        50% ); color: @ELEGANCE;        }
+				&.lively         { border-color: fade( @LIVELY  ,        50% ); color: @LIVELY;          }
+				&.mature         { border-color: fade( @MATURE  ,        50% ); color: @MATURE;          }
+				&.cute           { border-color: fade( @CUTE    ,        50% ); color: @CUTE;            }
+				&.sexy           { border-color: fade( @SEXY    ,        50% ); color: @SEXY;            }
+				&.pure           { border-color: fade( @PURE    ,        50% ); color: @PURE;            }
+				&.warm           { border-color: fade( @WARM    ,        50% ); color: @WARM;            }
+				&.cool           { border-color: fade( @COOL    ,        50% ); color: @COOL;            }
+				&.insparkly-vita { border-color: fade( @insparkly-color, 50% ); color: @insparkly-color; }
 
 				&.non-vita {
 					border: none;
@@ -621,6 +622,10 @@
 		#vita-effect-value {
 			display: inline-block;
 			width:   100px;
+
+			&.insparkly-vita {
+				text-decoration: line-through;
+			}
 		}
 
 #feasible {
@@ -753,7 +758,7 @@
 			vertical-align: bottom;
 			width:          21px;
 		}
-		.rcm-page {
+	.rcm-page {
 			font-family: "Maven Pro";
 			display:     inline-block;
 			margin-left: 20px;
@@ -795,6 +800,21 @@
 					font-weight: bold;
 				}
 			}
+		}
+	}
+	#rcm-vita {
+		display:        none;
+		height:         15px;
+		margin-right:   5px;
+		vertical-align: bottom;
+		width:          34px;
+		&.sparkly-vita {
+			background:     url( "resources/sparkly.png" ) no-repeat;
+			display:        inline-block;
+		}
+		&.insparkly-vita {
+			background:     url( "resources/insparkly.png" ) no-repeat;
+			display:        inline-block;
 		}
 	}
 	.terminus-item {
