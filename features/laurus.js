@@ -853,7 +853,7 @@ LAURUS.scoring = function ( objective ) {
 				} else {
 					return 0;
 				}
-			})();
+			} )();
 
 		$.each( item[ COLUMN.SLOTS ], function () {
 			var scale = SCALE[ this ],
@@ -1581,21 +1581,41 @@ LAURUS.advisor = ( function () {
 						/** @summary ヴィータの効果案内 */
 						_vitaEffect = function () {
 							var serial = SCORING_BY_SLOT.vita[ _pos.vita ],
-								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] );
+								vitaEffect = serial === -1 ? 0 : restore.vita( WARDROBE[ serial ].item[ COLUMN.VITA ] ),
+								stageCriteria = [];
 
 							if ( vitaEffect ) {
+								$.each( _stage[ STAGE.CRITERIA_STYLE ], function ( index, criteria ) {
+									if ( 0 < criteria ) {
+										stageCriteria.push( 1 );
+										stageCriteria.push( 0 );
+									} else {
+										stageCriteria.push( 0 );
+										stageCriteria.push( 1 );
+									}
+								} );
+
 								$( "#vita-effect-style" )
 									.removeClass()
-									.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] )
 									.text( STYLE_DEFS.MAP[ VITA_STYLE[ vitaEffect.style ] ] );
 								$( "#vita-effect-value" )
+									.removeClass()
 									.text( "+" + digitGrouping( vitaEffect.value ) );
+
+								if ( stageCriteria[ VITA_STYLE[ vitaEffect.style ] ] ) {
+									$( "#vita-effect-style" )
+										.addClass( STYLE_DEFS.LIST[ VITA_STYLE[ vitaEffect.style ] ] );
+								} else {
+									$( "#vita-effect-style, #vita-effect-value" )
+										.addClass( "inactive-vita" );
+								}
 							} else {
 								$( "#vita-effect-style" )
 									.removeClass()
 									.addClass( "non-vita" )
 									.text( "ヴィータ未装着" );
 								$( "#vita-effect-value" )
+									.removeClass()
 									.text( "効果なし" );
 							}
 						},
