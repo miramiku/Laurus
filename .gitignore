@@ -1,6 +1,7 @@
 # brackets 設定ファイル
 .brackets.json
 gulpfile.js
+package-lock.json
 resources/throwaway.json
 
 # folder
